@@ -3,6 +3,7 @@ package com.ivanasen.smarttickets
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
+import io.ipfs.kotlin.IPFS
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -28,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        val ipfs = IPFS("https://ipfs.infura.io:5001")
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
