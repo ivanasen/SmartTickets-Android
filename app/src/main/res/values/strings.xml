@@ -3,4 +3,15 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_discover">Discover</string>
+    <string name="title_my_tickets">My Tickets</string>
+    <string name="title_create">Create</string>
+    <string name="title_wallet">Wallet</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="search_events_content_description">Search Events</string>
+    <string name="filter_events_content_description">Filter Events</string>
 </resources>
