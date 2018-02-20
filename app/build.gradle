@@ -20,6 +20,7 @@ android {
 
         debug {
             buildConfigField "String", ETHEREUM_NODE_URL, "\"http://10.0.2.2:7545\""
+            buildConfigField "String", "IPFS_GATEWAY_URL", "\"https://hardbin.com/ipfs/\""
         }
 
         release {
@@ -27,7 +28,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             buildConfigField "String", ETHEREUM_NODE_URL, "\"https://rinkeby.infura.io/MuyFFrNqePpnLS1zvAUy\""
+            buildConfigField "String", "IPFS_GATEWAY_URL", "\"https://hardbin.com/ipfs/\""
         }
+
     }
 
     packagingOptions {

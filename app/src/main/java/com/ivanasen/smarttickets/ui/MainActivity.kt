@@ -1,19 +1,15 @@
-package com.ivanasen.smarttickets
+package com.ivanasen.smarttickets.ui
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import com.ivanasen.smarttickets.api.SmartTicketsCore
-import com.ivanasen.smarttickets.api.Web3JProvider
-import com.ivanasen.smarttickets.api.Web3JProvider.Companion.web3
-import com.ivanasen.smarttickets.api.generateWallet
+import com.ivanasen.smarttickets.*
+import com.ivanasen.smarttickets.api.contractwrappers.SmartTicketsCore
+import com.ivanasen.smarttickets.util.Web3JProvider.Companion.web3
 import com.ivanasen.smarttickets.util.Utility.Companion.loadFragment
 import kotlinx.android.synthetic.main.activity_main.*
-import org.web3j.crypto.Credentials
 import org.web3j.crypto.WalletUtils
-import org.web3j.protocol.core.methods.request.Transaction
 import java.io.File
-import java.math.BigInteger
 
 
 class MainActivity : AppCompatActivity() {

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.ivanasen.smarttickets.DiscoverFragment"
+    tools:context="com.ivanasen.smarttickets.ui.DiscoverFragment"
     tools:showIn="@layout/activity_main">
 
     <TextView android:layout_height="wrap_content"

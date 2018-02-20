@@ -1,4 +1,4 @@
-package com.ivanasen.smarttickets.api;
+package com.ivanasen.smarttickets.api.contractwrappers;
 
 import java.math.BigInteger;
 import java.util.ArrayList;

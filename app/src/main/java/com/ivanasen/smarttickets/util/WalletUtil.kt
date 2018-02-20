@@ -1,18 +1,14 @@
-package com.ivanasen.smarttickets.api
+package com.ivanasen.smarttickets.util
 
-import com.ivanasen.smarttickets.api.Web3JProvider.Companion.web3
-import org.web3j.crypto.RawTransaction
-import org.web3j.crypto.TransactionEncoder
+import com.ivanasen.smarttickets.util.Web3JProvider.Companion.web3
+import com.ivanasen.smarttickets.api.contractwrappers.SmartTicketsCore
 import org.web3j.crypto.WalletUtils
 import java.io.File
 import java.math.BigInteger
 import org.web3j.protocol.core.DefaultBlockParameterName
-import org.web3j.protocol.core.methods.response.EthGetTransactionCount
 import org.web3j.protocol.core.methods.response.TransactionReceipt
-import org.web3j.tx.Contract
 import org.web3j.tx.Transfer
 import org.web3j.utils.Convert
-import org.web3j.utils.Numeric
 import java.math.BigDecimal
 
 

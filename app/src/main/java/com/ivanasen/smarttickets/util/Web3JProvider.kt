@@ -1,4 +1,4 @@
-package com.ivanasen.smarttickets.api
+package com.ivanasen.smarttickets.util
 
 import com.ivanasen.smarttickets.BuildConfig
 import org.web3j.protocol.Web3j
