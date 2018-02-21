@@ -6,12 +6,16 @@ import android.util.Log
 import com.ivanasen.smarttickets.api.SmartTicketsIPFSApi
 import com.ivanasen.smarttickets.api.SmartTicketsContractProvider
 import com.ivanasen.smarttickets.api.contractwrappers.SmartTicketsCore
+import com.ivanasen.smarttickets.db.models.Event
 import com.ivanasen.smarttickets.util.WalletUtil
 import com.ivanasen.smarttickets.util.Web3JProvider
 import org.jetbrains.anko.coroutines.experimental.bg
+import org.spongycastle.util.encoders.Hex
+import org.spongycastle.util.encoders.HexEncoder
 import org.web3j.crypto.WalletUtils
 import org.web3j.protocol.Web3j
 import java.io.File
+import java.sql.Time
 
 
 class SmartTicketsRepository private constructor(
@@ -63,9 +67,15 @@ class SmartTicketsRepository private constructor(
 //
 //    }
 
-    fun getEvent(id: Int) {
+    fun getEvent(id: Int): Event {
         val event = mContract.getEvent(id.toBigInteger()).sendAsync().get()
         Log.d(LOG_TAG, "Event: ${event.value1} ${event.value1}")
+        return Event(id.toBigInteger(),
+                Hex.toHexString(event.value2),
+                Time(event.value1.toLong()),
+                emptyList(),
+                emptyList(),
+                true)
     }
 
     fun getCeoAddress() {
