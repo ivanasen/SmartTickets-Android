@@ -14,4 +14,5 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="search_events_content_description">Search Events</string>
     <string name="filter_events_content_description">Filter Events</string>
+    <string name="title_activity_maps">Map</string>
 </resources>

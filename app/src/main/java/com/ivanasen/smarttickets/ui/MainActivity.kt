@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import com.ivanasen.smarttickets.*
 import com.ivanasen.smarttickets.api.contractwrappers.SmartTicketsCore
-import com.ivanasen.smarttickets.util.Web3JProvider.Companion.web3
+import com.ivanasen.smarttickets.util.Web3JProvider.Companion.instance
 import com.ivanasen.smarttickets.util.Utility.Companion.loadFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import org.web3j.crypto.WalletUtils
@@ -20,30 +20,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
-
-        Thread {
-//            Log.d(TAG, web3.ethAccounts().send().accounts[0])
-            val file = File(this@MainActivity.filesDir, "")
-//            val credentials = Credentials.create("c87509a1c067bbde78beb793e6fa76530b6382a4c0241e5e4a9ec0a0f44dc0d3")
-            val wallet = WalletUtils.generateFullNewWalletFile("123", file)
-//            val contract = SmartTicketsCore.deploy(web3, credentials,
-//                    web3.ethGasPrice().send().gasPrice,
-//                    SmartTicketsCore.GAS_LIMIT).send()
-            val contract = SmartTicketsCore.load(
-                    "0x8cdaf0cd259887258bc13a92c0a6da92698644c0",
-                    web3,
-                    WalletUtils.loadCredentials("123", File(file, wallet)),
-                    web3.ethGasPrice().send().gasPrice,
-                    SmartTicketsCore.GAS_LIMIT)
-            val result = contract.ceoAddress().send()
-            Log.d(TAG, "ceoAddress: $result")
-        }.start()
 
         setupViews()
     }
 
     private fun setupViews() {
+        supportActionBar?.setDisplayShowTitleEnabled(false)
 
         bottomNavigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
