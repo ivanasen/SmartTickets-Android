@@ -1,6 +1,6 @@
 package com.ivanasen.smarttickets.repository
 
-import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
 import android.util.Log
 
 import com.ivanasen.smarttickets.api.SmartTicketsIPFSApi
@@ -11,30 +11,24 @@ import com.ivanasen.smarttickets.util.WalletUtil
 import com.ivanasen.smarttickets.util.Web3JProvider
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.spongycastle.util.encoders.Hex
-import org.spongycastle.util.encoders.HexEncoder
+import org.web3j.crypto.Credentials
 import org.web3j.crypto.WalletUtils
 import org.web3j.protocol.Web3j
 import java.io.File
 import java.sql.Time
 
 
-class SmartTicketsRepository private constructor(
-        private val mWeb3: Web3j,
-        private val mIpfsApi: SmartTicketsIPFSApi) {
+object SmartTicketsRepository {
 
-    companion object {
-        private val LOG_TAG = SmartTicketsRepository::class.simpleName
-        public val instance = SmartTicketsRepository(Web3JProvider.instance, SmartTicketsIPFSApi.create())
-    }
+    private val LOG_TAG = SmartTicketsRepository::class.simpleName
+    private val mWeb3: Web3j = Web3JProvider.instance
+    private val mIpfsApi: SmartTicketsIPFSApi = SmartTicketsIPFSApi.instance
 
-    private var mContract: SmartTicketsCore
-    private lateinit var mPassword: LiveData<String>
-    private lateinit var mWallet: File
 
-    init {
-        mContract = SmartTicketsContractProvider.provide(mWeb3,
-                WalletUtils.loadCredentials(mPassword.value, mWallet))
-    }
+    private lateinit var mContract: SmartTicketsCore
+
+    var credentials: MutableLiveData<Credentials> = MutableLiveData()
+    var unlockedWallet: MutableLiveData<Boolean> = MutableLiveData()
 
     fun getAddressBalance(address: String) {}
 
@@ -82,6 +76,27 @@ class SmartTicketsRepository private constructor(
         Log.d(LOG_TAG, "CeoAddress: ${mContract.ceoAddress().sendAsync().get()}")
     }
 
+    fun createContractInstance() {
+        mContract = SmartTicketsContractProvider.provide(mWeb3, credentials.value!!)
+    }
+
+    fun unlockWallet(password: String, wallet: File): Boolean {
+        return try {
+            credentials.postValue(WalletUtils.loadCredentials(password, wallet))
+            unlockedWallet.postValue(true)
+            true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            unlockedWallet.postValue(false)
+            false
+        }
+    }
+
+    fun createWallet(password: String, destinationDirectory: File): String {
+        return WalletUtils.generateNewWalletFile(password, destinationDirectory, true)
+    }
+
+
 //    fun getTicket(): LiveData<Ticket> {
 //
 //    }
@@ -102,7 +117,7 @@ class SmartTicketsRepository private constructor(
 //
 //    }
 //
-//    fun createWallet() {}
+
 //
 //    fun loadWallet() {}
 }

@@ -1,7 +1,7 @@
 package com.ivanasen.smarttickets.util
 
-import com.ivanasen.smarttickets.util.Web3JProvider.Companion.instance
 import com.ivanasen.smarttickets.api.contractwrappers.SmartTicketsCore
+import com.ivanasen.smarttickets.util.Web3JProvider.instance
 import org.web3j.crypto.WalletUtils
 import java.io.File
 import java.math.BigInteger

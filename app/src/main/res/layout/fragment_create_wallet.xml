@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_background"
+    tools:context="com.ivanasen.smarttickets.ui.WelcomeActivity">
+
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_above="@id/welcomeTextView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:contentDescription="@string/app_name"
+        app:srcCompat="@drawable/welcome_screen_logo" />
+
+    <TextView
+        android:id="@+id/welcomeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
+        android:maxWidth="300dp"
+        android:text="@string/welcome_msg"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColor="@android:color/primary_text_dark" />
+
+    <RelativeLayout
+        android:id="@+id/walletCreationView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:animateLayoutChanges="true"
+        android:clipToPadding="false"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/walletCreationMsgView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/createWalletBtn"
+            android:layout_centerHorizontal="true"
+            android:maxWidth="250dp"
+            android:text="@string/wallet_creation_msg"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:textColor="@android:color/primary_text_dark" />
+
+        <Button
+            android:id="@+id/createWalletBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_margin="16dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/rounded_btn"
+            android:maxWidth="150dp"
+            android:paddingEnd="30dp"
+            android:paddingStart="30dp"
+            android:text="@string/create_wallet_btn_text"
+            android:textColor="@color/colorPrimaryDark" />
+
+        <Button
+            android:id="@+id/recoverWalletBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_toEndOf="@id/createWalletBtn"
+            android:background="@drawable/rounded_btn"
+            android:maxWidth="150dp"
+            android:paddingEnd="30dp"
+            android:paddingStart="30dp"
+            android:text="@string/recover_wallet_btn_text"
+            android:textColor="@color/colorPrimaryDark" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/createWalletForm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:animateLayoutChanges="true"
+        android:background="@android:color/white"
+        android:elevation="8dp"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:visibility="gone">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/inputPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/password_input_hint"
+                android:imeOptions="actionNext"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:nextFocusDown="@id/confirmPassword" />
+
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/confirmPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/confirm_password_hint"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"
+                android:maxLines="1" />
+        </android.support.design.widget.TextInputLayout>
+
+        <TextView
+            android:id="@+id/invalidPasswordsView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/passwords_don_t_match_text"
+            android:textColor="@color/appOrangePink"
+            android:visibility="invisible" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:clipToPadding="false"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/cancelCreateWalletBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/rounded_btn"
+                android:paddingEnd="8dp"
+                android:paddingStart="8dp"
+                android:text="@string/cancel_text"
+                android:textColor="@color/common_google_signin_btn_text_light"
+                tools:ignore="ButtonStyle" />
+
+            <Button
+                android:id="@+id/attemptCreateWalletBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/rounded_btn_gradient"
+                android:enabled="false"
+                android:paddingEnd="8dp"
+                android:paddingStart="8dp"
+                android:text="@string/create_text"
+                android:textColor="@color/common_google_signin_btn_text_dark"
+                tools:ignore="ButtonStyle" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</RelativeLayout>

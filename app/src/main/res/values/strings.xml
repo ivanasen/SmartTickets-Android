@@ -15,4 +15,14 @@
     <string name="search_events_content_description">Search Events</string>
     <string name="filter_events_content_description">Filter Events</string>
     <string name="title_activity_maps">Map</string>
+    <string name="welcome_msg">Welcome to Smart Tickets!</string>
+    <string name="wallet_creation_msg">Get started by creating an Ethereum based wallet or recovering from a backed up one.</string>
+    <string name="create_wallet_btn_text">Create Wallet</string>
+    <string name="recover_wallet_btn_text">Recover Wallet</string>
+    <string name="password_input_hint">Password</string>
+    <string name="confirm_password_hint">Confirm Password</string>
+    <string name="cancel_text">Cancel</string>
+    <string name="create_text">Create</string>
+    <string name="passwords_don_t_match_text">Passwords don\'t match</string>
+    <string name="password_too_short_text">Pasword is too short.</string>
 </resources>

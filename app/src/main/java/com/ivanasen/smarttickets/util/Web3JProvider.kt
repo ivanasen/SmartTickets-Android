@@ -6,8 +6,6 @@ import org.web3j.protocol.Web3jFactory
 import org.web3j.protocol.http.HttpService
 
 
-class Web3JProvider {
-    companion object {
-        val instance: Web3j = Web3jFactory.build(HttpService(BuildConfig.ETHEREUM_NODE_URL))
-    }
+object Web3JProvider {
+    public val instance: Web3j = Web3jFactory.build(HttpService(BuildConfig.ETHEREUM_NODE_URL))
 }

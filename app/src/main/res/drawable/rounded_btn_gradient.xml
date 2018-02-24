@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="?android:attr/colorControlHighlight">
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="45"
+                android:endColor="@color/appOrange"
+                android:startColor="@color/appOrangePink" />
+            <!-- make the button corners rounded-->
+            <corners android:radius="25dp" />
+        </shape>
+    </item>
+</ripple>

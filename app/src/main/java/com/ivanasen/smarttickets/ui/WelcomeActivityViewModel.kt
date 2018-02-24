@@ -1,32 +1,27 @@
 package com.ivanasen.smarttickets.ui
 
-import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.ViewModel
 import android.content.Context
 import com.ivanasen.smarttickets.repository.SmartTicketsRepository
+import com.ivanasen.smarttickets.util.Utility.Companion.isValidPassword
 import org.jetbrains.anko.defaultSharedPreferences
+import org.web3j.crypto.Credentials
+import org.web3j.crypto.WalletUtils
 import java.io.File
 
 
-class MainActivityViewModel(application: Application) : AndroidViewModel(application) {
+class WelcomeActivityViewModel : ViewModel() {
     private val mRepository = SmartTicketsRepository
     private val WALLET_FILE_NAME = "WalletFileName"
-    private val MIN_PASSWORD_LENGTH = 8
 
     val unlockedWallet = mRepository.unlockedWallet
 
-    var password: LiveData<String> = MutableLiveData()
-
-//    public fun getEvents(): LiveData<List<Event>> {
-//
-//    }
-//
-//    public fun getTicketsForUser(): LiveData<List<Ticket>> {
-//
-//    }
-
+    var walletExists: MutableLiveData<Boolean> = MutableLiveData()
+    var password: MutableLiveData<String> = MutableLiveData()
+    var confirmPassword: MutableLiveData<String> = MutableLiveData()
+    var credentials: MutableLiveData<Credentials> = mRepository.credentials
 
     fun unlockWallet(password: String, context: Context): Boolean {
         val appContext = context.applicationContext
@@ -38,16 +33,26 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     }
 
     fun createNewWallet(password: String, context: Context) {
-        require(password.length < MIN_PASSWORD_LENGTH)
+        require(isValidPassword(password))
         val walletName = mRepository.createWallet(password, context.filesDir)
+
+        val appContext = context.applicationContext
+        appContext.defaultSharedPreferences
+                .edit()
+                .putString(WALLET_FILE_NAME, walletName)
+                .apply()
     }
 
     fun isThereAWallet(context: Context): Boolean {
         val appContext = context.applicationContext
         return try {
-            require(appContext.defaultSharedPreferences.getString(WALLET_FILE_NAME, "") != "")
+            val walletName = appContext.defaultSharedPreferences.getString(WALLET_FILE_NAME, "")
+            require(walletName != "")
+            require(File(context.filesDir, walletName).exists())
+            walletExists.postValue(true)
             true
-        } catch (e: IllegalArgumentException) {
+        } catch (e: Exception) {
+            walletExists.postValue(false)
             false
         }
     }

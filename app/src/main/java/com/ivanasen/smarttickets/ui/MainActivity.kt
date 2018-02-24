@@ -1,20 +1,22 @@
 package com.ivanasen.smarttickets.ui
 
+
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import com.ivanasen.smarttickets.*
-import com.ivanasen.smarttickets.api.contractwrappers.SmartTicketsCore
-import com.ivanasen.smarttickets.util.Web3JProvider.Companion.instance
 import com.ivanasen.smarttickets.util.Utility.Companion.loadFragment
 import kotlinx.android.synthetic.main.activity_main.*
-import org.web3j.crypto.WalletUtils
-import java.io.File
 
 
 class MainActivity : AppCompatActivity() {
 
-    private val TAG = MainActivity::class.simpleName
+    private val LOG_TAG = MainActivity::class.simpleName
+
+    public val viewModel by lazy {
+        ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,6 +24,21 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         setupViews()
+        observeLiveData()
+    }
+
+    private fun observeLiveData() {
+        viewModel.unlockedWallet.observe(this, Observer<Boolean> {
+            if (it == true) logIn() else promptUnlock()
+        })
+    }
+
+    private fun logIn() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    private fun promptUnlock() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     private fun setupViews() {

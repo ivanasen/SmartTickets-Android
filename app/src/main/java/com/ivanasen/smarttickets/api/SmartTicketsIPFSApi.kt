@@ -24,8 +24,9 @@ interface SmartTicketsIPFSApi {
 
     companion object {
         private val LOG_TAG = SmartTicketsIPFSApi::class.simpleName
+        public val instance: SmartTicketsIPFSApi = create()
 
-        fun create(): SmartTicketsIPFSApi {
+        private fun create(): SmartTicketsIPFSApi {
             val logger = HttpLoggingInterceptor(HttpLoggingInterceptor.Logger {
                 Log.d(LOG_TAG, it)
             })
