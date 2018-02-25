@@ -25,4 +25,10 @@
     <string name="create_text">Create</string>
     <string name="passwords_don_t_match_text">Passwords don\'t match</string>
     <string name="password_too_short_text">Pasword is too short.</string>
+    <string name="wallet_backup_msg">It\'s highly recommended to back up the wallet file. In case it\'s deleted you won\'t have access to the Ether stored in it.</string>
+    <string name="back_up_text">Back Up</string>
+    <string name="skip_text">Skip for now (Not Recommended)</string>
+    <string name="wallet_created_msg">Wallet successfully created!</string>
+    <string name="enter_password_hint">Enter Password</string>
+    <string name="unlock_wallet_text">Unlock Wallet</string>
 </resources>

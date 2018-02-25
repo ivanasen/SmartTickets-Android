@@ -6,6 +6,9 @@ import android.arch.lifecycle.ViewModel
 import android.content.Context
 import com.ivanasen.smarttickets.repository.SmartTicketsRepository
 import com.ivanasen.smarttickets.util.Utility.Companion.isValidPassword
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.launch
+import org.jetbrains.anko.coroutines.experimental.bg
 import org.jetbrains.anko.defaultSharedPreferences
 import org.web3j.crypto.Credentials
 import org.web3j.crypto.WalletUtils
@@ -33,15 +36,23 @@ class WelcomeActivityViewModel : ViewModel() {
     }
 
     fun createNewWallet(password: String, context: Context) {
-        require(isValidPassword(password))
-        val walletName = mRepository.createWallet(password, context.filesDir)
+        launch(UI) {
+            require(isValidPassword(password))
+            val walletName = bg { mRepository.createWallet(password, context.filesDir) }
 
-        val appContext = context.applicationContext
-        appContext.defaultSharedPreferences
-                .edit()
-                .putString(WALLET_FILE_NAME, walletName)
-                .apply()
+            val appContext = context.applicationContext
+            appContext.defaultSharedPreferences
+                    .edit()
+                    .putString(WALLET_FILE_NAME, walletName.await())
+                    .apply()
+
+            val wallet = File(context.filesDir, walletName.await())
+
+            credentials.value = bg { WalletUtils.loadCredentials(password, wallet) }.await()
+            walletExists.value = true
+        }
     }
+
 
     fun isThereAWallet(context: Context): Boolean {
         val appContext = context.applicationContext

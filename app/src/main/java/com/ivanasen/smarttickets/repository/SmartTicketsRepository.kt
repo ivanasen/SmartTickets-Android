@@ -93,7 +93,7 @@ object SmartTicketsRepository {
     }
 
     fun createWallet(password: String, destinationDirectory: File): String {
-        return WalletUtils.generateNewWalletFile(password, destinationDirectory, true)
+        return WalletUtils.generateNewWalletFile(password, destinationDirectory, false)
     }
 
 
