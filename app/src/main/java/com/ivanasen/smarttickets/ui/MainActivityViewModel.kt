@@ -19,6 +19,8 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
 
     var password: LiveData<String> = MutableLiveData()
 
+    var contractExists = mRepository.contractExists
+
 //    public fun getEvents(): LiveData<List<Event>> {
 //
 //    }
@@ -27,6 +29,9 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
 //
 //    }
 
+    init {
+        loadContract()
+    }
 
     fun unlockWallet(password: String, context: Context): Boolean {
         val appContext = context.applicationContext
@@ -53,6 +58,10 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     }
 
     fun loadContract() {
-        mRepository.
+        mRepository.createContractInstance()
+    }
+
+    fun getContractOwner() {
+        mRepository.getCeoAddress()
     }
 }

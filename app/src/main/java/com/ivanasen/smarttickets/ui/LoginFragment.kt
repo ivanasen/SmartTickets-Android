@@ -25,13 +25,14 @@ class LoginFragment : Fragment() {
     private val LOG_TAG = LoginFragment::class.java
 
     private lateinit var mRootView: View
-    private lateinit var mViewModel: WelcomeActivityViewModel
+    private val mViewModel: WelcomeActivityViewModel by lazy {
+        ViewModelProviders.of(this).get(WelcomeActivityViewModel::class.java)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         mRootView = inflater.inflate(R.layout.fragment_login, container, false)
-        mViewModel = ViewModelProviders.of(this).get(WelcomeActivityViewModel::class.java)
         return mRootView
     }
 

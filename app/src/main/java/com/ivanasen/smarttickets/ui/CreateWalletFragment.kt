@@ -29,12 +29,13 @@ class CreateWalletFragment : Fragment() {
     private val LOG_TAG = CreateWalletFragment::class.java.simpleName
 
     private lateinit var mRootView: View
-    private lateinit var mViewModel: WelcomeActivityViewModel
+    private val mViewModel: WelcomeActivityViewModel by lazy {
+        ViewModelProviders.of(this).get(WelcomeActivityViewModel::class.java)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         mRootView = inflater.inflate(R.layout.fragment_create_wallet, container, false)
-        mViewModel = ViewModelProviders.of(this).get(WelcomeActivityViewModel::class.java)
         return mRootView
     }
 

@@ -6,8 +6,6 @@ import org.web3j.crypto.Credentials
 import org.web3j.protocol.Web3j
 import org.web3j.protocol.core.methods.response.EthBlock
 import rx.Observable
-import rx.functions.Action1
-import java.util.*
 
 
 object SmartTicketsContractProvider {
@@ -20,17 +18,20 @@ object SmartTicketsContractProvider {
     fun provide(web3: Web3j, credentials: Credentials): SmartTicketsCore {
         val gasPrice = web3.ethGasPrice().sendAsync().get().gasPrice
 
-        blockObserver = web3.blockObservable(false)
-        blockObserver.subscribe({
-            gasLimit = it.block.gasLimit
-        })
+
+//        blockObserver = web3.catchUpToLatestAndSubscribeToNewBlocksObservable(
+//                { web3.ethBlockNumber().send().blockNumber.toString() },
+//                false)
+//        blockObserver.subscribe({
+//            gasLimit = it.block.gasLimit
+//        })
 
         return SmartTicketsCore.load(
                 address,
                 web3,
                 credentials,
                 gasPrice,
-                SmartTicketsCore.GAS_LIMIT)
+                gasLimit)
 
     }
 }

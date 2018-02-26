@@ -8,12 +8,13 @@ import com.ivanasen.smarttickets.util.Utility.Companion.loadFragment
 
 class WelcomeActivity : AppCompatActivity() {
 
-    private lateinit var mViewModel: WelcomeActivityViewModel
+    private val mViewModel: WelcomeActivityViewModel by lazy {
+        ViewModelProviders.of(this).get(WelcomeActivityViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_welcome)
-        mViewModel = ViewModelProviders.of(this).get(WelcomeActivityViewModel::class.java)
 
         observeLiveData()
     }

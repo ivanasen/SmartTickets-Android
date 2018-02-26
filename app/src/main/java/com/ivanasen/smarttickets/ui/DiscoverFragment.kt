@@ -18,13 +18,13 @@ class DiscoverFragment : Fragment() {
     private val LOG_TAG = DiscoverFragment::class.java.simpleName
 
     private lateinit var mRootView: View
-    private lateinit var mViewModel: MainActivityViewModel
+    private val mViewModel: MainActivityViewModel by lazy {
+        ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         mRootView = inflater.inflate(R.layout.fragment_discover, container, false)
-        mViewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
-
         return mRootView
     }
 }

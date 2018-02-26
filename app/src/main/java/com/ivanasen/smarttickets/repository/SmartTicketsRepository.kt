@@ -9,6 +9,8 @@ import com.ivanasen.smarttickets.api.contractwrappers.SmartTicketsCore
 import com.ivanasen.smarttickets.db.models.Event
 import com.ivanasen.smarttickets.util.WalletUtil
 import com.ivanasen.smarttickets.util.Web3JProvider
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.launch
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.spongycastle.util.encoders.Hex
 import org.web3j.crypto.Credentials
@@ -29,6 +31,8 @@ object SmartTicketsRepository {
 
     var credentials: MutableLiveData<Credentials> = MutableLiveData()
     var unlockedWallet: MutableLiveData<Boolean> = MutableLiveData()
+
+    var contractExists: MutableLiveData<Boolean> = MutableLiveData()
 
     fun getAddressBalance(address: String) {}
 
@@ -77,7 +81,11 @@ object SmartTicketsRepository {
     }
 
     fun createContractInstance() {
-        mContract = SmartTicketsContractProvider.provide(mWeb3, credentials.value!!)
+        launch(UI) {
+            val contract = bg { SmartTicketsContractProvider.provide(mWeb3, credentials.value!!) }
+            mContract = contract.await()
+            contractExists.postValue(true)
+        }
     }
 
     fun unlockWallet(password: String, wallet: File): Boolean {

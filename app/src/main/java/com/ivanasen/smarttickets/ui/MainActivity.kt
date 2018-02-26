@@ -5,6 +5,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import com.ivanasen.smarttickets.*
 import com.ivanasen.smarttickets.util.Utility.Companion.loadFragment
 import kotlinx.android.synthetic.main.activity_main.*
@@ -14,22 +15,27 @@ class MainActivity : AppCompatActivity() {
 
     private val LOG_TAG = MainActivity::class.simpleName
 
-    public val viewModel by lazy {
+    private val mViewModel by lazy {
         ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+  >      super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        loadContract()
-
+        observeLiveData()
         setupViews()
     }
 
-    private fun loadContract() {
-        viewModel.loadContract()
+    private fun observeLiveData() {
+        mViewModel.contractExists.observe(this, Observer {
+            if (it == true) {
+                Log.d(LOG_TAG, "Contract loaded successfully!")
+                mViewModel.getContractOwner()
+            }
+        })
+
     }
 
     private fun setupViews() {
