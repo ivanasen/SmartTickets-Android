@@ -15,7 +15,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     private val WALLET_FILE_NAME = "WalletFileName"
     private val MIN_PASSWORD_LENGTH = 8
 
-    val unlockedWallet = mRepository.unlockedWallet
+    val credentials = mRepository.credentials
 
     var password: LiveData<String> = MutableLiveData()
 
@@ -50,5 +50,9 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         } catch (e: IllegalArgumentException) {
             false
         }
+    }
+
+    fun loadContract() {
+        mRepository.
     }
 }

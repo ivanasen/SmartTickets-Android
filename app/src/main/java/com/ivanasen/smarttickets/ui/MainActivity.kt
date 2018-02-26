@@ -23,22 +23,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
+        loadContract()
+
         setupViews()
-        observeLiveData()
     }
 
-    private fun observeLiveData() {
-        viewModel.unlockedWallet.observe(this, Observer<Boolean> {
-            if (it == true) logIn() else promptUnlock()
-        })
-    }
-
-    private fun logIn() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    private fun promptUnlock() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    private fun loadContract() {
+        viewModel.loadContract()
     }
 
     private fun setupViews() {

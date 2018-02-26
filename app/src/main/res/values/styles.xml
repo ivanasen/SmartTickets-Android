@@ -2,25 +2,27 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowTranslucentStatus">true</item>
-
-        <item name="colorControlNormal">#c5c5c5</item>
-        <item name="colorControlActivated">@color/colorPrimaryDark</item>
-        <item name="colorControlHighlight">@color/colorPrimaryDark</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="AppTheme.LightInput">
+    <style name="AppTheme.LightInput" parent="AppTheme">
         <item name="colorControlNormal">@color/colorAccent</item>
-        <item name="colorControlActivated">@android:color/primary_text_dark</item>
-        <item name="colorControlHighlight">@android:color/primary_text_dark</item>
+        <item name="colorControlActivated">@color/colorAccent</item>
+        <item name="colorControlHighlight">@color/colorAccent</item>
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
+    <style name="AppTheme.OrangeInput" parent="AppTheme">
+        <item name="android:textColor">#212121</item>
+        <item name="colorControlNormal">#c5c5c5</item>
+        <item name="colorControlActivated">@color/colorPrimaryDark</item>
+        <item name="colorControlHighlight">@color/colorPrimaryDark</item>
+    </style>
 </resources>

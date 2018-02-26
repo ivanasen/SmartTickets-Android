@@ -8,7 +8,8 @@
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.OrangeInput">
 
         <EditText
             android:id="@+id/inputPassword"
@@ -26,7 +27,8 @@
     <android.support.design.widget.TextInputLayout
         android:id="@+id/input_layout_password"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.OrangeInput">
 
         <EditText
             android:id="@+id/confirmPassword"

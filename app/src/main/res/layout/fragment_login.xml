@@ -27,18 +27,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:gravity="center">
+            android:gravity="center"
+            android:theme="@style/AppTheme.LightInput">
 
             <EditText
                 android:id="@+id/inputPassword"
-                style="@style/AppTheme.LightInput"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="20"
                 android:hint="@string/enter_password_hint"
                 android:imeOptions="actionNext"
                 android:inputType="textPassword"
-                android:maxLines="1" />
+                android:maxLines="1"
+                android:textColor="@color/colorAccent"
+                android:textSize="24sp" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -49,18 +50,19 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/default_margin"
             android:background="@drawable/rounded_btn"
+            android:enabled="false"
             android:paddingEnd="30dp"
             android:paddingStart="30dp"
             android:text="@string/unlock_wallet_text"
             android:textColor="@color/colorPrimaryDark" />
 
         <Button
-            android:id="@+id/createNewWalletBtn"
+            android:id="@+id/useOtherWalletBtn"
             style="@style/Base.Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Create New Wallet"
+            android:text="@string/use_another_wallet_text"
             android:textAllCaps="false"
             android:textColor="@color/common_google_signin_btn_text_dark" />
 

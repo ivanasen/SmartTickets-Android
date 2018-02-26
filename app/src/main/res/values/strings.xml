@@ -31,4 +31,6 @@
     <string name="wallet_created_msg">Wallet successfully created!</string>
     <string name="enter_password_hint">Enter Password</string>
     <string name="unlock_wallet_text">Unlock Wallet</string>
+    <string name="wrong_password_text">Wrong Password</string>
+    <string name="use_another_wallet_text">Use Another Wallet</string>
 </resources>
