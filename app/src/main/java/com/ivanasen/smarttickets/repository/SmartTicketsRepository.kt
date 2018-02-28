@@ -1,6 +1,8 @@
 package com.ivanasen.smarttickets.repository
 
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.Observer
 import android.util.Log
 
 import com.ivanasen.smarttickets.api.SmartTicketsIPFSApi
@@ -16,6 +18,7 @@ import org.spongycastle.util.encoders.Hex
 import org.web3j.crypto.Credentials
 import org.web3j.crypto.WalletUtils
 import org.web3j.protocol.Web3j
+import org.web3j.protocol.core.DefaultBlockParameter
 import java.io.File
 import java.sql.Time
 
@@ -33,6 +36,8 @@ object SmartTicketsRepository {
     var unlockedWallet: MutableLiveData<Boolean> = MutableLiveData()
 
     var contractExists: MutableLiveData<Boolean> = MutableLiveData()
+
+    val availableFunds: MutableLiveData<Int> = MutableLiveData()
 
     fun getAddressBalance(address: String) {}
 
@@ -65,6 +70,11 @@ object SmartTicketsRepository {
 //
 //    }
 
+    fun loadInitialAppData() {
+        createContractInstance()
+        getAvailableFunds()
+    }
+
     fun getEvent(id: Int): Event {
         val event = mContract.getEvent(id.toBigInteger()).sendAsync().get()
         Log.d(LOG_TAG, "Event: ${event.value1} ${event.value1}")
@@ -77,14 +87,23 @@ object SmartTicketsRepository {
     }
 
     fun getCeoAddress() {
-        Log.d(LOG_TAG, "CeoAddress: ${mContract.ceoAddress().sendAsync().get()}")
+        launch(UI) {
+            val ceo = bg { mContract.ceoAddress().send() }
+            Log.d(LOG_TAG, "CeoAddress: ${ceo.await()}")
+        }
     }
 
     fun createContractInstance() {
         launch(UI) {
             val contract = bg { SmartTicketsContractProvider.provide(mWeb3, credentials.value!!) }
             mContract = contract.await()
-            contractExists.postValue(true)
+            try {
+                val isValid = bg { mContract.isValid }
+                contractExists.postValue(isValid.await())
+            } catch (e: Exception) {
+                e.printStackTrace()
+                contractExists.postValue(false)
+            }
         }
     }
 
@@ -102,6 +121,17 @@ object SmartTicketsRepository {
 
     fun createWallet(password: String, destinationDirectory: File): String {
         return WalletUtils.generateNewWalletFile(password, destinationDirectory, false)
+    }
+
+    private fun getAvailableFunds() {
+        launch(UI) {
+            val balance = bg {
+                val block = mWeb3.ethBlockNumber().send().blockNumber.toString()
+                val request = mWeb3.ethGetBalance(credentials.value?.address, { block }).send()
+                request.balance
+            }
+            availableFunds.postValue(balance.await().toInt())
+        }
     }
 
 

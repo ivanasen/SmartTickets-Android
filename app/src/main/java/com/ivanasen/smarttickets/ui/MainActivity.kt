@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-  >      super.onCreate(savedInstanceState)
+        super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
@@ -35,7 +35,6 @@ class MainActivity : AppCompatActivity() {
                 mViewModel.getContractOwner()
             }
         })
-
     }
 
     private fun setupViews() {

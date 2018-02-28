@@ -7,4 +7,5 @@
     <dimen name="event_list_item_image_height">140dp</dimen>
     <dimen name="default_padding">16dp</dimen>
     <dimen name="default_margin">16dp</dimen>
+    <dimen name="default_elevation">4dp</dimen>
 </resources>

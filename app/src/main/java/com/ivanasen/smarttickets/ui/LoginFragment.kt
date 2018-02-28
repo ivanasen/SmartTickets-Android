@@ -5,9 +5,12 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.transition.Fade
+import android.transition.TransitionManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.Toast
 
 import com.ivanasen.smarttickets.R
@@ -66,6 +69,14 @@ class LoginFragment : Fragment() {
         unlockWalletBtn.onClick {
             val password = inputPassword.text.toString()
             mViewModel.unlockWallet(password, this@LoginFragment.context!!)
+            showLoadingScreen()
         }
+    }
+
+    private fun showLoadingScreen() {
+        TransitionManager.beginDelayedTransition(view as ViewGroup, Fade())
+        loginForm.visibility = View.GONE
+        loadingScreen.visibility = View.VISIBLE
+        loginFormContrainer.layoutParams.height = LinearLayout.LayoutParams.MATCH_PARENT
     }
 }

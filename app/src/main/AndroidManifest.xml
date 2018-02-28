@@ -21,7 +21,9 @@
             android:name=".ui.MapsActivity"
             android:label="@string/title_activity_maps" />
 
-        <activity android:name=".ui.WelcomeActivity">
+        <activity
+            android:name=".ui.WelcomeActivity"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

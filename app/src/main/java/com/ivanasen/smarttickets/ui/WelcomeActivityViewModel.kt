@@ -73,4 +73,8 @@ class WelcomeActivityViewModel : ViewModel() {
             false
         }
     }
+
+    fun loadInitialAppData() {
+        mRepository.loadInitialAppData()
+    }
 }

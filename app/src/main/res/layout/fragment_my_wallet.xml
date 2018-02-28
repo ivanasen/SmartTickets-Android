@@ -1,13 +1,124 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:orientation="vertical"
+    android:padding="24dp"
     tools:context="com.ivanasen.smarttickets.ui.MyWalletFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/default_margin"
+        android:orientation="horizontal">
 
-</FrameLayout>
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/walletIdenticonView"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginEnd="26dp"
+            app:civ_border_width="0dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/available_balance_text"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                android:textColor="@android:color/secondary_text_light_nodisable" />
+
+            <TextView
+                android:id="@+id/availableEtherView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2.36"
+                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2,053.94"
+                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/default_margin"
+        app:cardBackgroundColor="#f2f2f2"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp"
+            android:paddingEnd="24dp"
+            android:paddingStart="24dp">
+
+            <TextView
+                android:id="@+id/walletAddressView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:maxWidth="250dp"
+                android:text="0xf17f52151ebef6c7334fad080c5704d77216b732" />
+
+            <ImageButton
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_qrcode" />
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/default_padding"
+        android:paddingEnd="@dimen/default_padding"
+        android:paddingStart="@dimen/default_padding">
+
+        <Button
+            android:id="@+id/receiveEtherBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_btn_gradient"
+            android:maxWidth="150dp"
+            android:text="@string/receive_text"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/sendEtherBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_btn_gradient"
+            android:maxWidth="150dp"
+            android:text="@string/send_text"
+            android:textColor="@android:color/white" />
+
+    </LinearLayout>
+
+</LinearLayout>

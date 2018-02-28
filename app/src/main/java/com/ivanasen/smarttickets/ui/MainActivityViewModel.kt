@@ -21,6 +21,8 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
 
     var contractExists = mRepository.contractExists
 
+    val availableEther: LiveData<Int> = mRepository.availableFunds
+
 //    public fun getEvents(): LiveData<List<Event>> {
 //
 //    }
@@ -64,4 +66,5 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     fun getContractOwner() {
         mRepository.getCeoAddress()
     }
+
 }
