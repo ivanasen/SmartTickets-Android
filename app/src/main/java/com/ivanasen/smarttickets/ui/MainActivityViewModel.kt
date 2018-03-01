@@ -8,6 +8,8 @@ import android.content.Context
 import com.ivanasen.smarttickets.repository.SmartTicketsRepository
 import org.jetbrains.anko.defaultSharedPreferences
 import java.io.File
+import java.math.BigInteger
+import java.net.Inet4Address
 import java.net.URL
 
 

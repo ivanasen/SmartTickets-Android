@@ -48,6 +48,7 @@ class LoginFragment : Fragment() {
     private fun observeLiveData() {
         mViewModel.credentials.observe(this, Observer {
             if (it != null) {
+                showLoadingScreen()
                 mViewModel.loadInitialAppData()
             }
         })
@@ -76,7 +77,6 @@ class LoginFragment : Fragment() {
         unlockWalletBtn.onClick {
             val password = inputPassword.text.toString()
             mViewModel.unlockWallet(password, this@LoginFragment.context!!)
-            showLoadingScreen()
         }
     }
 

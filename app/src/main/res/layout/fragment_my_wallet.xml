@@ -51,9 +51,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/small_margin"
-                    android:textColor="@android:color/secondary_text_light_nodisable"
                     android:text="@string/eth_symbol"
                     android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                    android:textColor="@android:color/secondary_text_light_nodisable"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -68,16 +68,15 @@
                     android:layout_height="wrap_content"
                     android:text="2,053.94"
                     android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                    android:textStyle="bold"
-                    />
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/small_margin"
-                    android:textColor="@android:color/secondary_text_light_nodisable"
                     android:text="@string/usd_symbol"
                     android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                    android:textColor="@android:color/secondary_text_light_nodisable"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -112,6 +111,7 @@
                 android:text="0xf17f52151ebef6c7334fad080c5704d77216b732" />
 
             <ImageButton
+                android:id="@+id/showQrCodeBtn"
                 style="@style/Base.Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

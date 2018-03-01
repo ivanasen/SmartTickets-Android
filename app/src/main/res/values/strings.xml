@@ -7,7 +7,7 @@
     <string name="action_settings">Settings</string>
     <string name="title_discover">Discover</string>
     <string name="title_my_tickets">My Tickets</string>
-    <string name="title_create">My Events</string>
+    <string name="title_create">Manage Events</string>
     <string name="title_wallet">My Wallet</string>
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -39,4 +39,7 @@
     <string name="gravatar_url"><![CDATA[http://www.gravatar.com/avatar/%s?s=150&d=identicon&r=PG]]></string>
     <string name="usd_symbol">USD</string>
     <string name="eth_symbol">ETH</string>
+    <string name="copy_text">Copy</string>
+    <string name="wallet_address_clipboard_label">Wallet Address</string>
+    <string name="copied_to_clipboard">Address copied to clipboard</string>
 </resources>

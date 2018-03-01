@@ -2,6 +2,7 @@ package com.ivanasen.smarttickets.util
 
 import com.ivanasen.smarttickets.api.contractwrappers.SmartTicketsCore
 import com.ivanasen.smarttickets.util.Web3JProvider.instance
+import org.web3j.crypto.Credentials
 import org.web3j.crypto.WalletUtils
 import java.io.File
 import java.math.BigInteger
@@ -21,8 +22,7 @@ class WalletUtil {
             return File(destinationDirectory, walletName)
         }
 
-        fun sendEther(wallet: File, password: String, amountEther: Double, to: String): TransactionReceipt {
-            val credentials = WalletUtils.loadCredentials(password, wallet)
+        fun sendEther(credentials: Credentials, amountEther: Double, to: String): TransactionReceipt {
             val txReceipt = Transfer.sendFunds(instance, credentials, to,
                     BigDecimal.valueOf(amountEther), Convert.Unit.ETHER).sendAsync().get()
             return txReceipt

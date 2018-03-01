@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="@dimen/default_padding"
+    android:paddingBottom="0dp">
+
+    <ImageView
+        android:id="@+id/walletAddressQr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxHeight="200dp"
+        android:maxWidth="200dp" />
+
+    <TextView
+        android:id="@+id/walletAddressTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxWidth="180dp" />
+
+    <Button
+        android:id="@+id/copyAddressBtn"
+        style="@style/Base.Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/copy_text"
+        android:textColor="@color/colorPrimary" />
+
+</LinearLayout>

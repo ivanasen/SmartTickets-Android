@@ -22,6 +22,7 @@ import org.web3j.protocol.Web3j
 import org.web3j.protocol.core.DefaultBlockParameterName
 import java.io.File
 import java.math.BigDecimal
+import java.math.BigInteger
 import java.net.URL
 import java.sql.Time
 
@@ -44,12 +45,6 @@ object SmartTicketsRepository {
     val usdBalance: MutableLiveData<Double> = MutableLiveData()
 
     fun getAddressBalance(address: String) {}
-
-    fun sendEther(wallet: File, password: String, to: String, amountEther: Double) {
-        val sendEther = bg {
-            WalletUtil.sendEther(wallet, password, amountEther, to)
-        }
-    }
 
 //    fun deploySmartTickets(wallet: File, password: String): SmartTicketsCore {
 //        WalletUtil.deploySmartTickets(wallet, password)
@@ -141,6 +136,13 @@ object SmartTicketsRepository {
             val resultObj = JSONObject(result)
             val askPrice = resultObj.getDouble("ask")
             usdBalance.postValue(askPrice * ether)
+        }
+    }
+
+    fun sendEtherTo(address: String, etherAmount: Double) {
+        require(credentials.value != null)
+        launch(UI) {
+            val txReceipt = bg { WalletUtil.sendEther(credentials.value!!, etherAmount, address) }
         }
     }
 

@@ -7,6 +7,12 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.content.ContextCompat.startActivity
 import com.ivanasen.smarttickets.ui.MainActivity
+import android.R.attr.label
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.widget.Toast
+import com.ivanasen.smarttickets.R
+
 
 class Utility {
     companion object {
@@ -28,6 +34,17 @@ class Utility {
         fun launchActivity(context: Context, cls: Class<*>) {
             val intent = Intent(context, cls)
             context.startActivity(intent)
+        }
+
+        fun copyToClipboard(context: Context, label: String,  text: String) {
+            val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clip = ClipData.newPlainText(label, text)
+            clipboard.primaryClip = clip
+
+            Toast.makeText(context,
+                    context.getString(R.string.copied_to_clipboard),
+                    Toast.LENGTH_SHORT)
+                    .show()
         }
     }
 
