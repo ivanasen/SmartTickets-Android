@@ -59,9 +59,10 @@ class CreateWalletFragment : Fragment() {
             }
         })
 
-        mViewModel.credentials.observe(this, Observer {
-            val publicKey = it?.ecKeyPair?.publicKey
-            Log.d(LOG_TAG, Hex.toHexString(publicKey?.toByteArray()))
+        mViewModel.contractDeployed.observe(this, Observer {
+            if (it == true) {
+                launchActivity(this@CreateWalletFragment.context!!, MainActivity::class.java)
+            }
         })
     }
 
@@ -133,7 +134,7 @@ class CreateWalletFragment : Fragment() {
         }
 
         skipBackupBtn.onClick {
-            launchActivity(this@CreateWalletFragment.context!!, MainActivity::class.java)
+            mViewModel.loadInitialAppData()
         }
     }
 }

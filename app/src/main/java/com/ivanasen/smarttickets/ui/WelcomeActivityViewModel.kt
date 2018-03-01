@@ -1,5 +1,6 @@
 package com.ivanasen.smarttickets.ui
 
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.content.Context
@@ -22,6 +23,7 @@ class WelcomeActivityViewModel : ViewModel() {
     var password: MutableLiveData<String> = MutableLiveData()
     var confirmPassword: MutableLiveData<String> = MutableLiveData()
     var credentials: MutableLiveData<Credentials> = mRepository.credentials
+    var contractDeployed: LiveData<Boolean> = mRepository.contractDeployed
     var wrongPasswordAttempts: MutableLiveData<Int> = MutableLiveData()
 
     fun unlockWallet(password: String, context: Context) {

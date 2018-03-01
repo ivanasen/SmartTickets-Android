@@ -32,7 +32,6 @@ class MainActivity : AppCompatActivity() {
         mViewModel.contractExists.observe(this, Observer {
             if (it == true) {
                 Log.d(LOG_TAG, "Contract loaded successfully!")
-                mViewModel.getContractOwner()
             }
         })
     }

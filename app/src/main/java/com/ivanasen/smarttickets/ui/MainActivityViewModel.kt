@@ -8,6 +8,7 @@ import android.content.Context
 import com.ivanasen.smarttickets.repository.SmartTicketsRepository
 import org.jetbrains.anko.defaultSharedPreferences
 import java.io.File
+import java.net.URL
 
 
 class MainActivityViewModel(application: Application) : AndroidViewModel(application) {
@@ -19,9 +20,10 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
 
     var password: LiveData<String> = MutableLiveData()
 
-    var contractExists = mRepository.contractExists
+    var contractExists = mRepository.contractDeployed
 
-    val availableEther: LiveData<Int> = mRepository.availableFunds
+    val etherBalance: LiveData<Double> = mRepository.etherBalance
+    val usdBalance: LiveData<Double> = mRepository.usdBalance
 
 //    public fun getEvents(): LiveData<List<Event>> {
 //
@@ -30,10 +32,6 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
 //    public fun getTicketsForUser(): LiveData<List<Ticket>> {
 //
 //    }
-
-    init {
-        loadContract()
-    }
 
     fun unlockWallet(password: String, context: Context): Boolean {
         val appContext = context.applicationContext
@@ -58,13 +56,4 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
             false
         }
     }
-
-    fun loadContract() {
-        mRepository.createContractInstance()
-    }
-
-    fun getContractOwner() {
-        mRepository.getCeoAddress()
-    }
-
 }

@@ -5,6 +5,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentActivity
 import android.transition.Fade
 import android.transition.TransitionManager
 import android.view.LayoutInflater
@@ -29,7 +30,7 @@ class LoginFragment : Fragment() {
 
     private lateinit var mRootView: View
     private val mViewModel: WelcomeActivityViewModel by lazy {
-        ViewModelProviders.of(this).get(WelcomeActivityViewModel::class.java)
+        ViewModelProviders.of(activity as FragmentActivity).get(WelcomeActivityViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -47,13 +48,19 @@ class LoginFragment : Fragment() {
     private fun observeLiveData() {
         mViewModel.credentials.observe(this, Observer {
             if (it != null) {
-                launchActivity(this@LoginFragment.context!!, MainActivity::class.java)
+                mViewModel.loadInitialAppData()
             }
         })
 
         mViewModel.wrongPasswordAttempts.observe(this, Observer {
             Toast.makeText(this@LoginFragment.context, "Wrong Password", Toast.LENGTH_SHORT)
                     .show()
+        })
+
+        mViewModel.contractDeployed.observe(this, Observer {
+            if (it == true) {
+                launchActivity(this@LoginFragment.context!!, MainActivity::class.java)
+            }
         })
     }
 
