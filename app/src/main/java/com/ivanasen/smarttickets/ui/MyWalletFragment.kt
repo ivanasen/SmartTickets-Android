@@ -3,7 +3,6 @@ package com.ivanasen.smarttickets.ui
 import android.app.AlertDialog
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.net.Credentials
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
@@ -16,12 +15,11 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
 import com.ivanasen.smarttickets.R
 import com.ivanasen.smarttickets.util.Utility.Companion.copyToClipboard
-import com.ivanasen.smarttickets.util.Web3JProvider
 import kotlinx.android.synthetic.main.fragment_my_wallet.*
-import kotlinx.android.synthetic.main.send_ether_layout.*
 import net.glxn.qrgen.android.QRCode
 import org.jetbrains.anko.imageBitmap
 import org.jetbrains.anko.sdk25.coroutines.onClick
+import org.web3j.crypto.WalletUtils
 
 
 class MyWalletFragment : Fragment() {
@@ -69,18 +67,19 @@ class MyWalletFragment : Fragment() {
                     .customView(R.layout.send_ether_layout, true)
                     .positiveText(getString(R.string.send_text))
                     .positiveColor(resources.getColor(R.color.colorPrimary))
-                    .onPositive({ dialog, which ->
-                        dialog.customView?.let {
-                            val address = it.findViewById<TextView>(R.id.inputAddress)
-                                    .text.toString()
-                            val amount = it.findViewById<TextView>(R.id.etherAmount)
-                                    .text.toString()
-                                    .toDouble()
+                    .onPositive({ dialog, _ ->
+                        val address = dialog.customView!!.findViewById<TextView>(R.id.inputAddress)
+                                .text.toString()
+                        val amount = dialog.customView!!.findViewById<TextView>(R.id.etherAmount)
+                                .text.toString()
+                                .toDouble()
 
-                            Log.d(LOG_TAG, "$address, $amount")
+                        require(WalletUtils.isValidAddress(address))
+                        require(amount > 0)
 
-                            mViewModel.sendEther(address, amount)
-                        }
+                        Log.d(LOG_TAG, "$address, $amount")
+
+                        mViewModel.sendEther(address, amount)
                     })
                     .negativeText(getString(R.string.cancel_text))
                     .show()
@@ -96,33 +95,27 @@ class MyWalletFragment : Fragment() {
     private fun showAddressDialog() {
         context?.let {
             val dialog = AlertDialog.Builder(context)
-                    .setView(createAddressDialogView())
+                    .setView(R.layout.wallet_address_dialog_layout)
                     .create()
             dialog.show()
 
             dialog.window.setLayout(DIALOG_WIDTH,
                     ViewGroup.LayoutParams.WRAP_CONTENT)
+
+            val walletAddressQrView = dialog.findViewById<ImageView>(R.id.walletAddressQr)
+            val walletAddressTextView = dialog.findViewById<TextView>(R.id.walletAddressTextView)
+            val copyBtn = dialog.findViewById<Button>(R.id.copyAddressBtn)
+
+            val address = walletAddressView.text.toString()
+            val walletBitmap = QRCode.from(address).withSize(800, 800).bitmap()
+            walletAddressQrView.imageBitmap = walletBitmap
+            walletAddressTextView.text = address
+
+            copyBtn.onClick {
+                copyToClipboard(this@MyWalletFragment.context!!,
+                        getString(R.string.wallet_address_clipboard_label),
+                        address)
+            }
         }
-    }
-
-
-    private fun createAddressDialogView(): View? {
-        val address = walletAddressView.text.toString()
-        val walletAddressDialog = layoutInflater
-                .inflate(R.layout.wallet_address_dialog_layout, view as ViewGroup, false)
-        val walletAddressQrView = walletAddressDialog.findViewById<ImageView>(R.id.walletAddressQr)
-        val walletAddressTextView = walletAddressDialog.findViewById<TextView>(R.id.walletAddressTextView)
-        val copyBtn = walletAddressDialog.findViewById<Button>(R.id.copyAddressBtn)
-
-        val walletBitmap = QRCode.from(address).withSize(800, 800).bitmap()
-        walletAddressQrView.imageBitmap = walletBitmap
-        walletAddressTextView.text = address
-
-        copyBtn.onClick {
-            copyToClipboard(this@MyWalletFragment.context!!,
-                    getString(R.string.wallet_address_clipboard_label),
-                    address)
-        }
-        return walletAddressDialog
     }
 }

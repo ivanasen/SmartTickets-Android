@@ -1,17 +1,21 @@
 package com.ivanasen.smarttickets.repository
 
 import android.arch.lifecycle.MutableLiveData
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.util.Log
+import com.ivanasen.smarttickets.R
 
 import com.ivanasen.smarttickets.api.SmartTicketsIPFSApi
-import com.ivanasen.smarttickets.api.SmartTicketsContractProvider
 import com.ivanasen.smarttickets.api.contractwrappers.SmartTicketsCore
 import com.ivanasen.smarttickets.db.models.Event
+import com.ivanasen.smarttickets.util.Utility
 import com.ivanasen.smarttickets.util.Utility.Companion.INFURA_ETHER_PRICE_IN_USD_URL
 import com.ivanasen.smarttickets.util.Utility.Companion.ONE_ETHER_IN_WEI
 import com.ivanasen.smarttickets.util.WalletUtil
 import com.ivanasen.smarttickets.util.Web3JProvider
-import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
 import org.jetbrains.anko.coroutines.experimental.bg
@@ -22,12 +26,13 @@ import org.web3j.crypto.WalletUtils
 import org.web3j.protocol.Web3j
 import org.web3j.protocol.core.DefaultBlockParameterName
 import rx.Subscription
-import rx.schedulers.Schedulers
-import rx.schedulers.Schedulers.io
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.math.BigDecimal
+import java.math.BigInteger
 import java.net.URL
 import java.sql.Time
+import javax.security.auth.callback.Callback
 
 
 object SmartTicketsRepository {
@@ -50,16 +55,47 @@ object SmartTicketsRepository {
 
     fun getAddressBalance(address: String) {}
 
-//    fun deploySmartTickets(wallet: File, password: String): SmartTicketsCore {
+    //    fun deploySmartTickets(wallet: File, password: String): SmartTicketsCore {
 //        WalletUtil.deploySmartTickets(wallet, password)
 //    }
 //
 //    fun buyTicket(): LiveData<Boolean> {
 //    }
 //
-//    fun createEvent(): LiveData<Event> {
-//
-//    }
+    fun createEvent(context: Context, event: Event) {
+        launch(UI) {
+            bg {
+                try {
+                    val eventMetadataHash = postEventToIpfs(event)
+
+                    val eventTxReceipt = mContract.createEvent(BigInteger.valueOf(event.date.time),
+                            eventMetadataHash).send()
+                    Log.d(LOG_TAG, eventTxReceipt.transactionHash)
+                } catch (e: Exception) {
+                    Log.e(LOG_TAG, e.message)
+                }
+            }
+
+        }
+    }
+
+    private fun postEventToIpfs(event: Event): ByteArray {
+        val response = mIpfsApi.postEvent(event).execute()
+        return response.headers().get(Utility.IPFS_HASH_HEADER)
+                .toString()
+                .toByteArray()
+    }
+
+    private fun uploadImage(drawable: BitmapDrawable) {
+        val bitmap = drawable.bitmap
+        val stream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+        val bitmapData = stream.toByteArray()
+
+        val imageResponse = mIpfsApi.postImage(bitmapData).execute()
+        val imageHash = imageResponse.headers().get("ipfs-hash")
+        Log.d(LOG_TAG, "Image IPFS hash: $imageHash")
+    }
 //
 //    fun addTicketForEvent(): LiveData<Event> {
 //
@@ -69,7 +105,7 @@ object SmartTicketsRepository {
 //
 //    }
 //
-//    fun getEventMetaData(id: BigInteger): LiveData<String> {
+//    fun getEvent(id: BigInteger): LiveData<String> {
 //
 //    }
 

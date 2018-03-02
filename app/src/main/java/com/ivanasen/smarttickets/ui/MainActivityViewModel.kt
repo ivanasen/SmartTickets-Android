@@ -5,12 +5,14 @@ import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.content.Context
+import com.ivanasen.smarttickets.db.models.Event
 import com.ivanasen.smarttickets.repository.SmartTicketsRepository
 import org.jetbrains.anko.defaultSharedPreferences
 import java.io.File
 import java.math.BigInteger
 import java.net.Inet4Address
 import java.net.URL
+import java.sql.Time
 
 
 class MainActivityViewModel(application: Application) : AndroidViewModel(application) {
@@ -61,5 +63,16 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
 
     fun sendEther(address: String, amount: Double) {
         mRepository.sendEtherTo(address, amount)
+    }
+
+    fun addEvent(context: Context) {
+        mRepository.createEvent(
+                context,
+                Event(BigInteger.valueOf(1),
+                        "sfsrfrg",
+                        Time(1),
+                        emptyList(),
+                        emptyList(),
+                        true))
     }
 }
