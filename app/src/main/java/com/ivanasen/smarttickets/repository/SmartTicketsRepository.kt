@@ -11,6 +11,7 @@ import com.ivanasen.smarttickets.util.Utility.Companion.INFURA_ETHER_PRICE_IN_US
 import com.ivanasen.smarttickets.util.Utility.Companion.ONE_ETHER_IN_WEI
 import com.ivanasen.smarttickets.util.WalletUtil
 import com.ivanasen.smarttickets.util.Web3JProvider
+import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
 import org.jetbrains.anko.coroutines.experimental.bg
@@ -20,9 +21,11 @@ import org.web3j.crypto.Credentials
 import org.web3j.crypto.WalletUtils
 import org.web3j.protocol.Web3j
 import org.web3j.protocol.core.DefaultBlockParameterName
+import rx.Subscription
+import rx.schedulers.Schedulers
+import rx.schedulers.Schedulers.io
 import java.io.File
 import java.math.BigDecimal
-import java.math.BigInteger
 import java.net.URL
 import java.sql.Time
 
@@ -35,6 +38,7 @@ object SmartTicketsRepository {
 
 
     private lateinit var mContract: SmartTicketsCore
+    private lateinit var mTxSubscription: Subscription
 
     var credentials: MutableLiveData<Credentials> = MutableLiveData()
     var unlockedWallet: MutableLiveData<Boolean> = MutableLiveData()
@@ -71,7 +75,8 @@ object SmartTicketsRepository {
 
     fun loadInitialAppData() {
         createContractInstance()
-        getEtherBalance()
+        fetchEtherBalance()
+        observeBlockchainData()
     }
 
     fun getEvent(id: Int): Event {
@@ -88,15 +93,16 @@ object SmartTicketsRepository {
 
     fun createContractInstance() {
         launch(UI) {
-            val contract = bg { SmartTicketsContractProvider.provide(mWeb3, credentials.value!!) }
-            mContract = contract.await()
-            try {
-                val isValid = bg { mContract.isValid }
-                contractDeployed.postValue(isValid.await())
-            } catch (e: Exception) {
-                e.printStackTrace()
-                contractDeployed.postValue(false)
-            }
+            //            val contract = bg { SmartTicketsContractProvider.provide(mWeb3, credentials.value!!) }
+//            mContract = contract.await()
+//            try {
+//                val isValid = bg { mContract.isValid }
+//                contractDeployed.postValue(isValid.await())
+//            } catch (e: Exception) {
+//                e.printStackTrace()
+//                contractDeployed.postValue(false)
+            contractDeployed.postValue(true)
+//            }
         }
     }
 
@@ -116,7 +122,7 @@ object SmartTicketsRepository {
         return WalletUtils.generateNewWalletFile(password, destinationDirectory, false)
     }
 
-    private fun getEtherBalance() {
+    private fun fetchEtherBalance() {
         launch(UI) {
             val balanceInWei = bg {
                 val request = mWeb3.ethGetBalance(credentials.value?.address,
@@ -127,6 +133,7 @@ object SmartTicketsRepository {
                     .divide(BigDecimal.valueOf(ONE_ETHER_IN_WEI))
             etherBalance.postValue(balanceInEther.toDouble())
             getUsdValueOfEther(balanceInEther.toDouble())
+            Log.d(LOG_TAG, "Fetch ether called!")
         }
     }
 
@@ -143,7 +150,34 @@ object SmartTicketsRepository {
         require(credentials.value != null)
         launch(UI) {
             val txReceipt = bg { WalletUtil.sendEther(credentials.value!!, etherAmount, address) }
+            Log.d(LOG_TAG, "Tx: ${txReceipt.await()}")
+            fetchEtherBalance()
         }
+    }
+
+
+    private fun observeBlockchainData() {
+//        mTxSubscription = mWeb3.transactionObservable()
+//                .subscribe({
+//                    Log.d(LOG_TAG, it.from.toString())
+//                    if (it.from == credentials.value?.address
+//                            || it.to == credentials.value?.address) {
+//                        fetchEtherBalance()
+//                    }
+//                }, {
+//
+//                })
+//
+//        mWeb3.blockObservable(false)
+//                .subscribe({
+//                    Log.d(LOG_TAG, "New block added ${it.block.hash}")
+//                }, {
+//
+//                })
+    }
+
+    fun onClear() {
+        mTxSubscription.unsubscribe()
     }
 
 

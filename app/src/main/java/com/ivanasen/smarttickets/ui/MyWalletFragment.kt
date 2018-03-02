@@ -3,6 +3,7 @@ package com.ivanasen.smarttickets.ui
 import android.app.AlertDialog
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.net.Credentials
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
@@ -11,10 +12,13 @@ import android.view.*
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
 import com.ivanasen.smarttickets.R
 import com.ivanasen.smarttickets.util.Utility.Companion.copyToClipboard
+import com.ivanasen.smarttickets.util.Web3JProvider
 import kotlinx.android.synthetic.main.fragment_my_wallet.*
+import kotlinx.android.synthetic.main.send_ether_layout.*
 import net.glxn.qrgen.android.QRCode
 import org.jetbrains.anko.imageBitmap
 import org.jetbrains.anko.sdk25.coroutines.onClick
@@ -35,11 +39,11 @@ class MyWalletFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        populateViews()
+        setupViews()
         observeLiveData()
     }
 
-    private fun populateViews() {
+    private fun setupViews() {
         val walletAddress = mViewModel.credentials.value?.address
         walletAddressView.text = walletAddress
         Log.d(LOG_TAG, walletAddress)
@@ -54,6 +58,33 @@ class MyWalletFragment : Fragment() {
 
         showQrCodeBtn.onClick { showAddressDialog() }
         receiveEtherBtn.onClick { showAddressDialog() }
+
+        sendEtherBtn.onClick { showSendEtherDialog() }
+    }
+
+    private fun showSendEtherDialog() {
+        context?.let {
+            MaterialDialog.Builder(it)
+                    .title(R.string.send_ether_dialog_title)
+                    .customView(R.layout.send_ether_layout, true)
+                    .positiveText(getString(R.string.send_text))
+                    .positiveColor(resources.getColor(R.color.colorPrimary))
+                    .onPositive({ dialog, which ->
+                        dialog.customView?.let {
+                            val address = it.findViewById<TextView>(R.id.inputAddress)
+                                    .text.toString()
+                            val amount = it.findViewById<TextView>(R.id.etherAmount)
+                                    .text.toString()
+                                    .toDouble()
+
+                            Log.d(LOG_TAG, "$address, $amount")
+
+                            mViewModel.sendEther(address, amount)
+                        }
+                    })
+                    .negativeText(getString(R.string.cancel_text))
+                    .show()
+        }
     }
 
     private fun observeLiveData() {

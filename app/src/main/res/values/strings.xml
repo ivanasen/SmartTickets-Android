@@ -42,4 +42,7 @@
     <string name="copy_text">Copy</string>
     <string name="wallet_address_clipboard_label">Wallet Address</string>
     <string name="copied_to_clipboard">Address copied to clipboard</string>
+    <string name="send_ether_dialog_title">Send Ether</string>
+    <string name="amount_input_hint">Ether Amount</string>
+    <string name="recipient_address_input_hint">Recipient Address</string>
 </resources>

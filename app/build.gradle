@@ -19,7 +19,7 @@ android {
         def ETHEREUM_NODE_URL = "ETHEREUM_NODE_URL"
 
         debug {
-            buildConfigField "String", ETHEREUM_NODE_URL, "\"http://10.0.2.2:7545\""
+            buildConfigField "String", ETHEREUM_NODE_URL, "\"https://rinkeby.infura.io/MuyFFrNqePpnLS1zvAUy\""
             buildConfigField "String", "IPFS_GATEWAY_URL", "\"https://hardbin.com/ipfs/\""
         }
 
@@ -66,7 +66,8 @@ dependencies {
     implementation "android.arch.persistence.room:rxjava2:1.0.0"
     implementation "android.arch.lifecycle:reactivestreams:1.1.0"
 
-    compile "io.reactivex.rxjava2:rxjava:2.0.6"
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
+    implementation "io.reactivex.rxjava2:rxjava:2.0.6"
 
     // Anko
     compile "org.jetbrains.anko:anko:$anko_version"

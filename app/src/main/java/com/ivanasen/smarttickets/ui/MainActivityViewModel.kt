@@ -58,4 +58,8 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
             false
         }
     }
+
+    fun sendEther(address: String, amount: Double) {
+        mRepository.sendEtherTo(address, amount)
+    }
 }
