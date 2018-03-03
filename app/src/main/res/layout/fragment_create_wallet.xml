@@ -8,11 +8,11 @@
     tools:context="com.ivanasen.smarttickets.ui.WelcomeActivity">
 
     <include
+        layout="@layout/welcome_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="70dp"
-        layout="@layout/welcome_layout"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="70dp" />
 
     <RelativeLayout
         android:id="@+id/walletCreationView"
@@ -57,9 +57,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
+            android:layout_margin="16dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
-            android:layout_toEndOf="@id/createWalletBtn"
             android:background="@drawable/rounded_btn"
             android:maxWidth="150dp"
             android:paddingEnd="30dp"

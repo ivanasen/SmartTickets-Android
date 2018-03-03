@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.util.Log
+import com.ivanasen.smarttickets.api.SmartTicketsContractProvider
 
 import com.ivanasen.smarttickets.api.SmartTicketsIPFSApi
 import com.ivanasen.smarttickets.api.contractwrappers.SmartTicketsCore
@@ -134,18 +135,17 @@ object SmartTicketsRepository {
 
 
     private fun createContractInstance() {
-//        launch(UI) {
-//            val contract = bg { SmartTicketsContractProvider.provide(mWeb3, credentials.value!!) }
-//            mContract = contract.await()
-//            try {
-//                val isValid = bg { mContract.isValid }
-//                contractDeployed.postValue(isValid.await())
-//            } catch (e: Exception) {
-//                e.printStackTrace()
-//                contractDeployed.postValue(false)
-        contractDeployed.postValue(true)
-//            }
-//        }
+        launch(UI) {
+            val contract = bg { SmartTicketsContractProvider.provide(mWeb3, credentials.value!!) }
+            mContract = contract.await()
+            try {
+                val isValid = bg { mContract.isValid }
+                contractDeployed.postValue(isValid.await())
+            } catch (e: Exception) {
+                e.printStackTrace()
+                contractDeployed.postValue(false)
+            }
+        }
     }
 
     fun unlockWallet(password: String, wallet: File): Boolean {

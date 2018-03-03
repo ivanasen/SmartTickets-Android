@@ -19,7 +19,7 @@ android {
         def ETHEREUM_NODE_URL = "ETHEREUM_NODE_URL"
 
         debug {
-            buildConfigField "String", ETHEREUM_NODE_URL, "\"https://ropsten.infura.io/YAcKUvG0v0T60082XYEO\""
+            buildConfigField "String", ETHEREUM_NODE_URL, "\"http://10.0.2.2:7545\""
             buildConfigField "String", "IPFS_GATEWAY_URL", "\"https://www.eternum.io/\""
         }
 

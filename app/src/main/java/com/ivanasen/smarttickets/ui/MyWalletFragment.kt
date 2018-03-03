@@ -51,7 +51,7 @@ class MyWalletFragment : Fragment() {
                 .load(url)
                 .into(walletIdenticonView)
 
-        etherBalanceView.text = String.format("%.5f", mViewModel.etherBalance.value)
+        etherBalanceView.text = mViewModel.etherBalance.value.toString()
         etherInUsdView.text = String.format("%.2f", mViewModel.usdBalance.value)
 
         showQrCodeBtn.onClick { showAddressDialog() }
@@ -89,6 +89,10 @@ class MyWalletFragment : Fragment() {
     private fun observeLiveData() {
         mViewModel.etherBalance.observe(this, Observer {
             etherBalanceView.text = it.toString()
+        })
+
+        mViewModel.usdBalance.observe(this, Observer {
+            etherInUsdView.text = String.format("%.2f", mViewModel.usdBalance.value)
         })
     }
 

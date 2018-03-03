@@ -5,13 +5,14 @@ import android.content.Intent
 import android.support.annotation.IdRes
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
-import android.support.v4.content.ContextCompat.startActivity
-import com.ivanasen.smarttickets.ui.MainActivity
-import android.R.attr.label
+import android.app.Activity
 import android.content.ClipData
 import android.content.ClipboardManager
+import android.net.Uri
 import android.widget.Toast
 import com.ivanasen.smarttickets.R
+import java.io.File
+import android.support.v4.app.ShareCompat
 
 
 class Utility {
@@ -37,7 +38,7 @@ class Utility {
             context.startActivity(intent)
         }
 
-        fun copyToClipboard(context: Context, label: String,  text: String) {
+        fun copyToClipboard(context: Context, label: String, text: String) {
             val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             val clip = ClipData.newPlainText(label, text)
             clipboard.primaryClip = clip
@@ -46,6 +47,19 @@ class Utility {
                     context.getString(R.string.copied_to_clipboard),
                     Toast.LENGTH_SHORT)
                     .show()
+        }
+
+        fun launchFileShareIntent(context: Context, file: File) {
+            val uri = "file://" + file.path
+            val uploadUri = Uri.parse(uri)
+
+            val uploadIntent = Intent()
+                    .setAction(Intent.ACTION_SEND)
+                    .setType("application/txt")
+                    .putExtra(Intent.EXTRA_STREAM, uploadUri)
+
+            context.startActivity(Intent.createChooser(uploadIntent,
+                    context.getString(R.string.backup_wallet_to_text)))
         }
     }
 

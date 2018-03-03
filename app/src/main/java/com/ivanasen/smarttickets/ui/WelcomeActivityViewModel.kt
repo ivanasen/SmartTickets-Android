@@ -1,10 +1,12 @@
 package com.ivanasen.smarttickets.ui
 
+import android.app.Activity
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.content.Context
 import com.ivanasen.smarttickets.repository.SmartTicketsRepository
+import com.ivanasen.smarttickets.util.Utility
 import com.ivanasen.smarttickets.util.Utility.Companion.isValidPassword
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
@@ -25,6 +27,7 @@ class WelcomeActivityViewModel : ViewModel() {
     var credentials: MutableLiveData<Credentials> = mRepository.credentials
     var contractDeployed: LiveData<Boolean> = mRepository.contractDeployed
     var wrongPasswordAttempts: MutableLiveData<Int> = MutableLiveData()
+    lateinit var walletFile: File
 
     fun unlockWallet(password: String, context: Context) {
         launch(UI) {
@@ -54,9 +57,9 @@ class WelcomeActivityViewModel : ViewModel() {
                     .putString(WALLET_FILE_NAME_KEY, walletName.await())
                     .apply()
 
-            val wallet = File(context.filesDir, walletName.await())
+            walletFile = File(context.filesDir, walletName.await())
 
-            credentials.value = bg { WalletUtils.loadCredentials(password, wallet) }.await()
+            credentials.value = bg { WalletUtils.loadCredentials(password, walletFile) }.await()
             walletExists.value = true
         }
     }
@@ -78,5 +81,9 @@ class WelcomeActivityViewModel : ViewModel() {
 
     fun loadInitialAppData() {
         mRepository.loadInitialAppData()
+    }
+
+    fun backupWallet(context: Context) {
+        Utility.launchFileShareIntent(context, walletFile)
     }
 }

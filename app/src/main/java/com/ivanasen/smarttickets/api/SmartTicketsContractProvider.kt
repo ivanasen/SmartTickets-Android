@@ -18,14 +18,6 @@ object SmartTicketsContractProvider {
     fun provide(web3: Web3j, credentials: Credentials): SmartTicketsCore {
         val gasPrice = web3.ethGasPrice().sendAsync().get().gasPrice
 
-
-//        blockObserver = web3.catchUpToLatestAndSubscribeToNewBlocksObservable(
-//                { web3.ethBlockNumber().send().blockNumber.toString() },
-//                false)
-//        blockObserver.subscribe({
-//            gasLimit = it.block.gasLimit
-//        })
-
         return SmartTicketsCore.load(
                 address,
                 web3,

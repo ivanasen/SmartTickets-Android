@@ -4,14 +4,21 @@
     android:layout_height="match_parent"
     tools:context="com.ivanasen.smarttickets.ui.CreateEventFragment">
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/eventsView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        tools:listitem="@layout/event_list_item" />
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/addEventBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="16dp"
         android:layout_marginBottom="72dp"
+        android:layout_marginEnd="16dp"
         android:src="@drawable/ic_add_black_24dp"
         android:tint="@color/white" />
 

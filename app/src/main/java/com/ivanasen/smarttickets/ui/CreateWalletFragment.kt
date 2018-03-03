@@ -15,8 +15,10 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 
 import com.ivanasen.smarttickets.R
+import com.ivanasen.smarttickets.util.Utility
 import com.ivanasen.smarttickets.util.Utility.Companion.isValidPassword
 import com.ivanasen.smarttickets.util.Utility.Companion.launchActivity
+import com.ivanasen.smarttickets.util.Utility.Companion.launchFileShareIntent
 import kotlinx.android.synthetic.main.create_wallet_form_layout.*
 import kotlinx.android.synthetic.main.fragment_create_wallet.*
 import kotlinx.android.synthetic.main.wallet_created_layout.*
@@ -130,7 +132,7 @@ class CreateWalletFragment : Fragment() {
         }
 
         backupBtn.onClick {
-            // TODO: Add backup functionality
+            mViewModel.backupWallet(activity!!)
         }
 
         skipBackupBtn.onClick {
