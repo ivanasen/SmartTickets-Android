@@ -4,9 +4,7 @@ import android.arch.lifecycle.MutableLiveData
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.util.Log
-import com.ivanasen.smarttickets.R
 
 import com.ivanasen.smarttickets.api.SmartTicketsIPFSApi
 import com.ivanasen.smarttickets.api.contractwrappers.SmartTicketsCore
@@ -32,12 +30,13 @@ import java.math.BigDecimal
 import java.math.BigInteger
 import java.net.URL
 import java.sql.Time
-import javax.security.auth.callback.Callback
+import java.util.*
 
 
 object SmartTicketsRepository {
 
     private val LOG_TAG = SmartTicketsRepository::class.simpleName
+    private const val DATA_FETCH_PERIOD_MILLIS: Long = 6000
     private val mWeb3: Web3j = Web3JProvider.instance
     private val mIpfsApi: SmartTicketsIPFSApi = SmartTicketsIPFSApi.instance
 
@@ -55,13 +54,7 @@ object SmartTicketsRepository {
 
     fun getAddressBalance(address: String) {}
 
-    //    fun deploySmartTickets(wallet: File, password: String): SmartTicketsCore {
-//        WalletUtil.deploySmartTickets(wallet, password)
-//    }
-//
-//    fun buyTicket(): LiveData<Boolean> {
-//    }
-//
+
     fun createEvent(context: Context, event: Event) {
         launch(UI) {
             bg {
@@ -111,8 +104,21 @@ object SmartTicketsRepository {
 
     fun loadInitialAppData() {
         createContractInstance()
-        fetchEtherBalance()
-        observeBlockchainData()
+        fetchDataRepeatedly()
+    }
+
+    private fun fetchDataRepeatedly() {
+        Timer().scheduleAtFixedRate(object : TimerTask() {
+            override fun run() {
+                fetchData()
+            }
+        }, 0, DATA_FETCH_PERIOD_MILLIS)
+    }
+
+    private fun fetchData() {
+        bg {
+            fetchEtherBalance()
+        }
     }
 
     fun getEvent(id: Int): Event {
@@ -127,9 +133,9 @@ object SmartTicketsRepository {
     }
 
 
-    fun createContractInstance() {
-        launch(UI) {
-            //            val contract = bg { SmartTicketsContractProvider.provide(mWeb3, credentials.value!!) }
+    private fun createContractInstance() {
+//        launch(UI) {
+//            val contract = bg { SmartTicketsContractProvider.provide(mWeb3, credentials.value!!) }
 //            mContract = contract.await()
 //            try {
 //                val isValid = bg { mContract.isValid }
@@ -137,9 +143,9 @@ object SmartTicketsRepository {
 //            } catch (e: Exception) {
 //                e.printStackTrace()
 //                contractDeployed.postValue(false)
-            contractDeployed.postValue(true)
+        contractDeployed.postValue(true)
 //            }
-        }
+//        }
     }
 
     fun unlockWallet(password: String, wallet: File): Boolean {
@@ -189,31 +195,6 @@ object SmartTicketsRepository {
             Log.d(LOG_TAG, "Tx: ${txReceipt.await()}")
             fetchEtherBalance()
         }
-    }
-
-
-    private fun observeBlockchainData() {
-//        mTxSubscription = mWeb3.transactionObservable()
-//                .subscribe({
-//                    Log.d(LOG_TAG, it.from.toString())
-//                    if (it.from == credentials.value?.address
-//                            || it.to == credentials.value?.address) {
-//                        fetchEtherBalance()
-//                    }
-//                }, {
-//
-//                })
-//
-//        mWeb3.blockObservable(false)
-//                .subscribe({
-//                    Log.d(LOG_TAG, "New block added ${it.block.hash}")
-//                }, {
-//
-//                })
-    }
-
-    fun onClear() {
-        mTxSubscription.unsubscribe()
     }
 
 
