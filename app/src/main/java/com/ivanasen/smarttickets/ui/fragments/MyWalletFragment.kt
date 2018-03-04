@@ -1,4 +1,4 @@
-package com.ivanasen.smarttickets.ui
+package com.ivanasen.smarttickets.ui.fragments
 
 import android.app.AlertDialog
 import android.arch.lifecycle.Observer
@@ -14,6 +14,7 @@ import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
 import com.ivanasen.smarttickets.R
+import com.ivanasen.smarttickets.viewmodels.MainActivityViewModel
 import com.ivanasen.smarttickets.util.Utility.Companion.copyToClipboard
 import kotlinx.android.synthetic.main.fragment_my_wallet.*
 import net.glxn.qrgen.android.QRCode

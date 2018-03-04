@@ -1,4 +1,4 @@
-package com.ivanasen.smarttickets.ui
+package com.ivanasen.smarttickets.ui.fragments
 
 import android.os.Bundle
 import android.support.v4.app.Fragment

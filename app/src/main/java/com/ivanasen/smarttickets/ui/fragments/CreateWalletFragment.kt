@@ -1,4 +1,4 @@
-package com.ivanasen.smarttickets.ui
+package com.ivanasen.smarttickets.ui.fragments
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment
 import android.transition.Fade
 import android.transition.Slide
 import android.transition.TransitionManager
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -15,16 +14,15 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 
 import com.ivanasen.smarttickets.R
-import com.ivanasen.smarttickets.util.Utility
+import com.ivanasen.smarttickets.ui.activities.MainActivity
+import com.ivanasen.smarttickets.viewmodels.WelcomeActivityViewModel
 import com.ivanasen.smarttickets.util.Utility.Companion.isValidPassword
 import com.ivanasen.smarttickets.util.Utility.Companion.launchActivity
-import com.ivanasen.smarttickets.util.Utility.Companion.launchFileShareIntent
 import kotlinx.android.synthetic.main.create_wallet_form_layout.*
 import kotlinx.android.synthetic.main.fragment_create_wallet.*
 import kotlinx.android.synthetic.main.wallet_created_layout.*
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.sdk25.coroutines.textChangedListener
-import org.spongycastle.util.encoders.Hex
 
 class CreateWalletFragment : Fragment() {
 

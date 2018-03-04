@@ -1,4 +1,4 @@
-package com.ivanasen.smarttickets.ui
+package com.ivanasen.smarttickets.ui.fragments
 
 
 import android.arch.lifecycle.Observer
@@ -15,6 +15,8 @@ import android.widget.LinearLayout
 import android.widget.Toast
 
 import com.ivanasen.smarttickets.R
+import com.ivanasen.smarttickets.ui.activities.MainActivity
+import com.ivanasen.smarttickets.viewmodels.WelcomeActivityViewModel
 import com.ivanasen.smarttickets.util.Utility.Companion.launchActivity
 import kotlinx.android.synthetic.main.fragment_login.*
 import org.jetbrains.anko.sdk25.coroutines.onClick

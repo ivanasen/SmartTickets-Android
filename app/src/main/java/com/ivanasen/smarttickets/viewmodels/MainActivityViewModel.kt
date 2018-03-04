@@ -1,4 +1,4 @@
-package com.ivanasen.smarttickets.ui
+package com.ivanasen.smarttickets.viewmodels
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
@@ -6,12 +6,10 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.content.Context
 import com.ivanasen.smarttickets.db.models.Event
-import com.ivanasen.smarttickets.repository.SmartTicketsRepository
+import com.ivanasen.smarttickets.repositories.SmartTicketsRepository
 import org.jetbrains.anko.defaultSharedPreferences
 import java.io.File
 import java.math.BigInteger
-import java.net.Inet4Address
-import java.net.URL
 import java.sql.Time
 
 

@@ -22,7 +22,6 @@
     <string name="password_input_hint">Password</string>
     <string name="confirm_password_hint">Confirm Password</string>
     <string name="cancel_text">Cancel</string>
-    <string name="create_text">Create</string>
     <string name="passwords_don_t_match_text">Passwords don\'t match</string>
     <string name="password_too_short_text">Pasword is too short.</string>
     <string name="wallet_backup_msg">It\'s highly recommended to back up the wallet file. In case it\'s deleted you won\'t have access to the Ether stored in it.</string>
@@ -47,4 +46,13 @@
     <string name="recipient_address_input_hint">Recipient Address</string>
     <string name="backup_wallet_intent_text">Backup Wallet</string>
     <string name="backup_wallet_to_text">Backup wallet to…</string>
+    <string name="create_text">Create</string>
+    <string name="event_name_hint">Event name</string>
+    <string name="event_description_hint">Event Description</string>
+    <string name="location_text">Location</string>
+    <string name="pick_location_text">Pick Location…</string>
+    <string name="picklocationbtn_content_description">pickLocationBtn</string>
+    <string name="images_text">Images</string>
+    <string name="date_text">Date</string>
+    <string name="time_text">Time</string>
 </resources>

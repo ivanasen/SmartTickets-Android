@@ -1,4 +1,4 @@
-package com.ivanasen.smarttickets.ui
+package com.ivanasen.smarttickets.ui.activities
 
 
 import android.arch.lifecycle.Observer
@@ -7,9 +7,13 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import com.ivanasen.smarttickets.*
+import com.ivanasen.smarttickets.ui.fragments.CreateEventFragment
+import com.ivanasen.smarttickets.ui.fragments.DiscoverFragment
+import com.ivanasen.smarttickets.ui.fragments.MyTicketsFragment
+import com.ivanasen.smarttickets.ui.fragments.MyWalletFragment
+import com.ivanasen.smarttickets.viewmodels.MainActivityViewModel
 import com.ivanasen.smarttickets.util.Utility.Companion.loadFragment
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.content_main.*
 
 
 class MainActivity : AppCompatActivity() {

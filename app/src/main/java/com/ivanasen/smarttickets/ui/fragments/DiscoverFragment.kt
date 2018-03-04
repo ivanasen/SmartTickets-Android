@@ -1,14 +1,13 @@
-package com.ivanasen.smarttickets.ui
+package com.ivanasen.smarttickets.ui.fragments
 
 import android.arch.lifecycle.ViewModelProviders
-import android.net.Credentials
 import android.support.v4.app.Fragment
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.ivanasen.smarttickets.R
+import com.ivanasen.smarttickets.viewmodels.MainActivityViewModel
 
 /**
  * A placeholder fragment containing a simple view.

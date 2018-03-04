@@ -1,11 +1,10 @@
-package com.ivanasen.smarttickets.ui
+package com.ivanasen.smarttickets.viewmodels
 
-import android.app.Activity
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.content.Context
-import com.ivanasen.smarttickets.repository.SmartTicketsRepository
+import com.ivanasen.smarttickets.repositories.SmartTicketsRepository
 import com.ivanasen.smarttickets.util.Utility
 import com.ivanasen.smarttickets.util.Utility.Companion.isValidPassword
 import kotlinx.coroutines.experimental.android.UI

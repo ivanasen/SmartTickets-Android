@@ -1,4 +1,4 @@
-package com.ivanasen.smarttickets.repository
+package com.ivanasen.smarttickets.repositories
 
 import android.arch.lifecycle.MutableLiveData
 import android.content.Context

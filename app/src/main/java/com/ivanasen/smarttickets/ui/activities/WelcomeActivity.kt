@@ -1,9 +1,12 @@
-package com.ivanasen.smarttickets.ui
+package com.ivanasen.smarttickets.ui.activities
 
 import android.arch.lifecycle.ViewModelProviders
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.ivanasen.smarttickets.R
+import com.ivanasen.smarttickets.ui.fragments.CreateWalletFragment
+import com.ivanasen.smarttickets.ui.fragments.LoginFragment
+import com.ivanasen.smarttickets.viewmodels.WelcomeActivityViewModel
 import com.ivanasen.smarttickets.util.Utility.Companion.loadFragment
 
 class WelcomeActivity : AppCompatActivity() {

@@ -6,7 +6,7 @@
     android:clipToPadding="false"
     android:orientation="vertical"
     android:padding="24dp"
-    tools:context="com.ivanasen.smarttickets.ui.MyWalletFragment">
+    tools:context="com.ivanasen.smarttickets.ui.fragments.MyWalletFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
