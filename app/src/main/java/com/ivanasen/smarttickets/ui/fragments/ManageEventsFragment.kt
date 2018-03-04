@@ -8,12 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.ivanasen.smarttickets.R
+import com.ivanasen.smarttickets.ui.activities.CreateEventActivity
+import com.ivanasen.smarttickets.util.Utility.Companion.launchActivity
 import com.ivanasen.smarttickets.viewmodels.MainActivityViewModel
 import kotlinx.android.synthetic.main.fragment_manage_events.*
 import org.jetbrains.anko.sdk25.coroutines.onClick
 
 
-class CreateEventFragment : Fragment() {
+class ManageEventsFragment : Fragment() {
 
     val mViewModel: MainActivityViewModel by lazy {
         ViewModelProviders.of(activity as FragmentActivity).get(MainActivityViewModel::class.java)
@@ -35,11 +37,7 @@ class CreateEventFragment : Fragment() {
 
     private fun setupViews() {
         addEventBtn.onClick {
-            launchEventCreationAcitivity()
+            launchActivity(this@ManageEventsFragment.context!!, CreateEventActivity::class.java)
         }
-    }
-
-    private fun launchEventCreationAcitivity() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

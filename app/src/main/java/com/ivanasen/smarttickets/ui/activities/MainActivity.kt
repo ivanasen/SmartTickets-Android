@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import com.ivanasen.smarttickets.*
-import com.ivanasen.smarttickets.ui.fragments.CreateEventFragment
+import com.ivanasen.smarttickets.ui.fragments.ManageEventsFragment
 import com.ivanasen.smarttickets.ui.fragments.DiscoverFragment
 import com.ivanasen.smarttickets.ui.fragments.MyTicketsFragment
 import com.ivanasen.smarttickets.ui.fragments.MyWalletFragment
@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_create -> {
                     appBarTitle.text = getString(R.string.title_create)
                     loadFragment(R.id.fragmentContainer,
-                            supportFragmentManager, CreateEventFragment())
+                            supportFragmentManager, ManageEventsFragment())
                     true
                 }
                 R.id.navigation_wallet -> {
