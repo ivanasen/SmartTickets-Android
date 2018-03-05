@@ -44,9 +44,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/enter_password_hint"
-                    android:imeOptions="actionNext"
+                    android:imeOptions="actionDone"
                     android:inputType="textPassword"
                     android:maxLines="1"
+                    android:textColor="@color/dark_grey"
                     android:textSize="24sp" />
 
             </android.support.design.widget.TextInputLayout>

@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
 
     <application
         android:allowBackup="true"
@@ -36,7 +38,6 @@
         <activity
             android:name=".ui.activities.CreateEventActivity"
             android:configChanges="orientation"
-            android:noHistory="true"
             android:parentActivityName="com.ivanasen.smarttickets.ui.activities.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeActionBar" />
@@ -51,8 +52,7 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
-
+            android:value="@string/google_places_api_key" />
 
     </application>
 

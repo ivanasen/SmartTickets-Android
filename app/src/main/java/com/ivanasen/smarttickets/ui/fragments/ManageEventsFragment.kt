@@ -10,15 +10,15 @@ import android.view.ViewGroup
 import com.ivanasen.smarttickets.R
 import com.ivanasen.smarttickets.ui.activities.CreateEventActivity
 import com.ivanasen.smarttickets.util.Utility.Companion.launchActivity
-import com.ivanasen.smarttickets.viewmodels.MainActivityViewModel
+import com.ivanasen.smarttickets.viewmodels.AppViewModel
 import kotlinx.android.synthetic.main.fragment_manage_events.*
 import org.jetbrains.anko.sdk25.coroutines.onClick
 
 
 class ManageEventsFragment : Fragment() {
 
-    val mViewModel: MainActivityViewModel by lazy {
-        ViewModelProviders.of(activity as FragmentActivity).get(MainActivityViewModel::class.java)
+    val mViewModel: AppViewModel by lazy {
+        ViewModelProviders.of(activity as FragmentActivity).get(AppViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

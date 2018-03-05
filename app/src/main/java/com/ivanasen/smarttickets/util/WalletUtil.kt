@@ -1,6 +1,5 @@
 package com.ivanasen.smarttickets.util
 
-import com.ivanasen.smarttickets.api.contractwrappers.SmartTicketsCore
 import com.ivanasen.smarttickets.util.Web3JProvider.instance
 import org.web3j.crypto.Credentials
 import org.web3j.crypto.WalletUtils
@@ -28,23 +27,5 @@ class WalletUtil {
             return txReceipt
         }
 
-        fun deploySmartTickets(wallet: File, password: String): SmartTicketsCore {
-            val credentials = WalletUtils.loadCredentials(password, wallet)
-            val gasPrice = instance.ethGasPrice().sendAsync().get().gasPrice
-
-            val contract = SmartTicketsCore.deploy(instance, credentials, gasPrice, SmartTicketsCore.GAS_LIMIT)
-                    .sendAsync()
-                    .get()
-
-            return contract
-        }
-
-
-        fun getNonce(address: String): BigInteger {
-            val ethGetTransactionCount = instance.ethGetTransactionCount(
-                    address, DefaultBlockParameterName.LATEST).sendAsync().get()
-
-            return ethGetTransactionCount.transactionCount
-        }
     }
 }

@@ -14,7 +14,7 @@ import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
 import com.ivanasen.smarttickets.R
-import com.ivanasen.smarttickets.viewmodels.MainActivityViewModel
+import com.ivanasen.smarttickets.viewmodels.AppViewModel
 import com.ivanasen.smarttickets.util.Utility.Companion.copyToClipboard
 import kotlinx.android.synthetic.main.fragment_my_wallet.*
 import net.glxn.qrgen.android.QRCode
@@ -28,8 +28,8 @@ class MyWalletFragment : Fragment() {
     private val LOG_TAG = MyWalletFragment::class.java.simpleName
     private val DIALOG_WIDTH: Int = 1000
 
-    private val mViewModel: MainActivityViewModel by lazy {
-        ViewModelProviders.of(activity as FragmentActivity).get(MainActivityViewModel::class.java)
+    private val mViewModel: AppViewModel by lazy {
+        ViewModelProviders.of(activity as FragmentActivity).get(AppViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

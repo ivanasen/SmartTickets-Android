@@ -11,7 +11,7 @@ import com.ivanasen.smarttickets.ui.fragments.ManageEventsFragment
 import com.ivanasen.smarttickets.ui.fragments.DiscoverFragment
 import com.ivanasen.smarttickets.ui.fragments.MyTicketsFragment
 import com.ivanasen.smarttickets.ui.fragments.MyWalletFragment
-import com.ivanasen.smarttickets.viewmodels.MainActivityViewModel
+import com.ivanasen.smarttickets.viewmodels.AppViewModel
 import com.ivanasen.smarttickets.util.Utility.Companion.loadFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
     private val LOG_TAG = MainActivity::class.simpleName
 
     private val mViewModel by lazy {
-        ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
+        ViewModelProviders.of(this).get(AppViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

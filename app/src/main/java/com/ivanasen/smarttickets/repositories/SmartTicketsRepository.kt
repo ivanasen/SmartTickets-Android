@@ -1,17 +1,18 @@
 package com.ivanasen.smarttickets.repositories
 
 import android.arch.lifecycle.MutableLiveData
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.util.Log
-import com.ivanasen.smarttickets.api.SmartTicketsContractProvider
+import com.ivanasen.smarttickets.contractwrappers.SmartTicketsContractProvider
 
 import com.ivanasen.smarttickets.api.SmartTicketsIPFSApi
-import com.ivanasen.smarttickets.api.contractwrappers.SmartTicketsCore
+import com.ivanasen.smarttickets.contractwrappers.SmartTickets
 import com.ivanasen.smarttickets.db.models.Event
+import com.ivanasen.smarttickets.db.models.TicketType
 import com.ivanasen.smarttickets.util.Utility
 import com.ivanasen.smarttickets.util.Utility.Companion.INFURA_ETHER_PRICE_IN_USD_URL
+import com.ivanasen.smarttickets.util.Utility.Companion.IPFS_HASH_HEADER
 import com.ivanasen.smarttickets.util.Utility.Companion.ONE_ETHER_IN_WEI
 import com.ivanasen.smarttickets.util.WalletUtil
 import com.ivanasen.smarttickets.util.Web3JProvider
@@ -19,31 +20,27 @@ import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.json.JSONObject
-import org.spongycastle.util.encoders.Hex
 import org.web3j.crypto.Credentials
 import org.web3j.crypto.WalletUtils
 import org.web3j.protocol.Web3j
 import org.web3j.protocol.core.DefaultBlockParameterName
-import rx.Subscription
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.net.URL
-import java.sql.Time
 import java.util.*
 
 
 object SmartTicketsRepository {
 
     private val LOG_TAG = SmartTicketsRepository::class.simpleName
-    private const val DATA_FETCH_PERIOD_MILLIS: Long = 6000
+    private const val DATA_FETCH_PERIOD_MILLIS: Long = 60000
     private val mWeb3: Web3j = Web3JProvider.instance
     private val mIpfsApi: SmartTicketsIPFSApi = SmartTicketsIPFSApi.instance
 
 
-    private lateinit var mContract: SmartTicketsCore
-    private lateinit var mTxSubscription: Subscription
+    private lateinit var mContract: SmartTickets
 
     var credentials: MutableLiveData<Credentials> = MutableLiveData()
     var unlockedWallet: MutableLiveData<Boolean> = MutableLiveData()
@@ -53,21 +50,44 @@ object SmartTicketsRepository {
     val etherBalance: MutableLiveData<Double> = MutableLiveData()
     val usdBalance: MutableLiveData<Double> = MutableLiveData()
 
-    fun getAddressBalance(address: String) {}
-
-
-    fun createEvent(context: Context, event: Event) {
+    fun createEvent(timestamp: Long,
+                    images: List<BitmapDrawable>,
+                    tickets: List<TicketType>) {
         launch(UI) {
             bg {
                 try {
+                    val imageHashes = uploadImages(images)
+
+                    val event = Event(timestamp, imageHashes, tickets)
                     val eventMetadataHash = postEventToIpfs(event)
 
-                    val eventTxReceipt = mContract.createEvent(BigInteger.valueOf(event.date.time),
-                            eventMetadataHash).send()
+                    val ticketPrices = tickets.map { it.priceInUSDCents }
+                    val ticketSupplies = tickets.map { it.initialSupply }
+                    val ticketRefundables = tickets.map {
+                        BigInteger.valueOf(if (it.refundable) 1 else 0)
+                    }
+
+                    val eventTxReceipt = mContract.createEvent(BigInteger.valueOf(timestamp),
+                            eventMetadataHash, ticketPrices, ticketSupplies, ticketRefundables).send()
                     Log.d(LOG_TAG, eventTxReceipt.transactionHash)
+
+                    val eventId = mContract.eventCount.send()
                 } catch (e: Exception) {
                     Log.e(LOG_TAG, e.message)
                 }
+            }
+        }
+    }
+
+    private fun addTicketTypeForEvent(eventId: BigInteger, ticketType: TicketType) {
+        launch(UI) {
+            val txReceipt = bg {
+                mContract.addTicketForEvent(
+                        eventId,
+                        ticketType.priceInUSDCents,
+                        ticketType.initialSupply,
+                        BigInteger.valueOf(if (ticketType.refundable) 1 else 0)
+                ).send()
             }
 
         }
@@ -80,16 +100,31 @@ object SmartTicketsRepository {
                 .toByteArray()
     }
 
-    private fun uploadImage(drawable: BitmapDrawable) {
-        val bitmap = drawable.bitmap
-        val stream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
-        val bitmapData = stream.toByteArray()
+    private fun uploadImage(drawable: BitmapDrawable, callback: ((String) -> Unit)) {
+        launch(UI) {
+            val header = bg {
+                val bitmap = drawable.bitmap
+                val stream = ByteArrayOutputStream()
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+                val bitmapData = stream.toByteArray()
 
-        val imageResponse = mIpfsApi.postImage(bitmapData).execute()
-        val imageHash = imageResponse.headers().get("ipfs-hash")
-        Log.d(LOG_TAG, "Image IPFS hash: $imageHash")
+                val imageResponse = mIpfsApi.postImage(bitmapData).execute()
+                imageResponse.headers().get(IPFS_HASH_HEADER)
+            }
+            callback(header.await()!!)
+        }
     }
+
+    private fun uploadImages(drawables: List<BitmapDrawable>): List<String> {
+        val imageHashes = mutableListOf<String>()
+        drawables.forEach {
+            uploadImage(it, {
+                imageHashes.add(it)
+            })
+        }
+        return imageHashes
+    }
+
 //
 //    fun addTicketForEvent(): LiveData<Event> {
 //
@@ -122,16 +157,16 @@ object SmartTicketsRepository {
         }
     }
 
-    fun getEvent(id: Int): Event {
-        val event = mContract.getEvent(id.toBigInteger()).sendAsync().get()
-        Log.d(LOG_TAG, "Event: ${event.value1} ${event.value1}")
-        return Event(id.toBigInteger(),
-                Hex.toHexString(event.value2),
-                Time(event.value1.toLong()),
-                emptyList(),
-                emptyList(),
-                true)
-    }
+//    fun getEvent(id: Int): Event {
+//        val event = mContract.getEvent(id.toBigInteger()).sendAsync().get()
+//        Log.d(LOG_TAG, "Event: ${event.value1} ${event.value1}")
+//        return Event(id.toBigInteger(),
+//                Hex.toHexString(event.value2),
+//                Time(event.value1.toLong()),
+//                emptyList(),
+//                emptyList(),
+//                true)
+//    }
 
 
     private fun createContractInstance() {
@@ -198,7 +233,7 @@ object SmartTicketsRepository {
     }
 
 
-//    fun getTicket(): LiveData<Ticket> {
+//    fun getTicket(): LiveData<TicketType> {
 //
 //    }
 //
@@ -206,7 +241,7 @@ object SmartTicketsRepository {
 //
 //    }
 //
-//    fun getTicketsForAddress(): LiveData<List<Ticket>> {
+//    fun getTicketsForAddress(): LiveData<List<TicketType>> {
 //
 //    }
 //

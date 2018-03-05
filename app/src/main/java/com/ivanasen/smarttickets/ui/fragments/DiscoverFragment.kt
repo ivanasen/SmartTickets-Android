@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.ivanasen.smarttickets.R
-import com.ivanasen.smarttickets.viewmodels.MainActivityViewModel
+import com.ivanasen.smarttickets.viewmodels.AppViewModel
 
 /**
  * A placeholder fragment containing a simple view.
@@ -17,8 +17,8 @@ class DiscoverFragment : Fragment() {
     private val LOG_TAG = DiscoverFragment::class.java.simpleName
 
     private lateinit var mRootView: View
-    private val mViewModel: MainActivityViewModel by lazy {
-        ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
+    private val mViewModel: AppViewModel by lazy {
+        ViewModelProviders.of(this).get(AppViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

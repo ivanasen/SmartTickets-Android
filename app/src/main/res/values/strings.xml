@@ -52,7 +52,18 @@
     <string name="location_text">Location</string>
     <string name="pick_location_text">Pick Location…</string>
     <string name="picklocationbtn_content_description">pickLocationBtn</string>
-    <string name="images_text">Images</string>
+    <string name="event_images_text">Event Images</string>
     <string name="date_text">Date</string>
     <string name="time_text">Time</string>
+    <string name="create_new_wallet_title">Create New Wallet</string>
+    <string name="ticket_types_text">Ticket Types</string>
+    <string name="time_format">HH:mm</string>
+    <string name="date_format">MMMM d, yyyy</string>
+    <string name="select_images_text">Select Images</string>
+    <string name="refundable_text">Refundable</string>
+    <string name="not_refundable_text">Not Refundable</string>
+    <string name="supply_label">Supply:</string>
+    <string name="price_label">Price:</string>
+    <string name="add_ticket_type">Add Ticket Type</string>
+    <string name="add_text">Add</string>
 </resources>
