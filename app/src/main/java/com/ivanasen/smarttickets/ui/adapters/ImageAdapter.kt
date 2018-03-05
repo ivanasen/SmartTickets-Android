@@ -1,4 +1,4 @@
-package com.ivanasen.smarttickets.ui
+package com.ivanasen.smarttickets.ui.adapters
 
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.LiveData

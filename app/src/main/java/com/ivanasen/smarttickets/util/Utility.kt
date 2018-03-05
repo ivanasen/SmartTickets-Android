@@ -8,11 +8,14 @@ import android.support.v4.app.FragmentManager
 import android.app.Activity
 import android.content.ClipData
 import android.content.ClipboardManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.widget.Toast
 import com.ivanasen.smarttickets.R
 import java.io.File
 import android.support.v4.app.ShareCompat
+import java.io.ByteArrayOutputStream
 
 
 class Utility {
@@ -61,6 +64,15 @@ class Utility {
             context.startActivity(Intent.createChooser(uploadIntent,
                     context.getString(R.string.backup_wallet_to_text)))
         }
+
+        fun convertBitmapToByteArray(bitmap: Bitmap): ByteArray? {
+            val stream = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+            return stream.toByteArray()
+        }
+
+        fun convertByteArrayToBitmap(byteArray: ByteArray): Bitmap? =
+                BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
     }
 
 }

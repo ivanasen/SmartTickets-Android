@@ -24,13 +24,15 @@ class MainActivity : AppCompatActivity() {
         ViewModelProviders.of(this).get(AppViewModel::class.java)
     }
 
+    private val ACTIVE_FRAGMENT_KEY = "activeFragment"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
         observeLiveData()
-        setupViews()
+        setupViews(savedInstanceState)
     }
 
     private fun observeLiveData() {
@@ -41,39 +43,49 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun setupViews() {
+    private fun setupViews(savedInstanceState: Bundle?) {
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
+        val activeFragmentId = savedInstanceState?.getInt(ACTIVE_FRAGMENT_KEY)
+        if (activeFragmentId != null) {
+            loadFragment(activeFragmentId)
+        } else {
+            loadFragment(R.id.navigation_discover)
+        }
+
         bottomNavigation.setOnNavigationItemSelectedListener {
-            when (it.itemId) {
-                R.id.navigation_discover -> {
-                    appBarTitle.text = getString(R.string.title_discover)
-                    loadFragment(R.id.fragmentContainer,
-                            supportFragmentManager, DiscoverFragment())
-                    true
-                }
-                R.id.navigation_my_tickets -> {
-                    appBarTitle.text = getString(R.string.title_my_tickets)
-                    loadFragment(R.id.fragmentContainer,
-                            supportFragmentManager, MyTicketsFragment())
-                    true
-                }
-                R.id.navigation_create -> {
-                    appBarTitle.text = getString(R.string.title_create)
-                    loadFragment(R.id.fragmentContainer,
-                            supportFragmentManager, ManageEventsFragment())
-                    true
-                }
-                R.id.navigation_wallet -> {
-                    appBarTitle.text = getString(R.string.title_wallet)
-                    loadFragment(R.id.fragmentContainer,
-                            supportFragmentManager, MyWalletFragment())
-                    true
-                }
-                else -> {
-                    true
-                }
+            loadFragment(it.itemId)
+            true
+        }
+    }
+
+    private fun loadFragment(itemId: Int) {
+        when (itemId) {
+            R.id.navigation_discover -> {
+                appBarTitle.text = getString(R.string.title_discover)
+                loadFragment(R.id.fragmentContainer,
+                        supportFragmentManager, DiscoverFragment())
+            }
+            R.id.navigation_my_tickets -> {
+                appBarTitle.text = getString(R.string.title_my_tickets)
+                loadFragment(R.id.fragmentContainer,
+                        supportFragmentManager, MyTicketsFragment())
+            }
+            R.id.navigation_create -> {
+                appBarTitle.text = getString(R.string.title_create)
+                loadFragment(R.id.fragmentContainer,
+                        supportFragmentManager, ManageEventsFragment())
+            }
+            R.id.navigation_wallet -> {
+                appBarTitle.text = getString(R.string.title_wallet)
+                loadFragment(R.id.fragmentContainer,
+                        supportFragmentManager, MyWalletFragment())
             }
         }
+    }
+
+    public override fun onSaveInstanceState(outState: Bundle) {
+        outState.putInt(ACTIVE_FRAGMENT_KEY, bottomNavigation.selectedItemId)
+        super.onSaveInstanceState(outState)
     }
 }

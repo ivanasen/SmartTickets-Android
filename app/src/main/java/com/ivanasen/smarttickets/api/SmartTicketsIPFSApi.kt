@@ -1,10 +1,13 @@
 package com.ivanasen.smarttickets.api
 
+import android.graphics.Bitmap
 import android.util.Log
 import com.google.gson.GsonBuilder
 import com.ivanasen.smarttickets.BuildConfig
-import com.ivanasen.smarttickets.db.models.Event
+import com.ivanasen.smarttickets.db.models.IPFSEvent
+import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
+import okhttp3.RequestBody
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -14,13 +17,16 @@ import retrofit2.http.*
 
 interface SmartTicketsIPFSApi {
     @GET("ipfs/{hash}")
-    fun getEvent(@Path("hash") hash: String): Call<Event>
+    fun getEvent(@Path("hash") hash: String): Call<IPFSEvent>
 
     @POST("ipfs/")
-    fun postEvent(@Body event: Event): Call<Void>
+    fun postEvent(@Body event: IPFSEvent): Call<Void>
 
     @POST("ipfs/")
-    fun postImage(@Body byteArray: ByteArray): Call<Void>
+    fun postImage(@Body image: RequestBody): Call<Void>
+
+    @GET("ipfs/{hash}")
+    fun getImage(@Path("hash") hash: String): Call<Bitmap>
 
     companion object {
         private val LOG_TAG = SmartTicketsIPFSApi::class.simpleName

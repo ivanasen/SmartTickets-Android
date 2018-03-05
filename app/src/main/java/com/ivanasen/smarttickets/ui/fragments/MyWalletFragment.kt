@@ -21,6 +21,7 @@ import net.glxn.qrgen.android.QRCode
 import org.jetbrains.anko.imageBitmap
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.web3j.crypto.WalletUtils
+import java.text.DecimalFormat
 
 
 class MyWalletFragment : Fragment() {
@@ -52,7 +53,7 @@ class MyWalletFragment : Fragment() {
                 .load(url)
                 .into(walletIdenticonView)
 
-        etherBalanceView.text = mViewModel.etherBalance.value.toString()
+        etherBalanceView.text = String.format("%.5f", mViewModel.etherBalance.value)
         etherInUsdView.text = String.format("%.2f", mViewModel.usdBalance.value)
 
         showQrCodeBtn.onClick { showAddressDialog() }
@@ -89,11 +90,13 @@ class MyWalletFragment : Fragment() {
 
     private fun observeLiveData() {
         mViewModel.etherBalance.observe(this, Observer {
-            etherBalanceView.text = it.toString()
+            val df = DecimalFormat(getString(R.string.eth_format))
+            etherBalanceView.text = df.format(it)
         })
 
         mViewModel.usdBalance.observe(this, Observer {
-            etherInUsdView.text = String.format("%.2f", mViewModel.usdBalance.value)
+            val df = DecimalFormat(getString(R.string.usd_format))
+            etherInUsdView.text = df.format(it)
         })
     }
 

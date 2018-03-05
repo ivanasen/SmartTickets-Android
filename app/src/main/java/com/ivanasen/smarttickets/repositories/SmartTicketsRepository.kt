@@ -2,13 +2,14 @@ package com.ivanasen.smarttickets.repositories
 
 import android.arch.lifecycle.MutableLiveData
 import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
 import android.util.Log
+import com.google.android.gms.maps.model.LatLng
 import com.ivanasen.smarttickets.contractwrappers.SmartTicketsContractProvider
 
 import com.ivanasen.smarttickets.api.SmartTicketsIPFSApi
 import com.ivanasen.smarttickets.contractwrappers.SmartTickets
 import com.ivanasen.smarttickets.db.models.Event
+import com.ivanasen.smarttickets.db.models.IPFSEvent
 import com.ivanasen.smarttickets.db.models.TicketType
 import com.ivanasen.smarttickets.util.Utility
 import com.ivanasen.smarttickets.util.Utility.Companion.INFURA_ETHER_PRICE_IN_USD_URL
@@ -16,24 +17,26 @@ import com.ivanasen.smarttickets.util.Utility.Companion.IPFS_HASH_HEADER
 import com.ivanasen.smarttickets.util.Utility.Companion.ONE_ETHER_IN_WEI
 import com.ivanasen.smarttickets.util.WalletUtil
 import com.ivanasen.smarttickets.util.Web3JProvider
+import kotlinx.coroutines.experimental.Deferred
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.json.JSONObject
 import org.web3j.crypto.Credentials
 import org.web3j.crypto.WalletUtils
 import org.web3j.protocol.Web3j
 import org.web3j.protocol.core.DefaultBlockParameterName
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.net.URL
+import java.nio.charset.Charset
 import java.util.*
 
 
 object SmartTicketsRepository {
-
     private val LOG_TAG = SmartTicketsRepository::class.simpleName
     private const val DATA_FETCH_PERIOD_MILLIS: Long = 60000
     private val mWeb3: Web3j = Web3JProvider.instance
@@ -50,16 +53,26 @@ object SmartTicketsRepository {
     val etherBalance: MutableLiveData<Double> = MutableLiveData()
     val usdBalance: MutableLiveData<Double> = MutableLiveData()
 
-    fun createEvent(timestamp: Long,
-                    images: List<BitmapDrawable>,
+    val events: MutableLiveData<MutableList<Event>> = MutableLiveData()
+
+    fun createEvent(name: String,
+                    description: String,
+                    timestamp: Long,
+                    latLong: LatLng,
+                    locationName: String,
+                    locationAddress: String,
+                    imagePaths: List<String>,
                     tickets: List<TicketType>) {
         launch(UI) {
             bg {
                 try {
-                    val imageHashes = uploadImages(images)
+                    val imageHashes = uploadImages(imagePaths)
 
-                    val event = Event(timestamp, imageHashes, tickets)
+                    val event = IPFSEvent(name, description, timestamp, latLong, locationName,
+                            locationAddress, imageHashes, tickets)
                     val eventMetadataHash = postEventToIpfs(event)
+
+                    Log.d(LOG_TAG, eventMetadataHash.toString(Charset.forName("UTF-8")))
 
                     val ticketPrices = tickets.map { it.priceInUSDCents }
                     val ticketSupplies = tickets.map { it.initialSupply }
@@ -71,7 +84,6 @@ object SmartTicketsRepository {
                             eventMetadataHash, ticketPrices, ticketSupplies, ticketRefundables).send()
                     Log.d(LOG_TAG, eventTxReceipt.transactionHash)
 
-                    val eventId = mContract.eventCount.send()
                 } catch (e: Exception) {
                     Log.e(LOG_TAG, e.message)
                 }
@@ -93,44 +105,36 @@ object SmartTicketsRepository {
         }
     }
 
-    private fun postEventToIpfs(event: Event): ByteArray {
+    private fun postEventToIpfs(event: IPFSEvent): ByteArray {
         val response = mIpfsApi.postEvent(event).execute()
         return response.headers().get(Utility.IPFS_HASH_HEADER)
                 .toString()
                 .toByteArray()
     }
 
-    private fun uploadImage(drawable: BitmapDrawable, callback: ((String) -> Unit)) {
-        launch(UI) {
-            val header = bg {
-                val bitmap = drawable.bitmap
-                val stream = ByteArrayOutputStream()
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
-                val bitmapData = stream.toByteArray()
+    private fun uploadImage(path: String): String? {
+        val file = File(path)
+        val requestBody = RequestBody.create(MediaType.parse("application/octet-stream"), file)
 
-                val imageResponse = mIpfsApi.postImage(bitmapData).execute()
-                imageResponse.headers().get(IPFS_HASH_HEADER)
-            }
-            callback(header.await()!!)
-        }
+        val imageResponse = mIpfsApi.postImage(requestBody).execute()
+        return imageResponse.headers().get(IPFS_HASH_HEADER)
     }
 
-    private fun uploadImages(drawables: List<BitmapDrawable>): List<String> {
+    private fun uploadImages(imagePaths: List<String>): List<String> {
         val imageHashes = mutableListOf<String>()
-        drawables.forEach {
-            uploadImage(it, {
-                imageHashes.add(it)
-            })
+        imagePaths.forEach {
+            val hash = uploadImage(it)
+            hash?.let { imageHashes.add(it) }
         }
         return imageHashes
     }
 
 //
-//    fun addTicketForEvent(): LiveData<Event> {
+//    fun addTicketForEvent(): LiveData<IPFSEvent> {
 //
 //    }
 //
-//    fun modifyEvent(): LiveData<Event> {
+//    fun modifyEvent(): LiveData<IPFSEvent> {
 //
 //    }
 //
@@ -157,10 +161,10 @@ object SmartTicketsRepository {
         }
     }
 
-//    fun getEvent(id: Int): Event {
+//    fun getEvent(id: Int): IPFSEvent {
 //        val event = mContract.getEvent(id.toBigInteger()).sendAsync().get()
-//        Log.d(LOG_TAG, "Event: ${event.value1} ${event.value1}")
-//        return Event(id.toBigInteger(),
+//        Log.d(LOG_TAG, "IPFSEvent: ${event.value1} ${event.value1}")
+//        return IPFSEvent(id.toBigInteger(),
 //                Hex.toHexString(event.value2),
 //                Time(event.value1.toLong()),
 //                emptyList(),
@@ -237,19 +241,70 @@ object SmartTicketsRepository {
 //
 //    }
 //
-//    fun getEvents(): LiveData<List<Event>> {
-//
-//    }
+
+
+    fun fetchEvents() {
+        bg {
+            val newEvents = mutableListOf<Event>()
+            val eventCount = mContract.eventCount.send().toLong()
+
+            // We start from index 1 because at index 0 is the Genesis Event of the contract
+            for (i in 1 until eventCount + 1) {
+                val event = mContract.getEvent(BigInteger.valueOf(i)).send()
+
+                val timestamp = event.value1.toLong()
+                val ipfsHash = event.value2.toString(Charset.forName("UTF-8"))
+                val cancelled = event.value3
+
+                val eventData: IPFSEvent? = getEventFromIPFS(ipfsHash)
+
+                if (cancelled.toInt() == 0 && eventData != null &&
+                        eventData.name != null &&
+                        eventData.latLong != null &&
+                        eventData.locationAddress != null &&
+                        eventData.locationName != null &&
+                        eventData.tickets != null) {
+                    val fullEvent = Event(
+                            i,
+                            ipfsHash,
+                            eventData.name,
+                            eventData.description!!,
+                            timestamp,
+                            eventData.latLong,
+                            eventData.locationName,
+                            eventData.locationAddress,
+                            eventData.images!!,
+                            eventData.tickets)
+
+                    newEvents.add(fullEvent)
+                }
+            }
+            events.postValue(newEvents)
+        }
+    }
+
+    private fun getEventFromIPFS(ipfsHash: String): IPFSEvent? {
+        val eventResponse = mIpfsApi.getEvent(ipfsHash).execute()
+        return eventResponse.body()
+    }
+
+    private fun getImageFromIPFS(ipfsHash: String): Deferred<Bitmap?> {
+        return bg {
+            val imageResponse = mIpfsApi.getImage(ipfsHash).execute()
+            imageResponse.body()
+        }
+    }
+
 //
 //    fun getTicketsForAddress(): LiveData<List<TicketType>> {
 //
 //    }
 //
-//    fun getEventsForAddress(): LiveData<List<Event>> {
+//    fun getEventsForAddress(): LiveData<List<IPFSEvent>> {
 //
 //    }
 //
-//    fun getEventsForArea(lat: Double, long: Double): LiveData<List<Event>> {
+//    fun getEventsForArea(lat: Double, long: Double): LiveData<List<IPFSEvent>> {
 //
 //    }
 //

@@ -66,4 +66,6 @@
     <string name="price_label">Price:</string>
     <string name="add_ticket_type">Add Ticket Type</string>
     <string name="add_text">Add</string>
+    <string name="usd_format">0.##</string>
+    <string name="eth_format">0.######</string>
 </resources>

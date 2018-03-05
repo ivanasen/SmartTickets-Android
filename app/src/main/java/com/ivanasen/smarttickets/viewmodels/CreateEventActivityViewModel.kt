@@ -1,14 +1,11 @@
 package com.ivanasen.smarttickets.viewmodels
 
-import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import android.graphics.drawable.BitmapDrawable
-import android.net.Uri
+import android.graphics.Bitmap
 import com.google.android.gms.location.places.Place
 import com.ivanasen.smarttickets.db.models.TicketType
 import com.ivanasen.smarttickets.repositories.SmartTicketsRepository
-import kotlinx.coroutines.experimental.launch
 import org.jetbrains.anko.coroutines.experimental.bg
 import java.math.BigInteger
 import java.util.*
@@ -32,14 +29,19 @@ class CreateEventActivityViewModel : ViewModel() {
         pickedPlace.postValue(place)
     }
 
-    fun attemptCreateEvent(drawables: List<BitmapDrawable>) {
+    fun attemptCreateEvent() {
         bg {
             require(!eventName.value?.isEmpty()!!)
             require(eventTime.value?.compareTo(Calendar.getInstance())!! >= 0)
             require(pickedPlace.value != null)
 
-            mRepository.createEvent(eventTime.value!!.timeInMillis / 1000,
-                    drawables,
+            mRepository.createEvent(eventName.value!!,
+                    eventDescription.value ?: "",
+                    eventTime.value!!.timeInMillis / 1000,
+                    pickedPlace.value!!.latLng,
+                    pickedPlace.value!!.name.toString(),
+                    pickedPlace.value!!.address.toString(),
+                    pickedImages.value?: emptyList(),
                     ticketTypes.value ?: emptyList())
         }
     }

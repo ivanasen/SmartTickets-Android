@@ -20,7 +20,8 @@ import kotlinx.android.synthetic.main.activity_create_event.*
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.sdk25.coroutines.textChangedListener
 import android.content.pm.PackageManager
-import android.graphics.drawable.BitmapDrawable
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
@@ -28,17 +29,10 @@ import android.widget.*
 import com.afollestad.materialdialogs.DialogAction
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.Theme
-import com.bumptech.glide.Glide
-import com.ivanasen.smarttickets.db.models.TicketType
-import com.ivanasen.smarttickets.ui.ImageAdapter
-import com.ivanasen.smarttickets.ui.TicketTypeAdapter
+import com.ivanasen.smarttickets.ui.adapters.ImageAdapter
+import com.ivanasen.smarttickets.ui.adapters.TicketTypeAdapter
 import droidninja.filepicker.FilePickerBuilder
 import droidninja.filepicker.FilePickerConst
-import kotlinx.android.synthetic.main.ticket_type_form.*
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.launch
-import org.jetbrains.anko.coroutines.experimental.bg
-import java.math.BigInteger
 import java.util.*
 import java.text.SimpleDateFormat
 
@@ -159,21 +153,9 @@ class CreateEventActivity : AppCompatActivity() {
         }
 
         createEventBtn.onClick {
-            bg { viewModel.attemptCreateEvent(getEventsImageDrawables()) }
+            viewModel.attemptCreateEvent()
         }
 
-    }
-
-    private fun getEventsImageDrawables(): List<BitmapDrawable> {
-        val imageView = ImageView(this)
-        val drawables = mutableListOf<BitmapDrawable>()
-        mAdapter.data.value?.forEach {
-            Glide.with(this)
-                    .load(it)
-                    .into(imageView)
-            drawables.add(imageView.drawable as BitmapDrawable)
-        }
-        return drawables
     }
 
     private fun showTicketTypeDialog() {

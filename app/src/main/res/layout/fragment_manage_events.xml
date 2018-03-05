@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="vertical"
-        tools:listitem="@layout/event_list_item" />
+        tools:listitem="@layout/list_item_event" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/addEventBtn"
