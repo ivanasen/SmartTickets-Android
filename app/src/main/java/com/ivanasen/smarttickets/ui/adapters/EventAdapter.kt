@@ -1,36 +1,30 @@
 package com.ivanasen.smarttickets.ui.adapters
 
+import android.annotation.SuppressLint
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.Observer
 import android.content.Context
-import android.graphics.Bitmap
-import android.support.annotation.Nullable
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.ivanasen.smarttickets.BuildConfig
 import com.ivanasen.smarttickets.R
-import com.ivanasen.smarttickets.api.SmartTicketsIPFSApi
 import com.ivanasen.smarttickets.db.models.Event
-import org.jetbrains.anko.imageBitmap
-import retrofit2.Call
-import retrofit2.Response
-import javax.security.auth.callback.Callback
+import java.text.SimpleDateFormat
 
-internal class EventAdapter(val context: Context, val data: LiveData<MutableList<Event>>)
+internal class EventAdapter(val context: Context, val eventsData: LiveData<MutableList<Event>>)
     : RecyclerView.Adapter<EventAdapter.ViewHolder>() {
 
     private val LOG_TAG = EventAdapter::class.java.simpleName
 
     init {
-        data.observe(context as LifecycleOwner, Observer {
-            Log.d(LOG_TAG, "Ebaniee" + it?.size)
+        eventsData.observe(context as LifecycleOwner, Observer {
             notifyDataSetChanged()
         })
     }
@@ -42,28 +36,46 @@ internal class EventAdapter(val context: Context, val data: LiveData<MutableList
     }
 
 
-    override fun getItemCount(): Int = if (data.value == null) 0 else data.value!!.size
+    override fun getItemCount(): Int = if (eventsData.value == null) 0 else eventsData.value!!.size
 
 
+    @SuppressLint("SimpleDateFormat")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if (data.value == null) return
+        if (eventsData.value == null) return
 
-        holder.eventLocation.text = data.value!![position].locationAddress
+        holder.eventLocation.text = eventsData.value!![position].locationAddress
 
-        val imageHash = data.value!![position].images[0]
+        holder.eventNameView.text = eventsData.value!![position].name
+
+        val timestamp = eventsData.value!![position].timestamp
+        val formatDate = SimpleDateFormat(context.getString(R.string.date_format))
+        holder.eventDateView.text = formatDate.format(timestamp)
+
+        val formatTime = SimpleDateFormat(context.getString(R.string.time_format))
+        holder.eventTimeView.text = formatTime.format(timestamp)
+
+        val cheapestTicket = eventsData.value!![position].tickets.minBy { it.priceInUSDCents }
+        holder.eventTicketView.text = String.format(context.getString(R.string.starting_from_text),
+                (cheapestTicket?.priceInUSDCents!!.toDouble() / 100))
+
+        val imageHash = eventsData.value!![position].images[0]
         val imageUrl = "${BuildConfig.IPFS_GATEWAY_URL}/ipfs/$imageHash"
 
         Glide.with(context)
                 .load(imageUrl)
+                .apply(RequestOptions()
+                        .centerCrop())
                 .into(holder.eventImageView)
+
     }
 
 
     class ViewHolder(var view: View) : RecyclerView.ViewHolder(view) {
         val eventImageView = view.findViewById<ImageView>(R.id.eventImageView)
+        val eventNameView = view.findViewById<TextView>(R.id.eventNameView)
         val eventDateView = view.findViewById<TextView>(R.id.eventDateView)
-        // TODO: add lowest costing event ticket to event preview
-        // val eventTicketView = view.findViewById<ImageView>(R.id.eventTicketPriceView)
+        val eventTimeView = view.findViewById<TextView>(R.id.eventTimeView)
+        val eventTicketView = view.findViewById<TextView>(R.id.eventTicketPriceView)
         val eventLocation = view.findViewById<TextView>(R.id.eventLocationView)
     }
 

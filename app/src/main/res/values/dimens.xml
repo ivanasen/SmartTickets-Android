@@ -11,4 +11,5 @@
     <dimen name="small_margin">6dp</dimen>
     <dimen name="big_margin">32dp</dimen>
     <dimen name="gallery_item_size">50dp</dimen>
+    <dimen name="small_padding">6dp</dimen>
 </resources>

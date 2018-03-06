@@ -68,4 +68,5 @@
     <string name="add_text">Add</string>
     <string name="usd_format">0.##</string>
     <string name="eth_format">0.######</string>
+    <string name="starting_from_text">From %.2f$</string>
 </resources>

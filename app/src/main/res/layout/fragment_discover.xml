@@ -10,7 +10,7 @@
         android:id="@+id/eventsView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="vertical"
+        android:padding="@dimen/small_padding"
         tools:listitem="@layout/list_item_event" />
 
 

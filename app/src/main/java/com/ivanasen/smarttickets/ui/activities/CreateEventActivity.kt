@@ -154,8 +154,13 @@ class CreateEventActivity : AppCompatActivity() {
 
         createEventBtn.onClick {
             viewModel.attemptCreateEvent()
+            showEventCreationScreen()
         }
 
+    }
+
+    private fun showEventCreationScreen() {
+        finish()
     }
 
     private fun showTicketTypeDialog() {
