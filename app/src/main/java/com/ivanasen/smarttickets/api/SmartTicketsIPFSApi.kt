@@ -25,9 +25,6 @@ interface SmartTicketsIPFSApi {
     @POST("ipfs/")
     fun postImage(@Body image: RequestBody): Call<Void>
 
-    @GET("ipfs/{hash}")
-    fun getImage(@Path("hash") hash: String): Call<Bitmap>
-
     companion object {
         private val LOG_TAG = SmartTicketsIPFSApi::class.simpleName
         val instance: SmartTicketsIPFSApi = create()

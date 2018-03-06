@@ -7,10 +7,7 @@ import android.support.v4.app.Fragment
 import android.transition.Fade
 import android.transition.Slide
 import android.transition.TransitionManager
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.LinearLayout
 
 import com.ivanasen.smarttickets.R

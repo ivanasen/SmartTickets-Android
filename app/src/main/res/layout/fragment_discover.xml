@@ -6,12 +6,21 @@
     tools:context="com.ivanasen.smarttickets.ui.fragments.DiscoverFragment"
     tools:showIn="@layout/activity_main">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/eventsView"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/eventRefreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="@dimen/small_padding"
-        tools:listitem="@layout/list_item_event" />
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/eventsView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="60dp"
+            android:paddingTop="@dimen/small_padding"
+            tools:listitem="@layout/list_item_event" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 
     <ProgressBar

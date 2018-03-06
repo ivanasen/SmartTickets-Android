@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/gradient_background"
+        android:animateLayoutChanges="true"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <View
@@ -24,49 +25,26 @@
             style="?android:attr/buttonBarStyle"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:contentInsetEnd="0dp"
-            app:contentInsetStart="0dp"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+            <!--<RelativeLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:animateLayoutChanges="true"-->
+            <!--android:orientation="horizontal">               -->
 
-                <ImageButton
-                    android:id="@+id/filterBtn"
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:contentDescription="@string/filter_events_content_description"
-                    app:srcCompat="@drawable/ic_tune_white_24dp" />
-
-                <TextView
-                    android:id="@+id/appBarTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:gravity="top"
-                    android:text="@string/title_discover"
-                    android:textAlignment="center"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Title" />
-
-
-                <ImageButton
-                    android:id="@+id/searchEventsBtn"
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="end"
-                    android:contentDescription="@string/search_events_content_description"
-                    app:srcCompat="@drawable/ic_search_white_24dp" />
-            </RelativeLayout>
+            <!--<TextView-->
+            <!--android:id="@+id/appBarTitle"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_margin="@dimen/default_margin"-->
+            <!--android:gravity="top"-->
+            <!--android:text="@string/title_discover"-->
+            <!--android:textAlignment="center"-->
+            <!--android:textAppearance="@style/TextAppearance.AppCompat.Title" />-->
+            <!--</RelativeLayout>-->
 
         </android.support.v7.widget.Toolbar>
 

@@ -35,12 +35,19 @@ class MyWalletFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+        activity?.title = getString(R.string.title_wallet)
+        setHasOptionsMenu(true)
         return inflater.inflate(R.layout.fragment_my_wallet, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupViews()
         observeLiveData()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater?.inflate(R.menu.my_wallet, menu)
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
     private fun setupViews() {

@@ -76,4 +76,8 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
     fun fetchEvents() {
         mRepository.fetchEvents()
     }
+
+    fun fetchEvent(eventId: Long): LiveData<Event> {
+        return mRepository.fetchEvent(eventId)
+    }
 }

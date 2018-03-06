@@ -1,5 +1,6 @@
 package com.ivanasen.smarttickets.repositories
 
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.graphics.Bitmap
 import android.util.Log
@@ -29,6 +30,7 @@ import org.web3j.crypto.WalletUtils
 import org.web3j.protocol.Web3j
 import org.web3j.protocol.core.DefaultBlockParameterName
 import java.io.File
+import java.lang.IllegalArgumentException
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.net.URL
@@ -234,6 +236,7 @@ object SmartTicketsRepository {
             Log.d(LOG_TAG, "Tx: ${txReceipt.await()}")
             fetchEtherBalance()
         }
+
     }
 
 
@@ -242,6 +245,48 @@ object SmartTicketsRepository {
 //    }
 //
 
+    fun fetchEvent(id: Long): LiveData<Event> {
+        val eventLiveData: MutableLiveData<Event> = MutableLiveData()
+
+        bg {
+            val event = getEvent(id)
+            eventLiveData.postValue(event)
+        }
+
+        return eventLiveData
+    }
+
+    private fun getEvent(id: Long): Event {
+        val event = mContract.getEvent(BigInteger.valueOf(id)).send()
+
+        val timestamp = event.value1.toLong()
+        val ipfsHash = event.value2.toString(Charset.forName("UTF-8"))
+        val cancelled = event.value3
+
+        val eventData: IPFSEvent? = getEventFromIPFS(ipfsHash)
+
+        if (cancelled.toInt() == 0 && eventData != null &&
+                eventData.name != null &&
+                eventData.latLong != null &&
+                eventData.locationAddress != null &&
+                eventData.locationName != null &&
+                eventData.tickets != null) {
+
+            return Event(
+                    id,
+                    ipfsHash,
+                    eventData.name,
+                    eventData.description!!,
+                    timestamp,
+                    eventData.latLong,
+                    eventData.locationName,
+                    eventData.locationAddress,
+                    eventData.images!!,
+                    eventData.tickets)
+        }
+
+        throw IllegalArgumentException("Event not found")
+    }
 
     fun fetchEvents() {
         bg {
@@ -250,34 +295,8 @@ object SmartTicketsRepository {
 
             // We start from index 1 because at index 0 is the Genesis Event of the contract
             for (i in 1 until eventCount + 1) {
-                val event = mContract.getEvent(BigInteger.valueOf(i)).send()
-
-                val timestamp = event.value1.toLong()
-                val ipfsHash = event.value2.toString(Charset.forName("UTF-8"))
-                val cancelled = event.value3
-
-                val eventData: IPFSEvent? = getEventFromIPFS(ipfsHash)
-
-                if (cancelled.toInt() == 0 && eventData != null &&
-                        eventData.name != null &&
-                        eventData.latLong != null &&
-                        eventData.locationAddress != null &&
-                        eventData.locationName != null &&
-                        eventData.tickets != null) {
-                    val fullEvent = Event(
-                            i,
-                            ipfsHash,
-                            eventData.name,
-                            eventData.description!!,
-                            timestamp,
-                            eventData.latLong,
-                            eventData.locationName,
-                            eventData.locationAddress,
-                            eventData.images!!,
-                            eventData.tickets)
-
-                    newEvents.add(fullEvent)
-                }
+                val event = getEvent(i)
+                newEvents.add(event)
             }
             events.postValue(newEvents)
         }
@@ -286,13 +305,6 @@ object SmartTicketsRepository {
     private fun getEventFromIPFS(ipfsHash: String): IPFSEvent? {
         val eventResponse = mIpfsApi.getEvent(ipfsHash).execute()
         return eventResponse.body()
-    }
-
-    private fun getImageFromIPFS(ipfsHash: String): Deferred<Bitmap?> {
-        return bg {
-            val imageResponse = mIpfsApi.getImage(ipfsHash).execute()
-            imageResponse.body()
-        }
     }
 
 //

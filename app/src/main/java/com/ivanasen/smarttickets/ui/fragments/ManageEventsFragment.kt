@@ -4,9 +4,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import com.ivanasen.smarttickets.R
 import com.ivanasen.smarttickets.ui.activities.CreateEventActivity
 import com.ivanasen.smarttickets.util.Utility.Companion.launchActivity
@@ -23,7 +21,14 @@ class ManageEventsFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+        activity?.title = getString(R.string.title_manage)
+        setHasOptionsMenu(true)
         return inflater.inflate(R.layout.fragment_manage_events, container, false)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater?.inflate(R.menu.manage_events, menu)
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
