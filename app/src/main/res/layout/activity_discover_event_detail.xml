@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
@@ -72,6 +73,7 @@
                 android:id="@+id/eventLocationView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/primary_ripple_background"
                 android:drawableStart="@drawable/ic_location_on_black_24dp"
                 android:drawableTint="@color/colorPrimary"
                 android:padding="@dimen/default_padding"
@@ -88,9 +90,27 @@
                 android:padding="@dimen/default_padding"
                 android:text="lorem sdfgdrhtygjthfyjtygjhrtfjjryjhtfhtrfhrth" />
 
+            <include layout="@layout/seperator_view_layout" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/small_margin"
+                android:paddingEnd="@dimen/default_padding"
+                android:paddingStart="@dimen/default_padding"
+                android:paddingTop="@dimen/default_padding"
+                android:text="@string/available_tickets_text"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/ticketTypesRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:clipChildren="false"
+                android:paddingBottom="@dimen/default_padding"
+                tools:listitem="@layout/list_item_ticket_type" />
         </LinearLayout>
-
     </android.support.v4.widget.NestedScrollView>
 
 </android.support.design.widget.CoordinatorLayout>

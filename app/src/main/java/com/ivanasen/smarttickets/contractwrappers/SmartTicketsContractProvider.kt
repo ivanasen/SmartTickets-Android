@@ -10,7 +10,7 @@ import rx.Observable
 
 
 object SmartTicketsContractProvider {
-    private const val address: String = "0xf25186b5081ff5ce73482ad761db0eb0d25abfbf"
+    private const val address: String = "0x345ca3e014aaf5dca488057592ee47305d9b3e10"
 
     fun provide(web3: Web3j, credentials: Credentials): SmartTickets {
         val gasPrice = web3.ethGasPrice().sendAsync().get().gasPrice

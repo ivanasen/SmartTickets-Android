@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModel
 import android.graphics.Bitmap
 import com.google.android.gms.location.places.Place
 import com.ivanasen.smarttickets.db.models.TicketType
+import com.ivanasen.smarttickets.db.models.TicketTypeIpfs
 import com.ivanasen.smarttickets.repositories.SmartTicketsRepository
 import org.jetbrains.anko.coroutines.experimental.bg
 import java.math.BigInteger
@@ -21,7 +22,7 @@ class CreateEventActivityViewModel : ViewModel() {
     val mRepository = SmartTicketsRepository
 
     val pickedImages: MutableLiveData<MutableList<String>> = MutableLiveData()
-    val ticketTypes: MutableLiveData<MutableList<TicketType>> = MutableLiveData()
+    val ticketTypes: MutableLiveData<MutableList<TicketTypeIpfs>> = MutableLiveData()
 
     val isValidEvent: MutableLiveData<Boolean> = MutableLiveData()
 
@@ -41,7 +42,7 @@ class CreateEventActivityViewModel : ViewModel() {
                     pickedPlace.value!!.latLng,
                     pickedPlace.value!!.name.toString(),
                     pickedPlace.value!!.address.toString(),
-                    pickedImages.value?: emptyList(),
+                    pickedImages.value ?: emptyList(),
                     ticketTypes.value ?: emptyList())
         }
     }
@@ -64,10 +65,10 @@ class CreateEventActivityViewModel : ViewModel() {
         bg {
             val priceInCents = (price.toString().toDouble() * 100).toLong()
 
-            val newTicketTypes = mutableListOf<TicketType>()
+            val newTicketTypes = mutableListOf<TicketTypeIpfs>()
             newTicketTypes.addAll(ticketTypes.value ?: emptyList())
             newTicketTypes.add(
-                    TicketType(BigInteger.ZERO,
+                    TicketTypeIpfs(
                             BigInteger.valueOf(priceInCents),
                             BigInteger.valueOf(supply.toLong()),
                             BigInteger.valueOf(supply.toLong()),

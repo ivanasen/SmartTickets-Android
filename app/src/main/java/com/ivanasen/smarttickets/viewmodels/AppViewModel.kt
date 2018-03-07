@@ -3,11 +3,10 @@ package com.ivanasen.smarttickets.viewmodels
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
 import android.content.Context
 import com.google.android.gms.location.places.Place
 import com.ivanasen.smarttickets.db.models.Event
-import com.ivanasen.smarttickets.db.models.IPFSEvent
+import com.ivanasen.smarttickets.db.models.TicketType
 import com.ivanasen.smarttickets.repositories.SmartTicketsRepository
 import org.jetbrains.anko.defaultSharedPreferences
 import java.io.File
@@ -20,7 +19,6 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
 
     val credentials = mRepository.credentials
 
-    var password: LiveData<String> = MutableLiveData()
 
     var contractExists = mRepository.contractDeployed
 
@@ -79,5 +77,13 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
 
     fun fetchEvent(eventId: Long): LiveData<Event> {
         return mRepository.fetchEvent(eventId)
+    }
+
+    fun fetchTicketTypesForEvent(eventId: Long): LiveData<MutableList<TicketType>> {
+        return mRepository.fetchTicketTypesForEvent(eventId)
+    }
+
+    val attemptBuyTicket: (ticketType: TicketType) -> Unit = {
+
     }
 }

@@ -12,6 +12,7 @@ import com.ivanasen.smarttickets.contractwrappers.SmartTickets
 import com.ivanasen.smarttickets.db.models.Event
 import com.ivanasen.smarttickets.db.models.IPFSEvent
 import com.ivanasen.smarttickets.db.models.TicketType
+import com.ivanasen.smarttickets.db.models.TicketTypeIpfs
 import com.ivanasen.smarttickets.util.Utility
 import com.ivanasen.smarttickets.util.Utility.Companion.INFURA_ETHER_PRICE_IN_USD_URL
 import com.ivanasen.smarttickets.util.Utility.Companion.IPFS_HASH_HEADER
@@ -64,7 +65,7 @@ object SmartTicketsRepository {
                     locationName: String,
                     locationAddress: String,
                     imagePaths: List<String>,
-                    tickets: List<TicketType>) {
+                    tickets: List<TicketTypeIpfs>) {
         launch(UI) {
             bg {
                 try {
@@ -221,12 +222,23 @@ object SmartTicketsRepository {
     }
 
     private fun getUsdValueOfEther(ether: Double) {
-        launch(UI) {
-            val result = bg { URL(INFURA_ETHER_PRICE_IN_USD_URL).readText() }.await()
+        bg {
+            val result = URL(INFURA_ETHER_PRICE_IN_USD_URL).readText()
             val resultObj = JSONObject(result)
             val askPrice = resultObj.getDouble("ask")
             usdBalance.postValue(askPrice * ether)
         }
+    }
+
+    fun fetchEtherValueOfUsd(usd: Double): LiveData<Double> {
+        val data = MutableLiveData<Double>()
+        bg {
+            val result = URL(INFURA_ETHER_PRICE_IN_USD_URL).readText()
+            val resultObj = JSONObject(result)
+            val askPrice = resultObj.getDouble("ask")
+            data.postValue(askPrice / usd)
+        }
+        return data
     }
 
     fun sendEtherTo(address: String, etherAmount: Double) {
@@ -236,7 +248,6 @@ object SmartTicketsRepository {
             Log.d(LOG_TAG, "Tx: ${txReceipt.await()}")
             fetchEtherBalance()
         }
-
     }
 
 
@@ -265,6 +276,8 @@ object SmartTicketsRepository {
 
         val eventData: IPFSEvent? = getEventFromIPFS(ipfsHash)
 
+        val ticketTypes = getTicketTypesForEvent(id)
+
         if (cancelled.toInt() == 0 && eventData != null &&
                 eventData.name != null &&
                 eventData.latLong != null &&
@@ -282,7 +295,7 @@ object SmartTicketsRepository {
                     eventData.locationName,
                     eventData.locationAddress,
                     eventData.images!!,
-                    eventData.tickets)
+                    ticketTypes)
         }
 
         throw IllegalArgumentException("Event not found")
@@ -305,6 +318,53 @@ object SmartTicketsRepository {
     private fun getEventFromIPFS(ipfsHash: String): IPFSEvent? {
         val eventResponse = mIpfsApi.getEvent(ipfsHash).execute()
         return eventResponse.body()
+    }
+
+
+    //    uint ticketTypeId,
+//    uint eventId,
+//    uint price,
+//    uint initialSupply,
+//    uint currentSupply,
+//    uint8 refundable
+    fun fetchTicketTypesForEvent(eventId: Long): LiveData<MutableList<TicketType>> {
+        val ticketTypes: MutableLiveData<MutableList<TicketType>> = MutableLiveData()
+        bg {
+            val ticketTypesForEvent = getTicketTypesForEvent(eventId)
+            if (ticketTypesForEvent.isNotEmpty()) {
+                ticketTypes.postValue(ticketTypesForEvent)
+            }
+        }
+        return ticketTypes
+    }
+
+    private fun getTicketTypesForEvent(eventId: Long): MutableList<TicketType> {
+        val count = mContract.getTicketTypesCountForEvent(BigInteger.valueOf(eventId))
+                .send().toLong()
+        val ticketTypesList = mutableListOf<TicketType>()
+        for (ticketTypeIndex in 0 until count) {
+
+            val ticketType = mContract.getTicketTypeForEvent(BigInteger.valueOf(eventId),
+                    BigInteger.valueOf(ticketTypeIndex)).send()
+
+            ticketType?.let {
+                val ticketTypeId = it.value1
+                val price = it.value3
+                val initialSupply = it.value4
+                val currentSupply = it.value5
+                val refundable = it.value6.toInt() == 1
+
+                ticketTypesList.add(TicketType(
+                        ticketTypeId,
+                        BigInteger.valueOf(eventId),
+                        price,
+                        initialSupply,
+                        currentSupply,
+                        refundable
+                ))
+            }
+        }
+        return ticketTypesList
     }
 
 //

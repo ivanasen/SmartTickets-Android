@@ -7,14 +7,17 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clipChildren="false"
+        android:clipToPadding="false"
         tools:context="com.ivanasen.smarttickets.ui.fragments.MyTicketsFragment">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/ticketsView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="vertical"
-            tools:listitem="@layout/list_item_event" />
+            android:layout_height="wrap_content"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:padding="@dimen/default_padding"
+            tools:listitem="@layout/list_item_ticket" />
 
     </FrameLayout>
 

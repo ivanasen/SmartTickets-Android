@@ -20,8 +20,6 @@ import kotlinx.android.synthetic.main.activity_create_event.*
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.sdk25.coroutines.textChangedListener
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
@@ -30,7 +28,7 @@ import com.afollestad.materialdialogs.DialogAction
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.Theme
 import com.ivanasen.smarttickets.ui.adapters.ImageAdapter
-import com.ivanasen.smarttickets.ui.adapters.TicketTypeAdapter
+import com.ivanasen.smarttickets.ui.adapters.TicketCreationTypeAdapter
 import droidninja.filepicker.FilePickerBuilder
 import droidninja.filepicker.FilePickerConst
 import java.util.*
@@ -123,7 +121,7 @@ class CreateEventActivity : AppCompatActivity() {
         val layoutManager = LinearLayoutManager(this)
         ticketsRecyclerView.layoutManager = layoutManager
         // specify an adapter (see also next example)
-        val ticketTypesAdapter = TicketTypeAdapter(this, viewModel.ticketTypes)
+        val ticketTypesAdapter = TicketCreationTypeAdapter(this, viewModel.ticketTypes)
         ticketsRecyclerView.adapter = ticketTypesAdapter
 
 

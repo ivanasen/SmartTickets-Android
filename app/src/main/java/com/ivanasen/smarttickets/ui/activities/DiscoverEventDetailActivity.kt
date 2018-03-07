@@ -1,16 +1,23 @@
 package com.ivanasen.smarttickets.ui.activities
 
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.support.v7.widget.LinearLayoutManager
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.ivanasen.smarttickets.R
 import com.ivanasen.smarttickets.db.models.Event
+import com.ivanasen.smarttickets.db.models.TicketType
+import com.ivanasen.smarttickets.ui.adapters.TicketCreationTypeAdapter
+import com.ivanasen.smarttickets.ui.adapters.TicketTypeAdapter
 import com.ivanasen.smarttickets.viewmodels.AppViewModel
 import kotlinx.android.synthetic.main.activity_discover_event_detail.*
+import org.jetbrains.anko.sdk25.coroutines.onClick
 
 class DiscoverEventDetailActivity : AppCompatActivity() {
 
@@ -41,10 +48,18 @@ class DiscoverEventDetailActivity : AppCompatActivity() {
         mViewModel.fetchEvent(eventId).observe(this, Observer {
             it?.let { populateViews(it) }
         })
+
     }
 
     private fun populateViews(event: Event) {
         eventLocationView.text = event.locationAddress
+        eventLocationView.onClick {
+            Toast.makeText(this@DiscoverEventDetailActivity, event.locationAddress, Toast.LENGTH_SHORT)
+                    .show()
+        }
+
+
+        eventDescriptionView.text = event.description
     }
 
     private fun setupViews() {
@@ -56,5 +71,12 @@ class DiscoverEventDetailActivity : AppCompatActivity() {
                 .apply(RequestOptions()
                         .centerCrop())
                 .into(eventImage)
+
+        val eventId = intent.extras.getLong(EXTRA_EVENT_ID)
+        val ticketTypesLiveData = mViewModel.fetchTicketTypesForEvent(eventId)
+        val adapter = TicketTypeAdapter(this, ticketTypesLiveData, mViewModel.attemptBuyTicket)
+        ticketTypesRecyclerView.adapter = adapter
+        ticketTypesRecyclerView.layoutManager = LinearLayoutManager(this)
     }
+
 }

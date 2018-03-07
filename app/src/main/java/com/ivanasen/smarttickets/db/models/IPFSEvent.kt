@@ -10,4 +10,4 @@ data class IPFSEvent(val name: String?,
                      val locationName: String?,
                      val locationAddress: String?,
                      val images: List<String>?,
-                     val tickets: List<TicketType>?)
+                     val tickets: List<TicketTypeIpfs>?)
