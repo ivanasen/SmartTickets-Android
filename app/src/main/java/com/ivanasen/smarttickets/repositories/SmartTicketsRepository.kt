@@ -8,10 +8,7 @@ import com.ivanasen.smarttickets.contractwrappers.SmartTicketsContractProvider
 
 import com.ivanasen.smarttickets.api.SmartTicketsIPFSApi
 import com.ivanasen.smarttickets.contractwrappers.SmartTickets
-import com.ivanasen.smarttickets.db.models.Event
-import com.ivanasen.smarttickets.db.models.IPFSEvent
-import com.ivanasen.smarttickets.db.models.TicketType
-import com.ivanasen.smarttickets.db.models.TicketTypeIpfs
+import com.ivanasen.smarttickets.db.models.*
 import com.ivanasen.smarttickets.util.Utility
 import com.ivanasen.smarttickets.util.Utility.Companion.IPFS_HASH_HEADER
 import com.ivanasen.smarttickets.util.Utility.Companion.ONE_ETHER_IN_WEI
@@ -20,10 +17,13 @@ import com.ivanasen.smarttickets.util.Web3JProvider
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.jetbrains.anko.coroutines.experimental.bg
+import org.web3j.abi.datatypes.generated.Uint256
 import org.web3j.crypto.Credentials
 import org.web3j.crypto.WalletUtils
 import org.web3j.protocol.Web3j
 import org.web3j.protocol.core.DefaultBlockParameterName
+import org.web3j.tuples.generated.Tuple5
+import org.web3j.tuples.generated.Tuple6
 import java.io.File
 import java.lang.IllegalArgumentException
 import java.math.BigDecimal
@@ -256,6 +256,7 @@ object SmartTicketsRepository {
         return eventLiveData
     }
 
+
     private fun getEvent(id: Long): Event {
         val event = mContract.getEvent(BigInteger.valueOf(id)).send()
 
@@ -335,24 +336,11 @@ object SmartTicketsRepository {
         val ticketTypesList = mutableListOf<TicketType>()
         for (ticketTypeIndex in 0 until count) {
 
-            val ticketType = mContract.getTicketTypeForEvent(BigInteger.valueOf(eventId),
+            val ticketTypeTuple = mContract.getTicketTypeForEvent(BigInteger.valueOf(eventId),
                     BigInteger.valueOf(ticketTypeIndex)).send()
 
-            ticketType?.let {
-                val ticketTypeId = it.value1
-                val price = it.value3
-                val initialSupply = it.value4
-                val currentSupply = it.value5
-                val refundable = it.value6.toInt() == 1
-
-                ticketTypesList.add(TicketType(
-                        ticketTypeId,
-                        BigInteger.valueOf(eventId),
-                        price,
-                        initialSupply,
-                        currentSupply,
-                        refundable
-                ))
+            ticketTypeTuple?.let {
+                ticketTypesList.add(convertToTicketType(it))
             }
         }
         return ticketTypesList
@@ -368,11 +356,67 @@ object SmartTicketsRepository {
 
             val txReceipt = mContract.buyTicket(ticketType.ticketTypeId,
                     totalPrice).send()
+            Log.d(LOG_TAG, txReceipt.transactionHash.toString())
         }
     }
 
     fun fetchBalance() {
         fetchEtherBalance()
+    }
+
+    fun fetchTickets(): LiveData<MutableList<Ticket>> {
+        val ticketsLiveData = MutableLiveData<MutableList<Ticket>>()
+        bg {
+            val tickets = mutableListOf<Ticket>()
+            val ownerAddress = credentials.value?.address
+            val balance = mContract.balanceOf(ownerAddress).send()
+            val ticketIds = mContract.getTicketsForOwner(ownerAddress).send()
+
+            ticketIds.forEach {
+                val id = (it as Uint256).value
+                val ticketTypeTuple = mContract.getTicketTypeForTicket(id).send()
+                val ticketType = convertToTicketType(ticketTypeTuple)
+
+                tickets.add(Ticket(id, ticketType))
+            }
+            ticketsLiveData.postValue(tickets)
+        }
+        return ticketsLiveData
+    }
+
+    private fun convertToTicketType(ticketTypeTuple: Tuple6<BigInteger,
+            BigInteger, BigInteger, BigInteger, BigInteger, BigInteger>?): TicketType {
+        val ticketTypeId = ticketTypeTuple?.value1
+        val eventId = ticketTypeTuple?.value2
+        val price = ticketTypeTuple?.value3
+        val initialSupply = ticketTypeTuple?.value4
+        val currentSupply = ticketTypeTuple?.value5
+        val refundable = ticketTypeTuple?.value6?.toInt() == 1
+
+        return TicketType(
+                ticketTypeId!!,
+                eventId!!,
+                price!!,
+                initialSupply!!,
+                currentSupply!!,
+                refundable)
+    }
+
+    fun fetchMyEvents(): LiveData<MutableList<Event>> {
+        val eventsLiveData = MutableLiveData<MutableList<Event>>()
+        bg {
+            val events = mutableListOf<Event>()
+            val ownerAddress = credentials.value?.address
+            val eventIds = mContract.getEventIdsForCreator(ownerAddress).send()
+
+            eventIds.forEach {
+                val id = (it as Uint256).value
+                val event = getEvent(id.toLong())
+                events.add(event)
+            }
+            eventsLiveData.postValue(events)
+        }
+        return eventsLiveData
     }
 
 //

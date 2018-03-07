@@ -67,7 +67,7 @@
     <string name="add_ticket_type">Add Ticket Type</string>
     <string name="add_text">Add</string>
     <string name="usd_format">0.##</string>
-    <string name="eth_format">0.######</string>
+    <string name="eth_format">0.#####</string>
     <string name="starting_from_text">From %.2f$</string>
     <string name="search_hint">Search Events</string>
     <string name="show_wallet_private_key_text">Show wallet private key</string>

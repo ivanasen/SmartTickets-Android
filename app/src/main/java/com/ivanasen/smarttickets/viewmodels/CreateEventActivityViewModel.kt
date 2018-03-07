@@ -18,7 +18,7 @@ class CreateEventActivityViewModel : ViewModel() {
     val eventName: MutableLiveData<String> = MutableLiveData()
     val eventDescription: MutableLiveData<String> = MutableLiveData()
     val pickedPlace: MutableLiveData<Place> = MutableLiveData()
-    val eventTime: MutableLiveData<Calendar> = MutableLiveData()
+    val eventTime: MutableLiveData<GregorianCalendar> = MutableLiveData()
     val mRepository = SmartTicketsRepository
 
     val pickedImages: MutableLiveData<MutableList<String>> = MutableLiveData()

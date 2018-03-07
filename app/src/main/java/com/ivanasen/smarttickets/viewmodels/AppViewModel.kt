@@ -6,6 +6,7 @@ import android.arch.lifecycle.LiveData
 import android.content.Context
 import com.google.android.gms.location.places.Place
 import com.ivanasen.smarttickets.db.models.Event
+import com.ivanasen.smarttickets.db.models.Ticket
 import com.ivanasen.smarttickets.db.models.TicketType
 import com.ivanasen.smarttickets.repositories.SmartTicketsRepository
 import org.jetbrains.anko.defaultSharedPreferences
@@ -92,6 +93,10 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun fetchMyEvents(): LiveData<MutableList<Event>> {
-        return mRepository.fetchEvents()
+        return mRepository.fetchMyEvents()
+    }
+
+    fun fetchTickets(): LiveData<MutableList<Ticket>> {
+        return mRepository.fetchTickets()
     }
 }

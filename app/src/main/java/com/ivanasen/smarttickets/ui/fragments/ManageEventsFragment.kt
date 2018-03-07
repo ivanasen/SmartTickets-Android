@@ -1,13 +1,17 @@
 package com.ivanasen.smarttickets.ui.fragments
 
+import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
+import android.support.v7.widget.LinearLayoutManager
 import android.view.*
 import com.ivanasen.smarttickets.R
+import com.ivanasen.smarttickets.db.models.Event
 import com.ivanasen.smarttickets.ui.activities.CreateEventActivity
+import com.ivanasen.smarttickets.ui.adapters.EventAdapter
 import com.ivanasen.smarttickets.util.Utility.Companion.launchActivity
 import com.ivanasen.smarttickets.viewmodels.AppViewModel
 import kotlinx.android.synthetic.main.fragment_manage_events.*
@@ -20,6 +24,8 @@ class ManageEventsFragment : Fragment() {
     val mViewModel: AppViewModel by lazy {
         ViewModelProviders.of(activity as FragmentActivity).get(AppViewModel::class.java)
     }
+
+    private val mEvents: MutableLiveData<MutableList<Event>> = MutableLiveData()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -41,6 +47,7 @@ class ManageEventsFragment : Fragment() {
     private fun observeLiveData() {
         mViewModel.fetchMyEvents().observe(this, Observer {
             manageEventsRefreshLayout.isRefreshing = false
+            mEvents.postValue(it)
         })
     }
 
@@ -53,5 +60,8 @@ class ManageEventsFragment : Fragment() {
         manageEventsRefreshLayout.onRefresh {
             mViewModel.fetchMyEvents()
         }
+
+        eventsView.layoutManager = LinearLayoutManager(context)
+        eventsView.adapter = EventAdapter(activity!!, mEvents)
     }
 }

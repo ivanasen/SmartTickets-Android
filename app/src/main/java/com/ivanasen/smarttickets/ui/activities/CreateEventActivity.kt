@@ -115,7 +115,7 @@ class CreateEventActivity : AppCompatActivity() {
                     PLACE_PICKER_REQUEST)
         }
 
-        viewModel.eventTime.postValue(Calendar.getInstance())
+        viewModel.eventTime.postValue(GregorianCalendar.getInstance() as GregorianCalendar)
 
         // use a linear layout manager
         val layoutManager = LinearLayoutManager(this)
@@ -258,7 +258,7 @@ class CreateEventActivity : AppCompatActivity() {
         override fun onTimeSet(view: TimePicker, hour: Int, minute: Int) {
             val viewModel = (activity as CreateEventActivity).viewModel
             val currentTime = viewModel.eventTime.value
-            val calendar = Calendar.getInstance()
+            val calendar = GregorianCalendar.getInstance() as GregorianCalendar
 
             calendar.set(Calendar.YEAR,
                     (currentTime ?: calendar).get(Calendar.YEAR))
@@ -289,7 +289,7 @@ class CreateEventActivity : AppCompatActivity() {
         override fun onDateSet(view: DatePicker, year: Int, month: Int, day: Int) {
             val viewModel = (activity as CreateEventActivity).viewModel
             val currentDate = viewModel.eventTime.value
-            val calendar = Calendar.getInstance()
+            val calendar = GregorianCalendar.getInstance() as GregorianCalendar
 
             calendar.set(Calendar.HOUR_OF_DAY,
                     (currentDate ?: calendar).get(Calendar.HOUR_OF_DAY))
