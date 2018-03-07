@@ -23,7 +23,6 @@ class Utility {
         val MIN_PASSWORD_LENGTH = 8
         val ONE_ETHER_IN_WEI = Math.pow(10.0, 18.0).toLong()
         val IPFS_HASH_HEADER = "ipfs-hash"
-        const val INFURA_ETHER_PRICE_IN_USD_URL = "https://api.infura.io/v1/ticker/ethusd"
 
         fun loadFragment(@IdRes containerViewId: Int, fragmentManager: FragmentManager, fragment: Fragment) {
             val transaction = fragmentManager.beginTransaction()

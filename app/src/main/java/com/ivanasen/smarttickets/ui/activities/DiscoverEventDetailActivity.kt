@@ -1,7 +1,5 @@
 package com.ivanasen.smarttickets.ui.activities
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.support.v7.app.AppCompatActivity
@@ -13,11 +11,13 @@ import com.bumptech.glide.request.RequestOptions
 import com.ivanasen.smarttickets.R
 import com.ivanasen.smarttickets.db.models.Event
 import com.ivanasen.smarttickets.db.models.TicketType
-import com.ivanasen.smarttickets.ui.adapters.TicketCreationTypeAdapter
 import com.ivanasen.smarttickets.ui.adapters.TicketTypeAdapter
 import com.ivanasen.smarttickets.viewmodels.AppViewModel
 import kotlinx.android.synthetic.main.activity_discover_event_detail.*
 import org.jetbrains.anko.sdk25.coroutines.onClick
+import java.text.DateFormat
+import java.text.DateFormat.*
+import java.text.SimpleDateFormat
 
 class DiscoverEventDetailActivity : AppCompatActivity() {
 
@@ -60,6 +60,9 @@ class DiscoverEventDetailActivity : AppCompatActivity() {
 
 
         eventDescriptionView.text = event.description
+
+        val formatDate = getDateTimeInstance(MEDIUM, SHORT).format(event.timestamp)
+        eventTimeView.text = formatDate
     }
 
     private fun setupViews() {
@@ -72,9 +75,13 @@ class DiscoverEventDetailActivity : AppCompatActivity() {
                         .centerCrop())
                 .into(eventImage)
 
+        val attemptBuyTicket: (ticketType: TicketType) -> Unit = {
+            mViewModel.attemptToBuyTicket(it)
+        }
+
         val eventId = intent.extras.getLong(EXTRA_EVENT_ID)
         val ticketTypesLiveData = mViewModel.fetchTicketTypesForEvent(eventId)
-        val adapter = TicketTypeAdapter(this, ticketTypesLiveData, mViewModel.attemptBuyTicket)
+        val adapter = TicketTypeAdapter(this, ticketTypesLiveData, attemptBuyTicket)
         ticketTypesRecyclerView.adapter = adapter
         ticketTypesRecyclerView.layoutManager = LinearLayoutManager(this)
     }

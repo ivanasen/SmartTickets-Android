@@ -1,6 +1,7 @@
 package com.ivanasen.smarttickets.ui.fragments
 
 import android.app.SearchManager
+import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
@@ -11,10 +12,12 @@ import android.support.v7.widget.SearchView
 import android.util.Log
 import android.view.*
 import com.ivanasen.smarttickets.R
+import com.ivanasen.smarttickets.db.models.Event
 import com.ivanasen.smarttickets.ui.adapters.EventAdapter
 import com.ivanasen.smarttickets.viewmodels.AppViewModel
 import kotlinx.android.synthetic.main.fragment_discover.*
-import org.jetbrains.anko.recyclerview.v7.coroutines.onItemTouchListener
+import org.jetbrains.anko.support.v4.onRefresh
+
 
 /**
  * A placeholder fragment containing a simple view.
@@ -27,6 +30,7 @@ class DiscoverFragment : Fragment() {
         ViewModelProviders.of(this).get(AppViewModel::class.java)
     }
 
+    private val mEvents: MutableLiveData<MutableList<Event>> = MutableLiveData()
     private lateinit var mAdapter: EventAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -52,18 +56,24 @@ class DiscoverFragment : Fragment() {
     }
 
     private fun observeLiveData() {
-        mViewModel.fetchEvents()
-
-        mViewModel.events.observe(this, Observer {
-            it?.forEach {
-                Log.d(LOG_TAG, "Fetched event: ${it.name}")
-            }
+        mViewModel.fetchEvents().observe(this, Observer {
+            mEvents.postValue(it)
+            eventRefreshLayout.isRefreshing = false
         })
     }
 
     private fun setupViews() {
-        mAdapter = EventAdapter(activity!!, mViewModel.events)
+        mAdapter = EventAdapter(activity!!, mEvents)
         eventsView.layoutManager = LinearLayoutManager(context)
         eventsView.adapter = mAdapter
+
+        eventRefreshLayout.isRefreshing = true
+        eventRefreshLayout.onRefresh {
+            Log.i(LOG_TAG, "onRefresh called from SwipeRefreshLayout")
+
+            // This method performs the actual data-refresh operation.
+            // The method calls setRefreshing(false) when it's finished.
+            mViewModel.fetchEvents()
+        }
     }
 }

@@ -2,7 +2,6 @@ package com.ivanasen.smarttickets.repositories
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
-import android.graphics.Bitmap
 import android.util.Log
 import com.google.android.gms.maps.model.LatLng
 import com.ivanasen.smarttickets.contractwrappers.SmartTicketsContractProvider
@@ -14,18 +13,13 @@ import com.ivanasen.smarttickets.db.models.IPFSEvent
 import com.ivanasen.smarttickets.db.models.TicketType
 import com.ivanasen.smarttickets.db.models.TicketTypeIpfs
 import com.ivanasen.smarttickets.util.Utility
-import com.ivanasen.smarttickets.util.Utility.Companion.INFURA_ETHER_PRICE_IN_USD_URL
 import com.ivanasen.smarttickets.util.Utility.Companion.IPFS_HASH_HEADER
 import com.ivanasen.smarttickets.util.Utility.Companion.ONE_ETHER_IN_WEI
 import com.ivanasen.smarttickets.util.WalletUtil
 import com.ivanasen.smarttickets.util.Web3JProvider
-import kotlinx.coroutines.experimental.Deferred
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.launch
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.jetbrains.anko.coroutines.experimental.bg
-import org.json.JSONObject
 import org.web3j.crypto.Credentials
 import org.web3j.crypto.WalletUtils
 import org.web3j.protocol.Web3j
@@ -34,7 +28,6 @@ import java.io.File
 import java.lang.IllegalArgumentException
 import java.math.BigDecimal
 import java.math.BigInteger
-import java.net.URL
 import java.nio.charset.Charset
 import java.util.*
 
@@ -53,10 +46,8 @@ object SmartTicketsRepository {
 
     var contractDeployed: MutableLiveData<Boolean> = MutableLiveData()
 
-    val etherBalance: MutableLiveData<Double> = MutableLiveData()
+    val etherBalance: MutableLiveData<BigDecimal> = MutableLiveData()
     val usdBalance: MutableLiveData<Double> = MutableLiveData()
-
-    val events: MutableLiveData<MutableList<Event>> = MutableLiveData()
 
     fun createEvent(name: String,
                     description: String,
@@ -66,45 +57,41 @@ object SmartTicketsRepository {
                     locationAddress: String,
                     imagePaths: List<String>,
                     tickets: List<TicketTypeIpfs>) {
-        launch(UI) {
-            bg {
-                try {
-                    val imageHashes = uploadImages(imagePaths)
+        bg {
+            try {
+                val imageHashes = uploadImages(imagePaths)
 
-                    val event = IPFSEvent(name, description, timestamp, latLong, locationName,
-                            locationAddress, imageHashes, tickets)
-                    val eventMetadataHash = postEventToIpfs(event)
+                val event = IPFSEvent(name, description, timestamp, latLong, locationName,
+                        locationAddress, imageHashes, tickets)
+                val eventMetadataHash = postEventToIpfs(event)
 
-                    Log.d(LOG_TAG, eventMetadataHash.toString(Charset.forName("UTF-8")))
+                Log.d(LOG_TAG, eventMetadataHash.toString(Charset.forName("UTF-8")))
 
-                    val ticketPrices = tickets.map { it.priceInUSDCents }
-                    val ticketSupplies = tickets.map { it.initialSupply }
-                    val ticketRefundables = tickets.map {
-                        BigInteger.valueOf(if (it.refundable) 1 else 0)
-                    }
-
-                    val eventTxReceipt = mContract.createEvent(BigInteger.valueOf(timestamp),
-                            eventMetadataHash, ticketPrices, ticketSupplies, ticketRefundables).send()
-                    Log.d(LOG_TAG, eventTxReceipt.transactionHash)
-
-                } catch (e: Exception) {
-                    Log.e(LOG_TAG, e.message)
+                val ticketPrices = tickets.map { it.priceInUSDCents }
+                val ticketSupplies = tickets.map { it.initialSupply }
+                val ticketRefundables = tickets.map {
+                    BigInteger.valueOf(if (it.refundable) 1 else 0)
                 }
+
+                val eventTxReceipt = mContract.createEvent(BigInteger.valueOf(timestamp),
+                        eventMetadataHash, ticketPrices, ticketSupplies, ticketRefundables).send()
+                Log.d(LOG_TAG, eventTxReceipt.transactionHash)
+
+            } catch (e: Exception) {
+                Log.e(LOG_TAG, e.message)
             }
+
         }
     }
 
     private fun addTicketTypeForEvent(eventId: BigInteger, ticketType: TicketType) {
-        launch(UI) {
-            val txReceipt = bg {
-                mContract.addTicketForEvent(
-                        eventId,
-                        ticketType.priceInUSDCents,
-                        ticketType.initialSupply,
-                        BigInteger.valueOf(if (ticketType.refundable) 1 else 0)
-                ).send()
-            }
-
+        bg {
+            val txReceipt = mContract.addTicketForEvent(
+                    eventId,
+                    ticketType.priceInUSDCents,
+                    ticketType.initialSupply,
+                    BigInteger.valueOf(if (ticketType.refundable) 1 else 0)
+            ).send()
         }
     }
 
@@ -177,12 +164,12 @@ object SmartTicketsRepository {
 
 
     private fun createContractInstance() {
-        launch(UI) {
-            val contract = bg { SmartTicketsContractProvider.provide(mWeb3, credentials.value!!) }
-            mContract = contract.await()
+        bg {
+            val contract = SmartTicketsContractProvider.provide(mWeb3, credentials.value!!)
+            mContract = contract
             try {
-                val isValid = bg { mContract.isValid }
-                contractDeployed.postValue(isValid.await())
+                val isValid = mContract.isValid
+                contractDeployed.postValue(isValid)
             } catch (e: Exception) {
                 e.printStackTrace()
                 contractDeployed.postValue(false)
@@ -207,45 +194,47 @@ object SmartTicketsRepository {
     }
 
     private fun fetchEtherBalance() {
-        launch(UI) {
-            val balanceInWei = bg {
-                val request = mWeb3.ethGetBalance(credentials.value?.address,
-                        DefaultBlockParameterName.LATEST).send()
-                request.balance
-            }
-            val balanceInEther = balanceInWei.await().toBigDecimal()
+        bg {
+            val balanceInWei = getWeiBalance()
+
+            val balanceInEther = balanceInWei.toBigDecimal()
                     .divide(BigDecimal.valueOf(ONE_ETHER_IN_WEI))
-            etherBalance.postValue(balanceInEther.toDouble())
-            getUsdValueOfEther(balanceInEther.toDouble())
+            etherBalance.postValue(balanceInEther)
+
+            fetchUsdBalance(balanceInWei)
             Log.d(LOG_TAG, "Fetch ether called!")
         }
     }
 
-    private fun getUsdValueOfEther(ether: Double) {
+    private fun getWeiBalance(): BigInteger {
+        val request = mWeb3.ethGetBalance(credentials.value?.address,
+                DefaultBlockParameterName.LATEST).send()
+        return request.balance
+    }
+
+    private fun fetchUsdBalance(weiValue: BigInteger) {
         bg {
-            val result = URL(INFURA_ETHER_PRICE_IN_USD_URL).readText()
-            val resultObj = JSONObject(result)
-            val askPrice = resultObj.getDouble("ask")
-            usdBalance.postValue(askPrice * ether)
+            val oneUsdCentInWei = mContract.oneUSDCentInWei.send()
+            usdBalance.postValue((weiValue / oneUsdCentInWei).toDouble() / 100)
         }
     }
 
-    fun fetchEtherValueOfUsd(usd: Double): LiveData<Double> {
-        val data = MutableLiveData<Double>()
+    fun fetchEtherValueOfUsd(usdCents: BigDecimal): LiveData<BigDecimal> {
+        val data = MutableLiveData<BigDecimal>()
         bg {
-            val result = URL(INFURA_ETHER_PRICE_IN_USD_URL).readText()
-            val resultObj = JSONObject(result)
-            val askPrice = resultObj.getDouble("ask")
-            data.postValue(askPrice / usd)
+            val oneUsdCentInWei = mContract.oneUSDCentInWei.send().toBigDecimal()
+            val oneEtherInWei = BigInteger.valueOf(ONE_ETHER_IN_WEI).toBigDecimal()
+            data.postValue((oneUsdCentInWei * usdCents).divide(oneEtherInWei))
         }
         return data
     }
 
     fun sendEtherTo(address: String, etherAmount: Double) {
-        require(credentials.value != null)
-        launch(UI) {
-            val txReceipt = bg { WalletUtil.sendEther(credentials.value!!, etherAmount, address) }
-            Log.d(LOG_TAG, "Tx: ${txReceipt.await()}")
+        bg {
+            require(credentials.value != null)
+            val txReceipt = WalletUtil.sendEther(credentials.value!!, etherAmount, address)
+            Log.d(LOG_TAG, "Tx: $txReceipt")
+
             fetchEtherBalance()
         }
     }
@@ -301,7 +290,8 @@ object SmartTicketsRepository {
         throw IllegalArgumentException("Event not found")
     }
 
-    fun fetchEvents() {
+    fun fetchEvents(): LiveData<MutableList<Event>> {
+        val events: MutableLiveData<MutableList<Event>> = MutableLiveData()
         bg {
             val newEvents = mutableListOf<Event>()
             val eventCount = mContract.eventCount.send().toLong()
@@ -313,6 +303,7 @@ object SmartTicketsRepository {
             }
             events.postValue(newEvents)
         }
+        return events
     }
 
     private fun getEventFromIPFS(ipfsHash: String): IPFSEvent? {
@@ -365,6 +356,23 @@ object SmartTicketsRepository {
             }
         }
         return ticketTypesList
+    }
+
+    fun buyTicket(ticketType: TicketType) {
+        bg {
+            val oneUsdCentInWei = mContract.oneUSDCentInWei.send()
+            val totalPrice = ticketType.priceInUSDCents * oneUsdCentInWei
+
+            val balanceInWei = getWeiBalance()
+            require(totalPrice < balanceInWei)
+
+            val txReceipt = mContract.buyTicket(ticketType.ticketTypeId,
+                    totalPrice).send()
+        }
+    }
+
+    fun fetchBalance() {
+        fetchEtherBalance()
     }
 
 //

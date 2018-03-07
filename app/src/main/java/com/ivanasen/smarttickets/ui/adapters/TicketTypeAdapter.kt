@@ -42,15 +42,15 @@ internal class TicketTypeAdapter(val context: Context, val data: LiveData<Mutabl
         if (data.value == null) return
         val ticketType = data.value!![position]
 
-        val ticketPriceInUsd = ticketType.priceInUSDCents.toDouble() / 100
+        val ticketPriceInUsd = ticketType.priceInUSDCents
         val remainingTickets = ticketType.currentSupply
         val refundable = ticketType.refundable
 
-        SmartTicketsRepository.fetchEtherValueOfUsd(ticketPriceInUsd)
+        SmartTicketsRepository.fetchEtherValueOfUsd(ticketPriceInUsd.toBigDecimal())
                 .observe(context as LifecycleOwner, Observer {
-                    holder.ticketPriceInEtherView.text = ethFormat.format(it)
+                    holder.ticketPriceInEtherView.text = it.toString()
                 })
-        holder.ticketPriceInUsdView.text = usdFormat.format(ticketPriceInUsd)
+        holder.ticketPriceInUsdView.text = usdFormat.format(ticketPriceInUsd.toDouble() / 100)
         holder.ticketSupplyTextView.text =
                 String.format(context.getString(R.string.tickets_remaining_text), remainingTickets)
         holder.ticketRefundable.text =

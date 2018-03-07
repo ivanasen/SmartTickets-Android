@@ -1,5 +1,6 @@
 package com.ivanasen.smarttickets.ui.fragments
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -11,6 +12,7 @@ import com.ivanasen.smarttickets.util.Utility.Companion.launchActivity
 import com.ivanasen.smarttickets.viewmodels.AppViewModel
 import kotlinx.android.synthetic.main.fragment_manage_events.*
 import org.jetbrains.anko.sdk25.coroutines.onClick
+import org.jetbrains.anko.support.v4.onRefresh
 
 
 class ManageEventsFragment : Fragment() {
@@ -37,12 +39,19 @@ class ManageEventsFragment : Fragment() {
     }
 
     private fun observeLiveData() {
-
+        mViewModel.fetchMyEvents().observe(this, Observer {
+            manageEventsRefreshLayout.isRefreshing = false
+        })
     }
 
     private fun setupViews() {
         addEventBtn.onClick {
             launchActivity(this@ManageEventsFragment.context!!, CreateEventActivity::class.java)
+        }
+
+        manageEventsRefreshLayout.isRefreshing = true
+        manageEventsRefreshLayout.onRefresh {
+            mViewModel.fetchMyEvents()
         }
     }
 }

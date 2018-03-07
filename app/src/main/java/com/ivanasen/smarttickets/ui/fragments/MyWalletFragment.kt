@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.fragment_my_wallet.*
 import net.glxn.qrgen.android.QRCode
 import org.jetbrains.anko.imageBitmap
 import org.jetbrains.anko.sdk25.coroutines.onClick
+import org.jetbrains.anko.support.v4.onRefresh
 import org.web3j.crypto.WalletUtils
 import java.text.DecimalFormat
 
@@ -67,6 +68,11 @@ class MyWalletFragment : Fragment() {
         receiveEtherBtn.onClick { showAddressDialog() }
 
         sendEtherBtn.onClick { showSendEtherDialog() }
+
+        walletRefreshLayout.isRefreshing = true
+        walletRefreshLayout.onRefresh {
+            mViewModel.fetchBalance()
+        }
     }
 
     private fun showSendEtherDialog() {
@@ -99,6 +105,7 @@ class MyWalletFragment : Fragment() {
         mViewModel.etherBalance.observe(this, Observer {
             val df = DecimalFormat(getString(R.string.eth_format))
             etherBalanceView.text = df.format(it)
+            walletRefreshLayout.isRefreshing = false
         })
 
         mViewModel.usdBalance.observe(this, Observer {

@@ -30,7 +30,7 @@ internal class TicketCreationTypeAdapter(val context: Context,
         return ViewHolder(v)
     }
 
-    override fun getItemCount(): Int = data.value!!.size
+    override fun getItemCount(): Int = if (data.value != null) data.value!!.size else 0
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.ticketPriceTextView.text =

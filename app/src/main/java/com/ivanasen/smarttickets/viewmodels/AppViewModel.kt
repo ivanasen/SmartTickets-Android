@@ -10,6 +10,7 @@ import com.ivanasen.smarttickets.db.models.TicketType
 import com.ivanasen.smarttickets.repositories.SmartTicketsRepository
 import org.jetbrains.anko.defaultSharedPreferences
 import java.io.File
+import java.math.BigDecimal
 
 
 class AppViewModel(application: Application) : AndroidViewModel(application) {
@@ -22,10 +23,8 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
 
     var contractExists = mRepository.contractDeployed
 
-    val etherBalance: LiveData<Double> = mRepository.etherBalance
+    val etherBalance: LiveData<BigDecimal> = mRepository.etherBalance
     val usdBalance: LiveData<Double> = mRepository.usdBalance
-
-    val events: LiveData<MutableList<Event>> = mRepository.events
 
 //    public fun fetchEvents(): LiveData<List<IPFSEvent>> {
 //
@@ -71,8 +70,8 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    fun fetchEvents() {
-        mRepository.fetchEvents()
+    fun fetchEvents(): LiveData<MutableList<Event>> {
+        return mRepository.fetchEvents()
     }
 
     fun fetchEvent(eventId: Long): LiveData<Event> {
@@ -83,7 +82,16 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         return mRepository.fetchTicketTypesForEvent(eventId)
     }
 
-    val attemptBuyTicket: (ticketType: TicketType) -> Unit = {
 
+    fun attemptToBuyTicket(ticketType: TicketType) {
+        mRepository.buyTicket(ticketType)
+    }
+
+    fun fetchBalance() {
+        mRepository.fetchBalance()
+    }
+
+    fun fetchMyEvents(): LiveData<MutableList<Event>> {
+        return mRepository.fetchEvents()
     }
 }
