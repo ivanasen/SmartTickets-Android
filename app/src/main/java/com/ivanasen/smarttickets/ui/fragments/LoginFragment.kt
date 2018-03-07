@@ -16,6 +16,7 @@ import android.widget.Toast
 
 import com.ivanasen.smarttickets.R
 import com.ivanasen.smarttickets.ui.activities.MainActivity
+import com.ivanasen.smarttickets.ui.activities.WelcomeActivity
 import com.ivanasen.smarttickets.viewmodels.WelcomeActivityViewModel
 import com.ivanasen.smarttickets.util.Utility.Companion.launchActivity
 import kotlinx.android.synthetic.main.fragment_login.*
@@ -74,6 +75,10 @@ class LoginFragment : Fragment() {
                     unlockWalletBtn.isEnabled = true
                 }
             }
+        }
+
+        useOtherWalletBtn.onClick {
+            (activity as WelcomeActivity).loadWalletCreationScreen()
         }
 
         unlockWalletBtn.onClick {

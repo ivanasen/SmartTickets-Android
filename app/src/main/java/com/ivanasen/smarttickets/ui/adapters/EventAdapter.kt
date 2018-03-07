@@ -54,7 +54,7 @@ internal class EventAdapter(val activity: Activity, val eventsData: LiveData<Mut
         val eventName = eventsData.value!![position].name
         holder.eventNameView.text = eventName
 
-        val timestamp = eventsData.value!![position].timestamp
+        val timestamp = eventsData.value!![position].timestamp * 1000
         val formatDate = SimpleDateFormat(activity.getString(R.string.date_format))
         holder.eventDateView.text = formatDate.format(timestamp)
 

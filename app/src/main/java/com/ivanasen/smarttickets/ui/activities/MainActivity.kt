@@ -17,6 +17,7 @@ import com.ivanasen.smarttickets.util.Utility.Companion.loadFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import android.view.MenuInflater
 import android.view.View
+import com.afollestad.materialdialogs.MaterialDialog
 
 
 class MainActivity : AppCompatActivity() {

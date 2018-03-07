@@ -62,7 +62,7 @@ class MyWalletFragment : Fragment() {
                 .into(walletIdenticonView)
 
         etherBalanceView.text = String.format("%.5f", mViewModel.etherBalance.value)
-        etherInUsdView.text = String.format("%.2f", mViewModel.usdBalance.value)
+        etherInUsdView.text = String.format("%.2f", mViewModel.usdBalance.value?: 0f)
 
         showQrCodeBtn.onClick { showAddressDialog() }
         receiveEtherBtn.onClick { showAddressDialog() }

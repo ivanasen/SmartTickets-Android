@@ -3,6 +3,7 @@ package com.ivanasen.smarttickets.ui.activities
 import android.arch.lifecycle.ViewModelProviders
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import com.afollestad.materialdialogs.MaterialDialog
 import com.ivanasen.smarttickets.R
 import com.ivanasen.smarttickets.ui.fragments.CreateWalletFragment
 import com.ivanasen.smarttickets.ui.fragments.LoginFragment
@@ -19,7 +20,16 @@ class WelcomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_welcome)
 
+        showInfoDialog()
         observeLiveData()
+    }
+
+    private fun showInfoDialog() {
+        MaterialDialog.Builder(this)
+                .content(getString(R.string.test_message))
+                .title(R.string.test_dialog_title)
+                .positiveText(getString(R.string.OK))
+                .show()
     }
 
     private fun observeLiveData() {
@@ -28,6 +38,10 @@ class WelcomeActivity : AppCompatActivity() {
         } else {
             loadFragment(R.id.fragmentContainer, supportFragmentManager, CreateWalletFragment())
         }
+    }
+
+    fun loadWalletCreationScreen() {
+        loadFragment(R.id.fragmentContainer, supportFragmentManager, CreateWalletFragment())
     }
 
 }

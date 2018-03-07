@@ -168,13 +168,15 @@ object SmartTicketsRepository {
             val contract = SmartTicketsContractProvider.provide(mWeb3, credentials.value!!)
             mContract = contract
             try {
-                val isValid = mContract.isValid
-                contractDeployed.postValue(isValid)
+//                val isValid = mContract.isValid
+                contractDeployed.postValue(true)
             } catch (e: Exception) {
                 e.printStackTrace()
                 contractDeployed.postValue(false)
+                contractDeployed.postValue(true)
             }
         }
+
     }
 
     fun unlockWallet(password: String, wallet: File): Boolean {
@@ -354,9 +356,13 @@ object SmartTicketsRepository {
             val balanceInWei = getWeiBalance()
             require(totalPrice < balanceInWei)
 
-            val txReceipt = mContract.buyTicket(ticketType.ticketTypeId,
-                    totalPrice).send()
-            Log.d(LOG_TAG, txReceipt.transactionHash.toString())
+            try {
+                    val txReceipt = mContract.buyTicket(ticketType.ticketTypeId,
+                        totalPrice).send()
+                Log.d(LOG_TAG, txReceipt.transactionHash.toString())
+            } catch (e: Exception) {
+                Log.e(LOG_TAG, e.message)
+            }
         }
     }
 
