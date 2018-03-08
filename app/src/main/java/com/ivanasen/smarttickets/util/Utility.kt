@@ -5,7 +5,6 @@ import android.content.Intent
 import android.support.annotation.IdRes
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
-import android.app.Activity
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.graphics.Bitmap
@@ -14,9 +13,10 @@ import android.net.Uri
 import android.widget.Toast
 import com.ivanasen.smarttickets.R
 import java.io.File
-import android.support.v4.app.ShareCompat
 import com.ivanasen.smarttickets.BuildConfig
 import java.io.ByteArrayOutputStream
+import android.support.v4.content.ContextCompat.startActivity
+import org.jetbrains.anko.startActivity
 
 
 class Utility {
@@ -24,6 +24,7 @@ class Utility {
         val MIN_PASSWORD_LENGTH = 8
         val ONE_ETHER_IN_WEI = Math.pow(10.0, 18.0).toLong()
         val IPFS_HASH_HEADER = "ipfs-hash"
+        val WALLET_FILE_NAME_KEY = "WalletFileNameKey"
 
         fun loadFragment(@IdRes containerViewId: Int, fragmentManager: FragmentManager, fragment: Fragment) {
             val transaction = fragmentManager.beginTransaction()
@@ -63,6 +64,16 @@ class Utility {
 
             context.startActivity(Intent.createChooser(uploadIntent,
                     context.getString(R.string.backup_wallet_to_text)))
+        }
+
+        fun backupWallet(context: Context, walletFile: File) {
+            // Create the text message with a string
+            val sendIntent = Intent()
+            sendIntent.action = Intent.ACTION_SEND
+            sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(walletFile))
+            sendIntent.type = "text/plain"
+
+            context.startActivity(sendIntent)
         }
 
         fun convertBitmapToByteArray(bitmap: Bitmap): ByteArray? {

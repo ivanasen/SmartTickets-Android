@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/navigation_private_key"
-        android:icon="@drawable/ic_qrcode"
-        android:title="@string/verify_ticket_holder"
-        app:showAsAction="always" />
-</menu>

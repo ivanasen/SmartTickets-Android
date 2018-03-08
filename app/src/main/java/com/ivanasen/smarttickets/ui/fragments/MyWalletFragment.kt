@@ -14,14 +14,18 @@ import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
 import com.ivanasen.smarttickets.R
+import com.ivanasen.smarttickets.util.Utility
+import com.ivanasen.smarttickets.util.Utility.Companion.WALLET_FILE_NAME_KEY
 import com.ivanasen.smarttickets.viewmodels.AppViewModel
 import com.ivanasen.smarttickets.util.Utility.Companion.copyToClipboard
 import kotlinx.android.synthetic.main.fragment_my_wallet.*
 import net.glxn.qrgen.android.QRCode
+import org.jetbrains.anko.defaultSharedPreferences
 import org.jetbrains.anko.imageBitmap
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.support.v4.onRefresh
 import org.web3j.crypto.WalletUtils
+import java.io.File
 import java.text.DecimalFormat
 
 
@@ -49,6 +53,18 @@ class MyWalletFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         inflater?.inflate(R.menu.my_wallet, menu)
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.navigation_backup -> {
+                val walletName = context?.defaultSharedPreferences
+                    ?.getString(WALLET_FILE_NAME_KEY, "")
+                val wallet = File(context?.filesDir, walletName)
+                Utility.backupWallet(context!!, wallet)
+            }
+        }
+        return true
     }
 
     private fun setupViews() {

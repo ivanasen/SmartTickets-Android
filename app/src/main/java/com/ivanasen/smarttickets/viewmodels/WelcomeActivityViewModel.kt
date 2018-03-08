@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModel
 import android.content.Context
 import com.ivanasen.smarttickets.repositories.SmartTicketsRepository
 import com.ivanasen.smarttickets.util.Utility
+import com.ivanasen.smarttickets.util.Utility.Companion.WALLET_FILE_NAME_KEY
 import com.ivanasen.smarttickets.util.Utility.Companion.isValidPassword
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
@@ -18,7 +19,6 @@ import java.io.File
 
 class WelcomeActivityViewModel : ViewModel() {
     private val mRepository = SmartTicketsRepository
-    private val WALLET_FILE_NAME_KEY = "WalletFileNameKey"
 
     var walletExists: MutableLiveData<Boolean> = MutableLiveData()
     var password: MutableLiveData<String> = MutableLiveData()
@@ -34,7 +34,7 @@ class WelcomeActivityViewModel : ViewModel() {
             require(isThereAWallet(appContext))
 
             bg {
-                val walletName = appContext.defaultSharedPreferences.getString(WALLET_FILE_NAME_KEY, "")
+                val walletName = appContext.defaultSharedPreferences.getString(Utility.WALLET_FILE_NAME_KEY, "")
                 val wallet = File(appContext.filesDir, walletName)
                 val wasWalletUnlocked = mRepository.unlockWallet(password, wallet)
 

@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import android.view.MenuInflater
 import android.view.View
 import com.afollestad.materialdialogs.MaterialDialog
+import kotlinx.android.synthetic.main.fragment_my_tickets.*
 
 
 class MainActivity : AppCompatActivity() {
