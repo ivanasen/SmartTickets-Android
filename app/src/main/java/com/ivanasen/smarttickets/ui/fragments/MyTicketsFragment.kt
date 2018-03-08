@@ -31,8 +31,6 @@ class MyTicketsFragment : Fragment() {
         ViewModelProviders.of(this).get(AppViewModel::class.java)
     }
 
-    private val mTickets: MutableLiveData<List<Ticket>> = MutableLiveData()
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         activity?.title = getString(R.string.title_my_tickets)
@@ -46,22 +44,27 @@ class MyTicketsFragment : Fragment() {
     }
 
     private fun populateViews() {
+        ticketsRefreshLayout.setColorSchemeColors(resources.getColor(R.color.appOrangePink),
+                resources.getColor(R.color.appOrange),
+                resources.getColor(R.color.appOrangePink))
         ticketsRefreshLayout.isRefreshing = true
         ticketsRefreshLayout.onRefresh {
-            mViewModel.fetchTickets()
+            mViewModel.refreshTickets()
         }
 
-        val adapter = TicketsAdapter(context, mTickets)
+        val adapter = TicketsAdapter(context, mViewModel.tickets, mViewModel.events)
         ticketsRecyclerView.layoutManager = LinearLayoutManager(context)
         ticketsRecyclerView.adapter = adapter
     }
 
     private fun observeLiveData() {
-        mViewModel.fetchTickets().observe(this, Observer {
+        mViewModel.tickets.observe(this, Observer {
             if ((it ?: emptyList<Ticket>()).isNotEmpty()) {
-                mTickets.postValue(it)
                 emptyViewLayout.visibility = View.GONE
                 ticketsRecyclerView.visibility = View.VISIBLE
+            } else {
+                emptyViewLayout.visibility = View.VISIBLE
+                ticketsRecyclerView.visibility = View.GONE
             }
             ticketsRefreshLayout.isRefreshing = false
         })

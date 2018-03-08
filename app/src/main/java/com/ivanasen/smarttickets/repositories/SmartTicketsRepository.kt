@@ -22,14 +22,12 @@ import org.web3j.crypto.Credentials
 import org.web3j.crypto.WalletUtils
 import org.web3j.protocol.Web3j
 import org.web3j.protocol.core.DefaultBlockParameterName
-import org.web3j.tuples.generated.Tuple5
 import org.web3j.tuples.generated.Tuple6
 import java.io.File
 import java.lang.IllegalArgumentException
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.nio.charset.Charset
-import java.util.*
 
 
 object SmartTicketsRepository {
@@ -48,6 +46,10 @@ object SmartTicketsRepository {
 
     val etherBalance: MutableLiveData<BigDecimal> = MutableLiveData()
     val usdBalance: MutableLiveData<Double> = MutableLiveData()
+
+    val myEvents: MutableLiveData<MutableList<Event>> = MutableLiveData()
+    val events: MutableLiveData<MutableList<Event>> = MutableLiveData()
+    val tickets: MutableLiveData<MutableList<Ticket>> = MutableLiveData()
 
     fun createEvent(name: String,
                     description: String,
@@ -134,21 +136,14 @@ object SmartTicketsRepository {
 
     fun loadInitialAppData() {
         createContractInstance()
-        fetchDataRepeatedly()
     }
 
-    private fun fetchDataRepeatedly() {
-        Timer().scheduleAtFixedRate(object : TimerTask() {
-            override fun run() {
-                fetchData()
-            }
-        }, 0, DATA_FETCH_PERIOD_MILLIS)
-    }
-
-    private fun fetchData() {
-        bg {
-            fetchEtherBalance()
-        }
+    private fun fetchContractData() {
+        fetchTickets()
+        fetchEvents()
+        fetchEtherBalance()
+        fetchUsdBalance()
+        fetchMyEvents()
     }
 
 //    fun getEvent(id: Int): IPFSEvent {
@@ -170,10 +165,11 @@ object SmartTicketsRepository {
             try {
 //                val isValid = mContract.isValid
                 contractDeployed.postValue(true)
+
+                fetchContractData()
             } catch (e: Exception) {
                 e.printStackTrace()
                 contractDeployed.postValue(false)
-                contractDeployed.postValue(true)
             }
         }
 
@@ -203,7 +199,6 @@ object SmartTicketsRepository {
                     .divide(BigDecimal.valueOf(ONE_ETHER_IN_WEI))
             etherBalance.postValue(balanceInEther)
 
-            fetchUsdBalance(balanceInWei)
             Log.d(LOG_TAG, "Fetch ether called!")
         }
     }
@@ -214,10 +209,11 @@ object SmartTicketsRepository {
         return request.balance
     }
 
-    private fun fetchUsdBalance(weiValue: BigInteger) {
+    private fun fetchUsdBalance() {
         bg {
             val oneUsdCentInWei = mContract.oneUSDCentInWei.send()
-            usdBalance.postValue((weiValue / oneUsdCentInWei).toDouble() / 100)
+            usdBalance.postValue((getWeiBalance() / oneUsdCentInWei).toDouble() / 100)
+            Log.d(LOG_TAG, "Fetch usd called!")
         }
     }
 
@@ -240,12 +236,6 @@ object SmartTicketsRepository {
             fetchEtherBalance()
         }
     }
-
-
-//    fun getTicket(): LiveData<TicketType> {
-//
-//    }
-//
 
     fun fetchEvent(id: Long): LiveData<Event> {
         val eventLiveData: MutableLiveData<Event> = MutableLiveData()
@@ -293,8 +283,7 @@ object SmartTicketsRepository {
         throw IllegalArgumentException("Event not found")
     }
 
-    fun fetchEvents(): LiveData<MutableList<Event>> {
-        val events: MutableLiveData<MutableList<Event>> = MutableLiveData()
+    fun fetchEvents() {
         bg {
             val newEvents = mutableListOf<Event>()
             val eventCount = mContract.eventCount.send().toLong()
@@ -303,10 +292,9 @@ object SmartTicketsRepository {
             for (i in 1 until eventCount + 1) {
                 val event = getEvent(i)
                 newEvents.add(event)
+                events.postValue(newEvents)
             }
-            events.postValue(newEvents)
         }
-        return events
     }
 
     private fun getEventFromIPFS(ipfsHash: String): IPFSEvent? {
@@ -315,12 +303,6 @@ object SmartTicketsRepository {
     }
 
 
-    //    uint ticketTypeId,
-//    uint eventId,
-//    uint price,
-//    uint initialSupply,
-//    uint currentSupply,
-//    uint8 refundable
     fun fetchTicketTypesForEvent(eventId: Long): LiveData<MutableList<TicketType>> {
         val ticketTypes: MutableLiveData<MutableList<TicketType>> = MutableLiveData()
         bg {
@@ -342,7 +324,7 @@ object SmartTicketsRepository {
                     BigInteger.valueOf(ticketTypeIndex)).send()
 
             ticketTypeTuple?.let {
-                ticketTypesList.add(convertToTicketType(it))
+                ticketTypesList.add(convertTupleToTicketType(it))
             }
         }
         return ticketTypesList
@@ -357,7 +339,7 @@ object SmartTicketsRepository {
             require(totalPrice < balanceInWei)
 
             try {
-                    val txReceipt = mContract.buyTicket(ticketType.ticketTypeId,
+                val txReceipt = mContract.buyTicket(ticketType.ticketTypeId,
                         totalPrice).send()
                 Log.d(LOG_TAG, txReceipt.transactionHash.toString())
             } catch (e: Exception) {
@@ -372,25 +354,25 @@ object SmartTicketsRepository {
 
     fun fetchTickets(): LiveData<MutableList<Ticket>> {
         val ticketsLiveData = MutableLiveData<MutableList<Ticket>>()
+
         bg {
-            val tickets = mutableListOf<Ticket>()
+            val newTickets = mutableListOf<Ticket>()
             val ownerAddress = credentials.value?.address
-            val balance = mContract.balanceOf(ownerAddress).send()
             val ticketIds = mContract.getTicketsForOwner(ownerAddress).send()
 
             ticketIds.forEach {
                 val id = (it as Uint256).value
                 val ticketTypeTuple = mContract.getTicketTypeForTicket(id).send()
-                val ticketType = convertToTicketType(ticketTypeTuple)
+                val ticketType = convertTupleToTicketType(ticketTypeTuple)
 
-                tickets.add(Ticket(id, ticketType))
+                newTickets.add(Ticket(id, ticketType))
+                tickets.postValue(newTickets)
             }
-            ticketsLiveData.postValue(tickets)
         }
         return ticketsLiveData
     }
 
-    private fun convertToTicketType(ticketTypeTuple: Tuple6<BigInteger,
+    private fun convertTupleToTicketType(ticketTypeTuple: Tuple6<BigInteger,
             BigInteger, BigInteger, BigInteger, BigInteger, BigInteger>?): TicketType {
         val ticketTypeId = ticketTypeTuple?.value1
         val eventId = ticketTypeTuple?.value2
@@ -408,8 +390,7 @@ object SmartTicketsRepository {
                 refundable)
     }
 
-    fun fetchMyEvents(): LiveData<MutableList<Event>> {
-        val eventsLiveData = MutableLiveData<MutableList<Event>>()
+    fun fetchMyEvents() {
         bg {
             val events = mutableListOf<Event>()
             val ownerAddress = credentials.value?.address
@@ -420,25 +401,12 @@ object SmartTicketsRepository {
                 val event = getEvent(id.toLong())
                 events.add(event)
             }
-            eventsLiveData.postValue(events)
+            myEvents.postValue(events)
         }
-        return eventsLiveData
     }
 
-//
-//    fun getTicketsForAddress(): LiveData<List<TicketType>> {
-//
-//    }
-//
-//    fun getEventsForAddress(): LiveData<List<IPFSEvent>> {
-//
-//    }
-//
 //    fun getEventsForArea(lat: Double, long: Double): LiveData<List<IPFSEvent>> {
 //
 //    }
 //
-
-//
-//    fun loadWallet() {}
 }

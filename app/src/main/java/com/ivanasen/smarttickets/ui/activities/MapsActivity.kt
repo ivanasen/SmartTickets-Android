@@ -13,6 +13,10 @@ import com.ivanasen.smarttickets.R
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
+    companion object {
+        val LAT_LONG_EXTRA_KEY = "LatLongExtra"
+    }
+
     private lateinit var mMap: GoogleMap
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,10 +39,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
      */
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
+        val coordinates = intent.extras.get(LAT_LONG_EXTRA_KEY) as LatLng
 
-        // Add a marker in Sydney and move the camera
-        val sydney = LatLng(-34.0, 151.0)
-        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        mMap.addMarker(MarkerOptions().position(coordinates))
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(coordinates))
     }
 }

@@ -53,27 +53,32 @@ class MyWalletFragment : Fragment() {
 
     private fun setupViews() {
         val walletAddress = mViewModel.credentials.value?.address
-        walletAddressView.text = walletAddress
         Log.d(LOG_TAG, walletAddress)
 
-        val url = String.format(getString(R.string.gravatar_url), walletAddress)
-        Glide.with(this)
-                .load(url)
-                .into(walletIdenticonView)
+        walletAddressView.text = walletAddress
 
-        etherBalanceView.text = String.format("%.5f", mViewModel.etherBalance.value)
-        etherInUsdView.text = String.format("%.2f", mViewModel.usdBalance.value?: 0f)
+        val gravatarUrl = getGravatarUrl(walletAddress ?: "")
+        Glide.with(this)
+                .load(gravatarUrl)
+                .into(walletIdenticonView)
 
         showQrCodeBtn.onClick { showAddressDialog() }
         receiveEtherBtn.onClick { showAddressDialog() }
 
         sendEtherBtn.onClick { showSendEtherDialog() }
 
+        walletRefreshLayout.setColorSchemeColors(resources.getColor(R.color.appOrangePink),
+                resources.getColor(R.color.appOrange),
+                resources.getColor(R.color.appOrangePink))
         walletRefreshLayout.isRefreshing = true
         walletRefreshLayout.onRefresh {
             mViewModel.fetchBalance()
         }
     }
+
+    private fun getGravatarUrl(walletAddress: String): String =
+            String.format(getString(R.string.gravatar_url), walletAddress)
+
 
     private fun showSendEtherDialog() {
         context?.let {

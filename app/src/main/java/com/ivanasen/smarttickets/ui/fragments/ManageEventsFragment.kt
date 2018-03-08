@@ -25,8 +25,6 @@ class ManageEventsFragment : Fragment() {
         ViewModelProviders.of(activity as FragmentActivity).get(AppViewModel::class.java)
     }
 
-    private val mEvents: MutableLiveData<MutableList<Event>> = MutableLiveData()
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         activity?.title = getString(R.string.title_manage)
@@ -45,11 +43,13 @@ class ManageEventsFragment : Fragment() {
     }
 
     private fun observeLiveData() {
-        mViewModel.fetchMyEvents().observe(this, Observer {
-            if ((it?: emptyList<Event>()).isNotEmpty()) {
-                mEvents.postValue(it)
+        mViewModel.myEvents.observe(this, Observer {
+            if ((it ?: emptyList<Event>()).isNotEmpty()) {
                 emptyViewLayout.visibility = View.GONE
                 eventsView.visibility = View.VISIBLE
+            } else {
+                emptyViewLayout.visibility = View.VISIBLE
+                eventsView.visibility = View.GONE
             }
             manageEventsRefreshLayout.isRefreshing = false
         })
@@ -60,12 +60,15 @@ class ManageEventsFragment : Fragment() {
             launchActivity(this@ManageEventsFragment.context!!, CreateEventActivity::class.java)
         }
 
+        manageEventsRefreshLayout.setColorSchemeColors(resources.getColor(R.color.appOrangePink),
+                resources.getColor(R.color.appOrange),
+                resources.getColor(R.color.appOrangePink))
         manageEventsRefreshLayout.isRefreshing = true
         manageEventsRefreshLayout.onRefresh {
             mViewModel.fetchMyEvents()
         }
 
         eventsView.layoutManager = LinearLayoutManager(context)
-        eventsView.adapter = EventAdapter(activity!!, mEvents)
+        eventsView.adapter = EventAdapter(activity!!, mViewModel.myEvents)
     }
 }

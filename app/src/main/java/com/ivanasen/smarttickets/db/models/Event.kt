@@ -1,5 +1,7 @@
 package com.ivanasen.smarttickets.db.models
 
+import android.os.Parcel
+import android.os.Parcelable
 import com.google.android.gms.maps.model.LatLng
 
 data class Event(val eventId: Long,

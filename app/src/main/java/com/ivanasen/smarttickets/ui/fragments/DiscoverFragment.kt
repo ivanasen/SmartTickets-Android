@@ -30,7 +30,6 @@ class DiscoverFragment : Fragment() {
         ViewModelProviders.of(this).get(AppViewModel::class.java)
     }
 
-    private val mEvents: MutableLiveData<MutableList<Event>> = MutableLiveData()
     private lateinit var mAdapter: EventAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -56,28 +55,30 @@ class DiscoverFragment : Fragment() {
     }
 
     private fun observeLiveData() {
-        mViewModel.fetchEvents().observe(this, Observer {
-            if ((it?: emptyList<Event>()).isNotEmpty()) {
-                mEvents.postValue(it)
+        mViewModel.events.observe(this, Observer {
+            if ((it ?: emptyList<Event>()).isNotEmpty()) {
                 emptyViewLayout.visibility = View.GONE
                 eventsView.visibility = View.VISIBLE
+            } else {
+                emptyViewLayout.visibility = View.VISIBLE
+                eventsView.visibility = View.GONE
             }
             eventRefreshLayout.isRefreshing = false
         })
     }
 
     private fun setupViews() {
-        mAdapter = EventAdapter(activity!!, mEvents)
+        mAdapter = EventAdapter(activity!!, mViewModel.events)
         eventsView.layoutManager = LinearLayoutManager(context)
         eventsView.adapter = mAdapter
 
+        eventRefreshLayout.setColorSchemeColors(resources.getColor(R.color.appOrangePink),
+                resources.getColor(R.color.appOrange),
+                resources.getColor(R.color.appOrangePink))
+
         eventRefreshLayout.isRefreshing = true
         eventRefreshLayout.onRefresh {
-            Log.i(LOG_TAG, "onRefresh called from SwipeRefreshLayout")
-
-            // This method performs the actual data-refresh operation.
-            // The method calls setRefreshing(false) when it's finished.
-            mViewModel.fetchEvents()
+            mViewModel.refreshEvents()
         }
     }
 }

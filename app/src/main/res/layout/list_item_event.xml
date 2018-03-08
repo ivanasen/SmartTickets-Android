@@ -22,12 +22,12 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <ImageView
+            <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/eventImageView"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/event_list_item_image_height"
-                android:background="@color/colorPrimary"
-                android:transitionName="@string/event_transition" />
+                android:transitionName="@string/event_transition"
+                app:riv_corner_radius="6dp" />
 
             <TextView
                 android:id="@+id/eventNameView"
@@ -55,17 +55,6 @@
                     android:drawableStart="@drawable/ic_date_range_black_24dp"
                     android:gravity="center"
                     android:text="From 30 JUL" />
-
-                <TextView
-                    android:id="@+id/eventTimeView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_margin="@dimen/small_margin"
-                    android:drawablePadding="4dp"
-                    android:drawableStart="@drawable/ic_access_time_black_24dp"
-                    android:gravity="center"
-                    android:text="17:00 h" />
 
                 <TextView
                     android:id="@+id/eventTicketPriceView"

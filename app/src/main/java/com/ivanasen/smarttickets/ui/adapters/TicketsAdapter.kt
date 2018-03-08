@@ -13,14 +13,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.ivanasen.smarttickets.BuildConfig
 import com.ivanasen.smarttickets.R
+import com.ivanasen.smarttickets.db.models.Event
 import com.ivanasen.smarttickets.db.models.Ticket
-import com.ivanasen.smarttickets.repositories.SmartTicketsRepository
-import org.w3c.dom.Text
+import com.ivanasen.smarttickets.util.Utility
 import java.text.SimpleDateFormat
 
-internal class TicketsAdapter(val context: Context?, val tickets: LiveData<List<Ticket>>)
+internal class TicketsAdapter(val context: Context?, private val tickets: LiveData<MutableList<Ticket>>,
+                              private val events: LiveData<MutableList<Event>>)
     : RecyclerView.Adapter<TicketsAdapter.ViewHolder>() {
 
     init {
@@ -42,38 +42,31 @@ internal class TicketsAdapter(val context: Context?, val tickets: LiveData<List<
         if (tickets.value == null) return
 
         val ticket = tickets.value!![position]
-        val ticketId = ticket.ticketId
-        val eventId = ticket.ticketType.eventId
+        val eventId = ticket.ticketType.eventId.toLong()
+        val event: Event = events.value?.filter { it.eventId == eventId }!![0]
 
-        SmartTicketsRepository.fetchEvent(eventId.toLong())
-                .observe(context as LifecycleOwner, Observer {
-                    it?.let {
-                        val imageUrl = "${BuildConfig.IPFS_GATEWAY_URL}/ipfs/${it.images[0]}"
-                        val eventName = it.name
-                        val formatDate = SimpleDateFormat(context.getString(R.string.date_format))
-                        val eventTimestamp = it.timestamp
-                        val eventDate = formatDate.format(eventTimestamp)
-                        val location = it.locationAddress
+        val imageUrl = Utility.getIpfsImageUrl(event.images[0])
+        val eventName = event.name
+        val formatDate = SimpleDateFormat(context?.getString(R.string.date_format))
+        val eventTimestamp = event.timestamp
+        val eventDate = formatDate.format(eventTimestamp)
+        val location = event.locationName
 
-                        Glide.with(context)
-                                .load(imageUrl)
-                                .apply(RequestOptions()
-                                        .centerCrop())
-                                .into(holder.eventImageView)
-                        holder.eventNameView.text = eventName
-                        holder.eventLocationView.text = location
-                        holder.eventDateView.text = eventDate
-                    }
-                })
-
-        val ticketPrice = ticket.ticketType.priceInUSDCents
-
+        Glide.with(context!!)
+                .load(imageUrl)
+                .apply(RequestOptions()
+                        .centerCrop())
+                .into(holder.eventImageView)
+        holder.eventNameView.text = eventName
+        holder.eventLocationView.text = location
+        holder.eventDateView.text = eventDate
     }
 
+
     class ViewHolder(var view: View) : RecyclerView.ViewHolder(view) {
-        val eventImageView = view.findViewById<ImageView>(R.id.eventImageView)
-        val eventNameView = view.findViewById<TextView>(R.id.eventNameView)
-        val eventDateView = view.findViewById<TextView>(R.id.ticketEventDate)
-        val eventLocationView = view.findViewById<TextView>(R.id.ticketEventLocation)
+        val eventImageView: ImageView = view.findViewById(R.id.eventImageView)
+        val eventNameView: TextView = view.findViewById(R.id.eventNameView)
+        val eventDateView: TextView = view.findViewById(R.id.ticketEventDate)
+        val eventLocationView: TextView = view.findViewById(R.id.ticketEventLocation)
     }
 }

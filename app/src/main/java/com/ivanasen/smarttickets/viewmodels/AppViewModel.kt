@@ -3,6 +3,7 @@ package com.ivanasen.smarttickets.viewmodels
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.Observer
 import android.content.Context
 import com.google.android.gms.location.places.Place
 import com.ivanasen.smarttickets.db.models.Event
@@ -27,7 +28,11 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
     val etherBalance: LiveData<BigDecimal> = mRepository.etherBalance
     val usdBalance: LiveData<Double> = mRepository.usdBalance
 
-//    public fun fetchEvents(): LiveData<List<IPFSEvent>> {
+    val myEvents: LiveData<MutableList<Event>> = mRepository.myEvents
+    val events: LiveData<MutableList<Event>> = mRepository.events
+    val tickets: LiveData<MutableList<Ticket>> = mRepository.tickets
+
+//    public fun refreshEvents(): LiveData<List<IPFSEvent>> {
 //
 //    }
 //
@@ -71,8 +76,8 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    fun fetchEvents(): LiveData<MutableList<Event>> {
-        return mRepository.fetchEvents()
+    fun refreshEvents() {
+        mRepository.fetchEvents()
     }
 
     fun fetchEvent(eventId: Long): LiveData<Event> {
@@ -83,7 +88,6 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         return mRepository.fetchTicketTypesForEvent(eventId)
     }
 
-
     fun attemptToBuyTicket(ticketType: TicketType) {
         mRepository.buyTicket(ticketType)
     }
@@ -92,11 +96,15 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         mRepository.fetchBalance()
     }
 
-    fun fetchMyEvents(): LiveData<MutableList<Event>> {
-        return mRepository.fetchMyEvents()
+    fun fetchMyEvents() {
+        mRepository.fetchMyEvents()
     }
 
-    fun fetchTickets(): LiveData<MutableList<Ticket>> {
+    fun refreshTickets(): LiveData<MutableList<Ticket>> {
         return mRepository.fetchTickets()
+    }
+
+    fun loadInitialAppData() {
+        mRepository.loadInitialAppData()
     }
 }

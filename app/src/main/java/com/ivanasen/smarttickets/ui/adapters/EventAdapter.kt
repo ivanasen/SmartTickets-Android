@@ -21,6 +21,8 @@ import java.text.SimpleDateFormat
 import android.support.v4.app.ActivityOptionsCompat
 import android.content.Intent
 import com.ivanasen.smarttickets.ui.activities.DiscoverEventDetailActivity
+import com.ivanasen.smarttickets.util.Utility
+import java.text.DateFormat
 
 
 internal class EventAdapter(val activity: Activity, val eventsData: LiveData<MutableList<Event>>)
@@ -47,27 +49,22 @@ internal class EventAdapter(val activity: Activity, val eventsData: LiveData<Mut
     @SuppressLint("SimpleDateFormat")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if (eventsData.value == null) return
-        val eventId = eventsData.value!![position].eventId
-
-        holder.eventLocation.text = eventsData.value!![position].locationAddress
 
         val eventName = eventsData.value!![position].name
-        holder.eventNameView.text = eventName
-
+        val eventId = eventsData.value!![position].eventId
+        val location = eventsData.value!![position].locationAddress
         val timestamp = eventsData.value!![position].timestamp * 1000
-        val formatDate = SimpleDateFormat(activity.getString(R.string.date_format))
-        holder.eventDateView.text = formatDate.format(timestamp)
-
-        val formatTime = SimpleDateFormat(activity.getString(R.string.time_format))
-        holder.eventTimeView.text = formatTime.format(timestamp)
-
+        val formattedDate = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT)
+                .format(timestamp)
         val cheapestTicket = eventsData.value!![position].tickets.minBy { it.priceInUSDCents }
         holder.eventTicketView.text = String.format(activity.getString(R.string.starting_from_text),
                 (cheapestTicket?.priceInUSDCents!!.toDouble() / 100))
-
         val imageHash = eventsData.value!![position].images[0]
-        val imageUrl = "${BuildConfig.IPFS_GATEWAY_URL}/ipfs/$imageHash"
+        val imageUrl = Utility.getIpfsImageUrl(imageHash)
 
+        holder.eventNameView.text = eventName
+        holder.eventLocation.text = location
+        holder.eventDateView.text = formattedDate
         Glide.with(activity)
                 .load(imageUrl)
                 .apply(RequestOptions()
@@ -76,8 +73,6 @@ internal class EventAdapter(val activity: Activity, val eventsData: LiveData<Mut
 
         holder.view.onClick {
             val intent = Intent(this@EventAdapter.activity, DiscoverEventDetailActivity::class.java)
-            intent.putExtra(DiscoverEventDetailActivity.EXTRA_EVENT_IMAGE, imageUrl)
-            intent.putExtra(DiscoverEventDetailActivity.EXTRA_EVENT_NAME, eventName)
             intent.putExtra(DiscoverEventDetailActivity.EXTRA_EVENT_ID, eventId)
 
             val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
@@ -89,12 +84,11 @@ internal class EventAdapter(val activity: Activity, val eventsData: LiveData<Mut
 
 
     class ViewHolder(var view: View) : RecyclerView.ViewHolder(view) {
-        val eventImageView = view.findViewById<ImageView>(R.id.eventImageView)
-        val eventNameView = view.findViewById<TextView>(R.id.eventNameView)
-        val eventDateView = view.findViewById<TextView>(R.id.eventDateView)
-        val eventTimeView = view.findViewById<TextView>(R.id.eventTimeView)
-        val eventTicketView = view.findViewById<TextView>(R.id.eventTicketPriceView)
-        val eventLocation = view.findViewById<TextView>(R.id.eventLocationView)
+        val eventImageView: ImageView = view.findViewById(R.id.eventImageView)
+        val eventNameView: TextView = view.findViewById(R.id.eventNameView)
+        val eventDateView: TextView = view.findViewById(R.id.eventDateView)
+        val eventTicketView: TextView = view.findViewById(R.id.eventTicketPriceView)
+        val eventLocation: TextView = view.findViewById(R.id.eventLocationView)
     }
 
 }

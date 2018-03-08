@@ -16,19 +16,12 @@ import com.ivanasen.smarttickets.repositories.SmartTicketsRepository
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import java.text.DecimalFormat
 
-internal class TicketTypeAdapter(val context: Context, val data: LiveData<MutableList<TicketType>>,
+internal class TicketTypeAdapter(val context: Context, val data: List<TicketType>,
                                  val onTicketBuyListener: (ticketType: TicketType) -> Unit)
     : RecyclerView.Adapter<TicketTypeAdapter.ViewHolder>() {
 
     private val ethFormat = DecimalFormat(context.getString(R.string.eth_format))
     private val usdFormat = DecimalFormat(context.getString(R.string.usd_format))
-
-    init {
-        data.observe(context as LifecycleOwner, Observer {
-            notifyDataSetChanged()
-        })
-    }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.list_item_ticket_type,
@@ -36,11 +29,10 @@ internal class TicketTypeAdapter(val context: Context, val data: LiveData<Mutabl
         return ViewHolder(v)
     }
 
-    override fun getItemCount(): Int = if (data.value != null) data.value!!.size else 0
+    override fun getItemCount(): Int = data.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if (data.value == null) return
-        val ticketType = data.value!![position]
+        val ticketType = data[position]
 
         val ticketPriceInUsd = ticketType.priceInUSDCents
         val remainingTickets = ticketType.currentSupply

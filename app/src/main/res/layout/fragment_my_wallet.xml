@@ -17,24 +17,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/default_margin"
-            android:orientation="horizontal">
+            android:gravity="center"
+            android:orientation="vertical">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/walletIdenticonView"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
-                android:layout_marginEnd="26dp"
-                app:civ_border_width="0dp" />
+                app:civ_border_width="0dp"
+                android:layout_marginBottom="@dimen/default_margin"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/available_balance_text"
+                    android:text="@string/wallet_balance_text"
                     android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                     android:textColor="@android:color/secondary_text_light_nodisable" />
 

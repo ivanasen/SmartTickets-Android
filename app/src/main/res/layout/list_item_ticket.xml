@@ -24,16 +24,19 @@
             android:layout_height="wrap_content"
             android:clipChildren="false"
             android:clipToPadding="false"
-            android:orientation="horizontal"
-            android:padding="@dimen/default_padding">
+            android:orientation="horizontal">
 
-            <com.makeramen.roundedimageview.RoundedImageView
+            <ImageView
                 android:id="@+id/eventImageView"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:elevation="4dp"
-                android:src="@drawable/gradient_background"
-                app:riv_corner_radius="8dp" />
+                android:layout_width="130dp"
+                android:layout_height="130dp"
+                android:src="@drawable/gradient_background" />
+
+            <View
+                android:layout_width="2dp"
+                android:layout_height="130dp"
+                android:layout_marginStart="@dimen/small_margin"
+                android:background="@drawable/gradient_background" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -42,14 +45,16 @@
                 android:layout_marginStart="@dimen/default_margin"
                 android:clipChildren="false"
                 android:clipToPadding="false"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/default_padding"
+                android:paddingTop="@dimen/default_padding">
 
                 <TextView
                     android:id="@+id/eventNameView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/small_margin"
-                    android:text="Man Utd vs. Chelsea"
+                    android:layout_weight="1"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     android:textColor="@color/dark_grey" />
 
@@ -58,14 +63,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/small_margin"
-                    android:text="9 March, 2018, 19:00" />
+                    android:layout_weight="1" />
 
                 <TextView
                     android:id="@+id/ticketEventLocation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:drawableStart="@drawable/ic_location_on_black_24dp"
-                    android:text="Old Trafford, London, England" />
+                    android:ellipsize="end" />
+
             </LinearLayout>
 
         </LinearLayout>

@@ -15,6 +15,7 @@ import android.widget.Toast
 import com.ivanasen.smarttickets.R
 import java.io.File
 import android.support.v4.app.ShareCompat
+import com.ivanasen.smarttickets.BuildConfig
 import java.io.ByteArrayOutputStream
 
 
@@ -72,6 +73,11 @@ class Utility {
 
         fun convertByteArrayToBitmap(byteArray: ByteArray): Bitmap? =
                 BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
+
+        fun getIpfsImageUrl(imageHash: String): String =
+                "${BuildConfig.IPFS_GATEWAY_URL}/ipfs/$imageHash"
+
+//        enum
     }
 
 }
