@@ -20,7 +20,33 @@
             android:clipChildren="false"
             android:clipToPadding="false"
             android:padding="@dimen/default_padding"
+            android:visibility="gone"
             tools:listitem="@layout/list_item_ticket" />
+
+        <LinearLayout
+            android:id="@+id/emptyViewLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_ticket_alt"
+                android:tint="@android:color/secondary_text_light_nodisable" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/it_s_empty_here_text"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textColor="@android:color/secondary_text_light_nodisable" />
+        </LinearLayout>
+
 
     </FrameLayout>
 

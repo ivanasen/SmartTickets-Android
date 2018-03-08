@@ -58,7 +58,11 @@ class MyTicketsFragment : Fragment() {
 
     private fun observeLiveData() {
         mViewModel.fetchTickets().observe(this, Observer {
-            mTickets.postValue(it)
+            if ((it ?: emptyList<Ticket>()).isNotEmpty()) {
+                mTickets.postValue(it)
+                emptyViewLayout.visibility = View.GONE
+                ticketsRecyclerView.visibility = View.VISIBLE
+            }
             ticketsRefreshLayout.isRefreshing = false
         })
     }

@@ -10,7 +10,7 @@ import org.web3j.protocol.core.DefaultBlockParameterName
 object SmartTicketsContractProvider {
 //    private const val debugAddress: String = "0x345ca3e014aaf5dca488057592ee47305d9b3e10"
     private const val ropstenAddress: String = "0x073be062A001f0A97982E531f83EFDc0482779C6"
-    private const val debugAddress: String = "0xCBc2f1D573bcA98E96778C384A4772b8d6e6f450"
+    private const val debugAddress: String = "0x3145e05b05b08b9720110b17e10017fba52cfeb6"
 
     fun provide(web3: Web3j, credentials: Credentials): SmartTickets {
         val gasPrice = web3.ethGasPrice().sendAsync().get().gasPrice

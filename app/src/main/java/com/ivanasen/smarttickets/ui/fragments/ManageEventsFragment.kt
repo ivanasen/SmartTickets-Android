@@ -46,8 +46,12 @@ class ManageEventsFragment : Fragment() {
 
     private fun observeLiveData() {
         mViewModel.fetchMyEvents().observe(this, Observer {
+            if ((it?: emptyList<Event>()).isNotEmpty()) {
+                mEvents.postValue(it)
+                emptyViewLayout.visibility = View.GONE
+                eventsView.visibility = View.VISIBLE
+            }
             manageEventsRefreshLayout.isRefreshing = false
-            mEvents.postValue(it)
         })
     }
 

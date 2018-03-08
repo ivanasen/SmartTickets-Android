@@ -87,4 +87,5 @@
     <string name="test_message">Since Smart Tickets is still unstable and in active development we\'re using the Ropsten Test Network of Ethereum. You can obtain test Ether from a faucet. Please don\'t send any real Ether to this wallet.</string>
     <string name="OK">Okay</string>
     <string name="test_dialog_title">Important Notice</string>
+    <string name="it_s_empty_here_text">It\'s empty here :(</string>
 </resources>

@@ -57,7 +57,11 @@ class DiscoverFragment : Fragment() {
 
     private fun observeLiveData() {
         mViewModel.fetchEvents().observe(this, Observer {
-            mEvents.postValue(it)
+            if ((it?: emptyList<Event>()).isNotEmpty()) {
+                mEvents.postValue(it)
+                emptyViewLayout.visibility = View.GONE
+                eventsView.visibility = View.VISIBLE
+            }
             eventRefreshLayout.isRefreshing = false
         })
     }

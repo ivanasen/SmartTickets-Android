@@ -105,7 +105,7 @@
             <View
                 android:layout_width="3dp"
                 android:layout_height="180dp"
-                android:layout_marginStart="@dimen/big_margin"
+                android:layout_marginStart="@dimen/small_margin"
                 android:background="@drawable/gradient_background" />
 
             <Button

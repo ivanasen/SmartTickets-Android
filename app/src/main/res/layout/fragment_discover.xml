@@ -11,14 +11,46 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/eventsView"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:paddingBottom="60dp"
-            android:paddingTop="@dimen/small_padding"
-            tools:listitem="@layout/list_item_event" />
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/eventsView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingBottom="60dp"
+                android:paddingTop="@dimen/small_padding"
+                android:visibility="gone"
+                tools:listitem="@layout/list_item_event" />
+
+            <LinearLayout
+                android:id="@+id/emptyViewLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_compass"
+                    android:tint="@android:color/secondary_text_light_nodisable" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/it_s_empty_here_text"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textColor="@android:color/secondary_text_light_nodisable" />
+            </LinearLayout>
+
+        </FrameLayout>
+
 
     </android.support.v4.widget.SwipeRefreshLayout>
 

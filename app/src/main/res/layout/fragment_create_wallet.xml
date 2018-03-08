@@ -22,7 +22,7 @@
         android:layout_centerHorizontal="true"
         android:animateLayoutChanges="true"
         android:clipToPadding="false"
-        android:padding="16dp">
+        android:padding="8dp">
 
         <TextView
             android:id="@+id/walletCreationMsgView"
