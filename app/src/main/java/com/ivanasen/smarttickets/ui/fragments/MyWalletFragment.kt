@@ -11,6 +11,7 @@ import android.view.*
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import com.afollestad.materialdialogs.DialogAction
 import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
 import com.ivanasen.smarttickets.R
@@ -59,12 +60,32 @@ class MyWalletFragment : Fragment() {
         when (item?.itemId) {
             R.id.navigation_backup -> {
                 val walletName = context?.defaultSharedPreferences
-                    ?.getString(WALLET_FILE_NAME_KEY, "")
+                        ?.getString(WALLET_FILE_NAME_KEY, "")
                 val wallet = File(context?.filesDir, walletName)
                 Utility.backupWallet(context!!, wallet)
             }
+            R.id.navigation_private_key -> {
+                showPrivateKeyDialog()
+            }
         }
         return true
+    }
+
+    private fun showPrivateKeyDialog() {
+        MaterialDialog.Builder(context!!)
+                .title("")
+                .input(getString(R.string.password_input_hint),
+                        "",
+                        false,
+                        { materialDialog: MaterialDialog, charSequence: CharSequence ->
+//                            if (mViewModel)
+                        })
+                .positiveText("Show")
+                .onPositive({ materialDialog: MaterialDialog, dialogAction: DialogAction ->
+                    materialDialog.setContent(
+                            mViewModel.credentials.value?.ecKeyPair?.privateKey?.toString(16)
+                    )
+                })
     }
 
     private fun setupViews() {

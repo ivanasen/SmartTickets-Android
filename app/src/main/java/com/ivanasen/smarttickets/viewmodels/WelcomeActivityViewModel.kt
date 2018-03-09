@@ -83,6 +83,6 @@ class WelcomeActivityViewModel : ViewModel() {
     }
 
     fun backupWallet(context: Context) {
-        Utility.launchFileShareIntent(context, walletFile)
+        Utility.backupWallet(context, walletFile)
     }
 }

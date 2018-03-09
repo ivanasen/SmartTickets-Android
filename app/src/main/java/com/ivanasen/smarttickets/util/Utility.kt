@@ -17,6 +17,8 @@ import com.ivanasen.smarttickets.BuildConfig
 import java.io.ByteArrayOutputStream
 import android.support.v4.content.ContextCompat.startActivity
 import org.jetbrains.anko.startActivity
+import com.ivanasen.smarttickets.ui.activities.MainActivity
+import android.support.v4.content.FileProvider
 
 
 class Utility {
@@ -25,6 +27,8 @@ class Utility {
         val ONE_ETHER_IN_WEI = Math.pow(10.0, 18.0).toLong()
         val IPFS_HASH_HEADER = "ipfs-hash"
         val WALLET_FILE_NAME_KEY = "WalletFileNameKey"
+
+        private val PROVIDER_AUTHORITY = "${BuildConfig.APPLICATION_ID}.provider"
 
         fun loadFragment(@IdRes containerViewId: Int, fragmentManager: FragmentManager, fragment: Fragment) {
             val transaction = fragmentManager.beginTransaction()
@@ -53,27 +57,17 @@ class Utility {
                     .show()
         }
 
-        fun launchFileShareIntent(context: Context, file: File) {
-            val uri = "file://" + file.path
-            val uploadUri = Uri.parse(uri)
-
-            val uploadIntent = Intent()
-                    .setAction(Intent.ACTION_SEND)
-                    .setType("application/txt")
-                    .putExtra(Intent.EXTRA_STREAM, uploadUri)
-
-            context.startActivity(Intent.createChooser(uploadIntent,
-                    context.getString(R.string.backup_wallet_to_text)))
-        }
-
         fun backupWallet(context: Context, walletFile: File) {
-            // Create the text message with a string
             val sendIntent = Intent()
             sendIntent.action = Intent.ACTION_SEND
-            sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(walletFile))
+            require(walletFile.exists())
+
+            val walletUri = FileProvider.getUriForFile(context, PROVIDER_AUTHORITY, walletFile)
+            sendIntent.putExtra(Intent.EXTRA_STREAM, walletUri)
             sendIntent.type = "text/plain"
 
-            context.startActivity(sendIntent)
+            context.startActivity(Intent.createChooser(sendIntent,
+                    context.getString(R.string.backup_wallet_to_text)))
         }
 
         fun convertBitmapToByteArray(bitmap: Bitmap): ByteArray? {
