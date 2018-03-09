@@ -13,4 +13,5 @@
     <dimen name="gallery_item_size">50dp</dimen>
     <dimen name="small_padding">6dp</dimen>
     <dimen name="back_btn_size">42dp</dimen>
+    <dimen name="bottom_navigation_height_with_padding">70dp</dimen>
 </resources>

@@ -58,9 +58,12 @@ object SmartTicketsRepository {
                     locationName: String,
                     locationAddress: String,
                     imagePaths: List<String>,
-                    tickets: List<TicketTypeIpfs>) {
+                    tickets: List<TicketTypeIpfs>): LiveData<Utility.Companion.TransactionStatus> {
+        val txStatusLiveData: MutableLiveData<Utility.Companion.TransactionStatus> =
+                MutableLiveData()
         bg {
             try {
+                txStatusLiveData.postValue(Utility.Companion.TransactionStatus.PENDING)
                 val imageHashes = uploadImages(imagePaths)
 
                 val event = IPFSEvent(name, description, timestamp, latLong, locationName,
@@ -77,13 +80,16 @@ object SmartTicketsRepository {
 
                 val eventTxReceipt = mContract.createEvent(BigInteger.valueOf(timestamp),
                         eventMetadataHash, ticketPrices, ticketSupplies, ticketRefundables).send()
+                txStatusLiveData.postValue(Utility.Companion.TransactionStatus.COMPLETE)
                 Log.d(LOG_TAG, eventTxReceipt.transactionHash)
 
             } catch (e: Exception) {
                 Log.e(LOG_TAG, e.message)
+                txStatusLiveData.postValue(Utility.Companion.TransactionStatus.ERROR)
             }
 
         }
+        return txStatusLiveData
     }
 
     private fun addTicketTypeForEvent(eventId: BigInteger, ticketType: TicketType) {
@@ -135,14 +141,13 @@ object SmartTicketsRepository {
 //    }
 
     fun loadInitialAppData() {
-        createContractInstance()
+        initialiseContract()
     }
 
     private fun fetchContractData() {
         fetchTickets()
         fetchEvents()
-        fetchEtherBalance()
-        fetchUsdBalance()
+        fetchBalance()
         fetchMyEvents()
     }
 
@@ -158,13 +163,13 @@ object SmartTicketsRepository {
 //    }
 
 
-    private fun createContractInstance() {
+    private fun initialiseContract() {
         bg {
             val contract = SmartTicketsContractProvider.provide(mWeb3, credentials.value!!)
             mContract = contract
             try {
-//                val isValid = mContract.isValid
-                contractDeployed.postValue(true)
+                val isValid = mContract.isValid
+                contractDeployed.postValue(isValid)
 
                 fetchContractData()
             } catch (e: Exception) {
@@ -233,7 +238,7 @@ object SmartTicketsRepository {
             val txReceipt = WalletUtil.sendEther(credentials.value!!, etherAmount, address)
             Log.d(LOG_TAG, "Tx: $txReceipt")
 
-            fetchEtherBalance()
+            fetchBalance()
         }
     }
 
@@ -330,8 +335,12 @@ object SmartTicketsRepository {
         return ticketTypesList
     }
 
-    fun buyTicket(ticketType: TicketType) {
+    fun buyTicket(ticketType: TicketType): LiveData<Utility.Companion.TransactionStatus> {
+        val txStatusLiveData: MutableLiveData<Utility.Companion.TransactionStatus> =
+                MutableLiveData()
+
         bg {
+            txStatusLiveData.postValue(Utility.Companion.TransactionStatus.PENDING)
             val oneUsdCentInWei = mContract.oneUSDCentInWei.send()
             val totalPrice = ticketType.priceInUSDCents * oneUsdCentInWei
 
@@ -342,19 +351,26 @@ object SmartTicketsRepository {
                 val txReceipt = mContract.buyTicket(ticketType.ticketTypeId,
                         totalPrice).send()
                 Log.d(LOG_TAG, txReceipt.transactionHash.toString())
+                txStatusLiveData.postValue(Utility.Companion.TransactionStatus.COMPLETE)
             } catch (e: Exception) {
                 Log.e(LOG_TAG, e.message)
+                Log.d(LOG_TAG, "Balance: " + balanceInWei.toBigDecimal()
+                        .divide(Math.pow(10.0, 18.0).toBigDecimal()).toString())
+                Log.d(LOG_TAG, "Total Price: " + totalPrice.toBigDecimal()
+                        .divide(Math.pow(10.0, 18.0).toBigDecimal()).toString())
+                txStatusLiveData.postValue(Utility.Companion.TransactionStatus.ERROR)
             }
         }
+
+        return txStatusLiveData
     }
 
     fun fetchBalance() {
         fetchEtherBalance()
+        fetchUsdBalance()
     }
 
-    fun fetchTickets(): LiveData<MutableList<Ticket>> {
-        val ticketsLiveData = MutableLiveData<MutableList<Ticket>>()
-
+    fun fetchTickets() {
         bg {
             val newTickets = mutableListOf<Ticket>()
             val ownerAddress = credentials.value?.address
@@ -369,7 +385,6 @@ object SmartTicketsRepository {
                 tickets.postValue(newTickets)
             }
         }
-        return ticketsLiveData
     }
 
     private fun convertTupleToTicketType(ticketTypeTuple: Tuple6<BigInteger,

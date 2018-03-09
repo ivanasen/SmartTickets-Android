@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.*
+import com.afollestad.materialdialogs.MaterialDialog
 import com.ivanasen.smarttickets.R
 import com.ivanasen.smarttickets.db.models.Event
 import com.ivanasen.smarttickets.ui.activities.CreateEventActivity
@@ -34,6 +35,16 @@ class ManageEventsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupViews()
         observeLiveData()
+
+        showTestDialog()
+    }
+
+    private fun showTestDialog() {
+        MaterialDialog.Builder(context!!)
+                .title(getString(R.string.test_dialog_title))
+                .content(getString(R.string.event_creation_test_message))
+                .positiveText(R.string.OK)
+                .show()
     }
 
     private fun observeLiveData() {

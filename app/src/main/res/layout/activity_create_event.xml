@@ -1,245 +1,260 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    android:id="@+id/rootView"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.ivanasen.smarttickets.ui.activities.CreateEventActivity">
+    android:layout_height="match_parent">
 
-    <ScrollView
+    <RelativeLayout
+        android:id="@+id/contentView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        tools:context="com.ivanasen.smarttickets.ui.activities.CreateEventActivity">
 
-        <LinearLayout
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/default_padding">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/AppTheme.OrangeInput">
+
+                    <EditText
+                        android:id="@+id/inputEventName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/event_name_hint"
+                        android:imeOptions="actionNext"
+                        android:inputType="text"
+                        android:maxLines="1" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/default_margin"
+                    android:theme="@style/AppTheme.OrangeInput">
+
+                    <EditText
+                        android:id="@+id/inputEventDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/event_description_hint"
+                        android:imeOptions="actionNext"
+                        android:inputType="textMultiLine" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/default_margin"
+                    android:clipChildren="false"
+                    android:clipToPadding="false">
+
+                    <TextView
+                        android:id="@+id/locationLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:text="@string/location_text" />
+
+                    <TextView
+                        android:id="@+id/pickedPlaceText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/locationLabel"
+                        android:layout_marginBottom="@dimen/default_margin"
+                        android:layout_marginEnd="132dp"
+                        android:text="@string/pick_location_text"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                        android:textColor="@color/dark_grey"
+                        android:textStyle="italic" />
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/pickLocationBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_margin="@dimen/small_margin"
+                        android:background="@drawable/gradient_background"
+                        android:contentDescription="@string/picklocationbtn_content_description"
+                        android:src="@drawable/ic_edit_location_black_24dp"
+                        tools:ignore="RelativeOverlap" />
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/default_margin">
+
+                    <TextView
+                        android:id="@+id/dateLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/date_text" />
+
+                    <TextView
+                        android:id="@+id/eventDateView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/dateLabel"
+                        android:spinnerMode="dialog"
+                        android:text="Thu, Apr 13, 2018"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                        android:textColor="@color/colorPrimary" />
+
+                    <TextView
+                        android:id="@+id/timeLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/big_margin"
+                        android:layout_toEndOf="@id/eventDateView"
+                        android:text="@string/time_text" />
+
+                    <TextView
+                        android:id="@+id/eventTimeView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/timeLabel"
+                        android:layout_marginStart="@dimen/big_margin"
+                        android:layout_toEndOf="@id/eventDateView"
+                        android:text="20:00"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                        android:textColor="@color/colorPrimary" />
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/default_margin">
+
+                    <TextView
+                        android:id="@+id/ticketsLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/small_margin"
+                        android:text="@string/ticket_types_text" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/ticketsRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/ticketsLabel"
+                        tools:listitem="@layout/list_item_ticket_creation" />
+
+                    <ImageButton
+                        android:id="@+id/addTicketTypeBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/ticketsRecyclerView"
+                        android:layout_margin="@dimen/small_margin"
+                        android:background="@drawable/rounded_btn_gradient"
+                        android:padding="@dimen/small_margin"
+                        android:src="@drawable/ic_add_black_24dp"
+                        android:tint="@color/white" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clipChildren="false"
+                    android:clipToPadding="false">
+
+                    <TextView
+                        android:id="@+id/imagesLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/small_margin"
+                        android:text="@string/event_images_text" />
+
+                    <Button
+                        android:id="@+id/selectImagesButton"
+                        style="@style/Base.Widget.AppCompat.Button.Borderless"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/imagesLabel"
+                        android:paddingEnd="@dimen/default_padding"
+                        android:paddingStart="@dimen/default_padding"
+                        android:text="@string/select_images_text" />
+
+                    <com.ivanasen.smarttickets.ui.views.ExpandableHeightGridView
+                        android:id="@+id/eventImagesGridView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/selectImagesButton"
+                        android:layout_marginTop="@dimen/small_margin"
+                        android:columnWidth="100dp"
+                        android:numColumns="auto_fit"
+                        android:paddingBottom="64dp"
+                        tools:listitem="@layout/list_item_image" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+
+        </ScrollView>
+
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/default_padding">
+            android:layout_alignParentBottom="true"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="0dp"
+            app:cardElevation="@dimen/default_elevation">
 
-            <android.support.design.widget.TextInputLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:theme="@style/AppTheme.OrangeInput">
-
-                <EditText
-                    android:id="@+id/inputEventName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/event_name_hint"
-                    android:imeOptions="actionNext"
-                    android:inputType="text"
-                    android:maxLines="1" />
-
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/default_margin"
-                android:theme="@style/AppTheme.OrangeInput">
-
-                <EditText
-                    android:id="@+id/inputEventDescription"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/event_description_hint"
-                    android:imeOptions="actionNext"
-                    android:inputType="textMultiLine" />
-
-            </android.support.design.widget.TextInputLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/default_margin"
-                android:clipChildren="false"
-                android:clipToPadding="false">
-
-                <TextView
-                    android:id="@+id/locationLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:text="@string/location_text" />
-
-                <TextView
-                    android:id="@+id/pickedPlaceText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/locationLabel"
-                    android:layout_marginBottom="@dimen/default_margin"
-                    android:layout_marginEnd="132dp"
-                    android:text="@string/pick_location_text"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                    android:textColor="@color/dark_grey"
-                    android:textStyle="italic" />
-
-                <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/pickLocationBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_margin="@dimen/small_margin"
-                    android:background="@drawable/gradient_background"
-                    android:contentDescription="@string/picklocationbtn_content_description"
-                    android:src="@drawable/ic_edit_location_black_24dp"
-                    tools:ignore="RelativeOverlap" />
-
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/default_margin">
-
-                <TextView
-                    android:id="@+id/dateLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/date_text" />
-
-                <TextView
-                    android:id="@+id/eventDateView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/dateLabel"
-                    android:spinnerMode="dialog"
-                    android:text="Thu, Apr 13, 2018"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                    android:textColor="@color/colorPrimary" />
-
-                <TextView
-                    android:id="@+id/timeLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/big_margin"
-                    android:layout_toEndOf="@id/eventDateView"
-                    android:text="@string/time_text" />
-
-                <TextView
-                    android:id="@+id/eventTimeView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/timeLabel"
-                    android:layout_marginStart="@dimen/big_margin"
-                    android:layout_toEndOf="@id/eventDateView"
-                    android:text="20:00"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                    android:textColor="@color/colorPrimary" />
-
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/default_margin">
-
-                <TextView
-                    android:id="@+id/ticketsLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/small_margin"
-                    android:text="@string/ticket_types_text" />
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/ticketsRecyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/ticketsLabel"
-                    tools:listitem="@layout/list_item_ticket_creation" />
-
-                <ImageButton
-                    android:id="@+id/addTicketTypeBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/ticketsRecyclerView"
-                    android:background="@drawable/rounded_btn_gradient"
-                    android:padding="@dimen/small_margin"
-                    android:layout_margin="@dimen/small_margin"
-                    android:src="@drawable/ic_add_black_24dp"
-                    android:tint="@color/white" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clipChildren="false"
-                android:clipToPadding="false">
-
-                <TextView
-                    android:id="@+id/imagesLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/small_margin"
-                    android:text="@string/event_images_text" />
+                android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/selectImagesButton"
-                    style="@style/Base.Widget.AppCompat.Button.Borderless"
+                    android:id="@+id/cancelCreateEventBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/imagesLabel"
-                    android:paddingEnd="@dimen/default_padding"
-                    android:paddingStart="@dimen/default_padding"
-                    android:text="@string/select_images_text" />
+                    android:layout_margin="@dimen/small_margin"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_btn_gradient"
+                    android:text="@string/cancel_text"
+                    android:textColor="@android:color/white" />
 
-                <com.ivanasen.smarttickets.ui.views.ExpandableHeightGridView
-                    android:id="@+id/eventImagesGridView"
-                    android:layout_width="match_parent"
+                <Button
+                    android:id="@+id/createEventBtn"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/selectImagesButton"
-                    android:layout_marginTop="@dimen/small_margin"
-                    android:columnWidth="100dp"
-                    android:numColumns="auto_fit"
-                    android:paddingBottom="64dp"
-                    tools:listitem="@layout/list_item_image" />
+                    android:layout_margin="@dimen/small_margin"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_btn_gradient"
+                    android:enabled="false"
+                    android:text="@string/create_text"
+                    android:textColor="@android:color/white" />
 
-            </RelativeLayout>
-        </LinearLayout>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
 
+    </RelativeLayout>
 
-    </ScrollView>
-
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
+    <ProgressBar
+        android:id="@+id/eventProgressBar"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="0dp"
-        app:cardElevation="@dimen/default_elevation">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/cancelCreateEventBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/small_margin"
-                android:layout_weight="1"
-                android:background="@drawable/rounded_btn_gradient"
-                android:text="@string/cancel_text"
-                android:textColor="@android:color/white" />
-
-            <Button
-                android:id="@+id/createEventBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/small_margin"
-                android:layout_weight="1"
-                android:background="@drawable/rounded_btn_gradient"
-                android:enabled="false"
-                android:text="@string/create_text"
-                android:textColor="@android:color/white" />
-
-        </LinearLayout>
-    </android.support.v7.widget.CardView>
-
-</RelativeLayout>
+        android:layout_gravity="center"
+        android:visibility="gone" />
+</FrameLayout>

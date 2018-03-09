@@ -23,12 +23,17 @@ import android.content.pm.PackageManager
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
+import android.transition.Fade
+import android.transition.TransitionManager
+import android.view.View
+import android.view.ViewGroup
 import android.widget.*
 import com.afollestad.materialdialogs.DialogAction
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.Theme
 import com.ivanasen.smarttickets.ui.adapters.ImageAdapter
 import com.ivanasen.smarttickets.ui.adapters.TicketCreationTypeAdapter
+import com.ivanasen.smarttickets.util.Utility
 import droidninja.filepicker.FilePickerBuilder
 import droidninja.filepicker.FilePickerConst
 import java.util.*
@@ -152,13 +157,43 @@ class CreateEventActivity : AppCompatActivity() {
 
         createEventBtn.onClick {
             viewModel.attemptCreateEvent()
-            showEventCreationScreen()
+                    .observe(this@CreateEventActivity, Observer {
+                        when (it) {
+                            Utility.Companion.TransactionStatus.PENDING -> {
+                                showLoadingScreen()
+                            }
+                            Utility.Companion.TransactionStatus.COMPLETE -> {
+                                MaterialDialog.Builder(this@CreateEventActivity)
+                                        .title(getString(R.string.event_success_title))
+                                        .content(getString(R.string.event_creation_message))
+                                        .positiveText(getString(R.string.OK))
+                                        .onPositive({ _, _ ->
+                                            finish()
+                                        })
+                            }
+                            Utility.Companion.TransactionStatus.ERROR -> {
+                                hideLoadingScreen()
+                                Toast.makeText(this@CreateEventActivity,
+                                        getString(R.string.event_error_message),
+                                        Toast.LENGTH_LONG)
+                                        .show()
+                            }
+                        }
+                    })
         }
 
     }
 
-    private fun showEventCreationScreen() {
-        finish()
+    private fun showLoadingScreen() {
+        TransitionManager.beginDelayedTransition(rootView as ViewGroup, Fade())
+        contentView.visibility = View.GONE
+        eventProgressBar.visibility = View.VISIBLE
+    }
+
+    private fun hideLoadingScreen() {
+        TransitionManager.beginDelayedTransition(rootView as ViewGroup, Fade())
+        contentView.visibility = View.GONE
+        eventProgressBar.visibility = View.VISIBLE
     }
 
     private fun showTicketTypeDialog() {

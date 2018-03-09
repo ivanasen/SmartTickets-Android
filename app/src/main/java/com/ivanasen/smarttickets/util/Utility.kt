@@ -30,6 +30,10 @@ class Utility {
 
         private val PROVIDER_AUTHORITY = "${BuildConfig.APPLICATION_ID}.provider"
 
+        enum class TransactionStatus {
+            PENDING, COMPLETE, ERROR
+        }
+
         fun loadFragment(@IdRes containerViewId: Int, fragmentManager: FragmentManager, fragment: Fragment) {
             val transaction = fragmentManager.beginTransaction()
             transaction.replace(containerViewId, fragment)
@@ -57,17 +61,30 @@ class Utility {
                     .show()
         }
 
+        fun launchFileShareIntent(context: Context, file: File) {
+            val uri = "file://" + file.path
+            val uploadUri = Uri.parse(uri)
+
+            val uploadIntent = Intent()
+                    .setAction(Intent.ACTION_SEND)
+                    .setType("application/txt")
+                    .putExtra(Intent.EXTRA_STREAM, uploadUri)
+
+            context.startActivity(Intent.createChooser(uploadIntent,
+                    context.getString(R.string.backup_wallet_to_text)))
+        }
+
         fun backupWallet(context: Context, walletFile: File) {
+            // Create the text message with a string
             val sendIntent = Intent()
             sendIntent.action = Intent.ACTION_SEND
-            require(walletFile.exists())
+
 
             val walletUri = FileProvider.getUriForFile(context, PROVIDER_AUTHORITY, walletFile)
             sendIntent.putExtra(Intent.EXTRA_STREAM, walletUri)
-            sendIntent.type = "text/plain"
+//            sendIntent.type = "text/plain"
 
-            context.startActivity(Intent.createChooser(sendIntent,
-                    context.getString(R.string.backup_wallet_to_text)))
+            context.startActivity(Intent.createChooser(sendIntent, "Backup To.."))
         }
 
         fun convertBitmapToByteArray(bitmap: Bitmap): ByteArray? {
@@ -81,8 +98,6 @@ class Utility {
 
         fun getIpfsImageUrl(imageHash: String): String =
                 "${BuildConfig.IPFS_GATEWAY_URL}/ipfs/$imageHash"
-
-//        enum
     }
 
 }

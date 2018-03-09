@@ -89,4 +89,13 @@
     <string name="test_dialog_title">Important Notice</string>
     <string name="it_s_empty_here_text">It\'s empty here :(</string>
     <string name="back_up_wallet">Back up wallet</string>
+    <string name="event_creation_test_message">The Event Management and Creation functionality is restricted only to addresses registered as Event Organisers but for testing purposes everyone is able to create events right now.</string>
+    <string name="ticket_success">Your successfully bought a ticket. It will appear in your \'My Tickets\' section in a couple of minutes.</string>
+    <string name="buying_ticket_text">Buying Ticket…</string>
+    <string name="tx_error_text">Error processing transaction</string>
+    <string name="event_creation_message">Event creation successfully submited. Your event will be live in a couple of minutes.</string>
+    <string name="event_error_message">Error creating event.</string>
+    <string name="event_success_title">Event creation successful</string>
+    <string name="ticket_success_title">Ticket bought successfully!</string>
+    <string name="sell_ticket_btn_text">Sell Ticket</string>
 </resources>

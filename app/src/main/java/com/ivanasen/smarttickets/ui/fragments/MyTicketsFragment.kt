@@ -19,7 +19,10 @@ import com.ivanasen.smarttickets.ui.adapters.TicketsAdapter
 import com.ivanasen.smarttickets.util.Utility
 import com.ivanasen.smarttickets.viewmodels.AppViewModel
 import kotlinx.android.synthetic.main.fragment_my_tickets.*
+import kotlinx.android.synthetic.main.fragment_my_wallet.*
 import kotlinx.android.synthetic.main.list_item_ticket.*
+import net.glxn.qrgen.android.QRCode
+import org.jetbrains.anko.imageBitmap
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.support.v4.onRefresh
 import java.text.DateFormat
@@ -86,10 +89,16 @@ class MyTicketsFragment : Fragment() {
                         .centerCrop())
                 .into(ticketEventImageView)
 
+        val ticketIdString = ticket.ticketId.toString()
+        val ticketBitmap = QRCode.from(ticketIdString).withSize(550, 550).bitmap()
+        ticketQrCode.imageBitmap = ticketBitmap
+
         ticketEventName.text = event.name
         ticketEventLocation.text = event.locationName
         ticketEventDate.text = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT)
                 .format(event.timestamp * 1000)
+
+        sellTicketBtn.isEnabled = ticket.ticketType.refundable
     }
 
     private fun observeLiveData() {

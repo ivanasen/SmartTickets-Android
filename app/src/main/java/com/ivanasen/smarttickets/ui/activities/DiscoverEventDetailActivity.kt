@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.widget.Toast
+import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.gms.maps.model.LatLng
@@ -69,6 +70,29 @@ class DiscoverEventDetailActivity : AppCompatActivity() {
 
         val attemptBuyTicket: (ticketType: TicketType) -> Unit = {
             mViewModel.attemptToBuyTicket(it)
+                    .observe(this, Observer {
+                        when (it) {
+                            Utility.Companion.TransactionStatus.PENDING -> {
+                                Toast.makeText(applicationContext,
+                                        getString(R.string.buying_ticket_text),
+                                        Toast.LENGTH_LONG)
+                                        .show()
+                            }
+                            Utility.Companion.TransactionStatus.COMPLETE -> {
+                                MaterialDialog.Builder(this)
+                                        .title(getString(R.string.ticket_success_title))
+                                        .content(getString(R.string.ticket_success))
+                                        .positiveText(getString(R.string.OK))
+                                        .show()
+                            }
+                            Utility.Companion.TransactionStatus.ERROR -> {
+                                Toast.makeText(applicationContext,
+                                        getString(R.string.tx_error_text),
+                                        Toast.LENGTH_LONG)
+                                        .show()
+                            }
+                        }
+                    })
         }
 
         val formatDate = getDateTimeInstance(MEDIUM, SHORT).format(event.timestamp * 1000)

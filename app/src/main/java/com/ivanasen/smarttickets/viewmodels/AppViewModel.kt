@@ -10,6 +10,7 @@ import com.ivanasen.smarttickets.db.models.Event
 import com.ivanasen.smarttickets.db.models.Ticket
 import com.ivanasen.smarttickets.db.models.TicketType
 import com.ivanasen.smarttickets.repositories.SmartTicketsRepository
+import com.ivanasen.smarttickets.util.Utility
 import org.jetbrains.anko.defaultSharedPreferences
 import java.io.File
 import java.math.BigDecimal
@@ -88,8 +89,8 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         return mRepository.fetchTicketTypesForEvent(eventId)
     }
 
-    fun attemptToBuyTicket(ticketType: TicketType) {
-        mRepository.buyTicket(ticketType)
+    fun attemptToBuyTicket(ticketType: TicketType): LiveData<Utility.Companion.TransactionStatus> {
+        return mRepository.buyTicket(ticketType)
     }
 
     fun fetchBalance() {
@@ -100,7 +101,7 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         mRepository.fetchMyEvents()
     }
 
-    fun refreshTickets(): LiveData<MutableList<Ticket>> {
+    fun refreshTickets() {
         return mRepository.fetchTickets()
     }
 

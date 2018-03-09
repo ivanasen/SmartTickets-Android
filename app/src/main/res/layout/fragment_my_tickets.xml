@@ -20,7 +20,10 @@
             android:layout_height="wrap_content"
             android:clipChildren="false"
             android:clipToPadding="false"
-            android:padding="@dimen/default_padding"
+            android:paddingBottom="@dimen/bottom_navigation_height_with_padding"
+            android:paddingEnd="@dimen/default_padding"
+            android:paddingStart="@dimen/default_padding"
+            android:paddingTop="@dimen/default_padding"
             android:visibility="gone"
             tools:listitem="@layout/list_item_ticket" />
 
@@ -61,8 +64,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="70dp"
-                android:layout_marginEnd="60dp"
-                android:layout_marginStart="60dp"
+                android:layout_marginEnd="40dp"
+                android:layout_marginStart="40dp"
                 android:layout_marginTop="@dimen/default_margin"
                 app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="26dp"
@@ -76,7 +79,7 @@
                     <ImageView
                         android:id="@+id/ticketEventImageView"
                         android:layout_width="match_parent"
-                        android:layout_height="200dp"
+                        android:layout_height="140dp"
                         android:src="@drawable/gradient_background" />
 
                     <LinearLayout
@@ -93,15 +96,7 @@
                             android:ellipsize="end"
                             android:maxLines="1"
                             android:text="Concert"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
-
-                        <Button
-                            style="@style/Widget.AppCompat.Button.Borderless"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Open Event"
-                            android:layout_gravity="center"
-                            android:textColor="@color/colorPrimary"/>
+                            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
                     </LinearLayout>
 
@@ -115,7 +110,9 @@
                         android:id="@+id/eventDateView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/default_margin"
+                        android:layout_marginBottom="@dimen/small_margin"
+                        android:layout_marginStart="@dimen/default_margin"
+                        android:layout_marginTop="@dimen/small_margin"
                         android:drawableStart="@drawable/ic_date_range_black_24dp"
                         android:text="January 18, 1970"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
@@ -125,7 +122,7 @@
                         android:id="@+id/eventLocationViewView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/default_margin"
+                        android:layout_marginBottom="@dimen/small_margin"
                         android:layout_marginStart="@dimen/default_margin"
                         android:layout_marginTop="0dp"
                         android:drawableStart="@drawable/ic_location_on_black_24dp"
@@ -137,25 +134,33 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp" />
 
+                    <ImageView
+                        android:id="@+id/ticketQrCode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/default_margin"
+                        android:layout_gravity="center"
+                        android:src="@drawable/gradient_background" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:clipChildren="false"
+                        android:clipToPadding="false"
                         android:gravity="bottom"
                         android:orientation="horizontal"
-                        android:paddingStart="@dimen/default_padding"
-                        android:paddingEnd="@dimen/default_padding"
-                        android:paddingTop="@dimen/default_padding"
                         android:paddingBottom="@dimen/small_padding"
-                        android:clipToPadding="false"
-                        android:clipChildren="false">
+                        android:paddingEnd="@dimen/default_padding"
+                        android:paddingStart="@dimen/default_padding"
+                        android:paddingTop="@dimen/default_padding">
 
                         <Button
                             android:id="@+id/sellTicketBtn"
                             style="@style/Widget.AppCompat.Button.Borderless"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Sell Ticket" />
+                            android:text="@string/sell_ticket_btn_text" />
 
                         <TextView
                             android:id="@+id/ticketPriceInUsdView"
@@ -168,7 +173,6 @@
                             android:textColor="@color/colorPrimary" />
 
                     </LinearLayout>
-
 
                 </LinearLayout>
 
