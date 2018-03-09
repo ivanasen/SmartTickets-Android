@@ -55,7 +55,6 @@ class DiscoverFragment : Fragment() {
 //                return true
 //            }
 //        })
-
         super.onCreateOptionsMenu(menu, inflater)
     }
 
