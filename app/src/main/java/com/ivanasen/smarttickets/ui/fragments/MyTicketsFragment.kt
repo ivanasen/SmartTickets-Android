@@ -69,6 +69,10 @@ class MyTicketsFragment : Fragment() {
             TransitionManager.beginDelayedTransition(view as ViewGroup, Fade())
             ticketDetailView.visibility = View.GONE
         }
+
+        ticketCardView.onClick {
+            // Don't hide the view
+        }
     }
 
     private fun showTicketDetailView(event: Event, ticket: Ticket) {

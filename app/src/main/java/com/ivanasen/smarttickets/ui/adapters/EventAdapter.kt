@@ -90,5 +90,4 @@ internal class EventAdapter(val activity: Activity, val eventsData: LiveData<Mut
         val eventTicketView: TextView = view.findViewById(R.id.eventTicketPriceView)
         val eventLocation: TextView = view.findViewById(R.id.eventLocationView)
     }
-
 }

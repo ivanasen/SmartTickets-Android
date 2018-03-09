@@ -47,7 +47,6 @@
             android:parentActivityName=".ui.activities.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeActionBar" />
-
         <activity
             android:name=".ui.activities.DiscoverEventDetailActivity"
             android:configChanges="orientation"
@@ -76,6 +75,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_places_api_key" />
 
+        <activity android:name=".ui.activities.ManageEventDetailActivity"></activity>
     </application>
 
 </manifest>
