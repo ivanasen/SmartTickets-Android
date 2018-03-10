@@ -41,14 +41,22 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
+
         <activity
             android:name=".ui.activities.CreateEventActivity"
             android:configChanges="orientation"
             android:parentActivityName=".ui.activities.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeActionBar" />
+
         <activity
             android:name=".ui.activities.DiscoverEventDetailActivity"
+            android:configChanges="orientation"
+            android:parentActivityName=".ui.activities.MainActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.activities.ManageEventDetailActivity"
             android:configChanges="orientation"
             android:parentActivityName=".ui.activities.MainActivity"
             android:screenOrientation="portrait" />
@@ -75,7 +83,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_places_api_key" />
 
-        <activity android:name=".ui.activities.ManageEventDetailActivity"></activity>
     </application>
 
 </manifest>

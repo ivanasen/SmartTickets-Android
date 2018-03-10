@@ -5,14 +5,18 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
+import android.content.Intent
 import android.support.v4.app.Fragment
 import android.os.Bundle
+import android.support.v4.app.ActivityOptionsCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
 import android.util.Log
 import android.view.*
+import android.widget.ImageView
 import com.ivanasen.smarttickets.R
 import com.ivanasen.smarttickets.db.models.Event
+import com.ivanasen.smarttickets.ui.activities.DiscoverEventDetailActivity
 import com.ivanasen.smarttickets.ui.adapters.EventAdapter
 import com.ivanasen.smarttickets.viewmodels.AppViewModel
 import kotlinx.android.synthetic.main.fragment_discover.*
@@ -77,8 +81,16 @@ class DiscoverFragment : Fragment() {
     }
 
     private fun setupViews() {
-        mAdapter = EventAdapter(activity!!, mViewModel.events)
         eventsView.layoutManager = LinearLayoutManager(context)
+        mAdapter = EventAdapter(activity!!, mViewModel.events, { eventId, sharedView ->
+            val intent = Intent(context, DiscoverEventDetailActivity::class.java)
+            intent.putExtra(DiscoverEventDetailActivity.EXTRA_EVENT_ID, eventId)
+
+            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    activity!!, sharedView,
+                    activity!!.getString(R.string.event_transition))
+            context?.startActivity(intent, options.toBundle())
+        })
         eventsView.adapter = mAdapter
 
         eventRefreshLayout.setColorSchemeColors(resources.getColor(R.color.appOrangePink),

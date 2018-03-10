@@ -222,6 +222,15 @@ object SmartTicketsRepository {
         }
     }
 
+    fun convertEtherToUsd(weiValue: BigInteger): LiveData<Double> {
+        val convertLiveData: MutableLiveData<Double> = MutableLiveData()
+        bg {
+            val oneUsdCentInWei = mContract.oneUSDCentInWei.send()
+            convertLiveData.postValue((weiValue / oneUsdCentInWei).toDouble() / 100)
+        }
+        return convertLiveData
+    }
+
     fun fetchEtherValueOfUsd(usdCents: BigDecimal): LiveData<BigDecimal> {
         val data = MutableLiveData<BigDecimal>()
         bg {
@@ -282,7 +291,8 @@ object SmartTicketsRepository {
                     eventData.locationName,
                     eventData.locationAddress,
                     eventData.images!!,
-                    ticketTypes)
+                    ticketTypes,
+                    event.value5)
         }
 
         throw IllegalArgumentException("Event not found")
@@ -381,8 +391,10 @@ object SmartTicketsRepository {
                 val ticketTypeTuple = mContract.getTicketTypeForTicket(id).send()
                 val ticketType = convertTupleToTicketType(ticketTypeTuple)
 
-                newTickets.add(Ticket(id, ticketType))
-                tickets.postValue(newTickets)
+                if (ticketType.eventId.toLong() > 0) {
+                    newTickets.add(Ticket(id, ticketType))
+                    tickets.postValue(newTickets)
+                }
             }
         }
     }
@@ -418,6 +430,43 @@ object SmartTicketsRepository {
             }
             myEvents.postValue(events)
         }
+    }
+
+    fun sellTicket(ticket: Ticket): LiveData<Utility.Companion.TransactionStatus> {
+        val ticketLiveData: MutableLiveData<Utility.Companion.TransactionStatus> =
+                MutableLiveData()
+        bg {
+            ticketLiveData.postValue(Utility.Companion.TransactionStatus.PENDING)
+            try {
+                val ticketId = ticket.ticketId
+                val txReceipt = mContract.refundTicket(ticketId).send()
+                ticketLiveData.postValue(Utility.Companion.TransactionStatus.COMPLETE)
+                Log.d(LOG_TAG, txReceipt.transactionHash)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                ticketLiveData.postValue(Utility.Companion.TransactionStatus.ERROR)
+            }
+        }
+
+        return ticketLiveData
+    }
+
+    fun withdrawalFunds(eventId: Long): LiveData<Utility.Companion.TransactionStatus> {
+        val fundsLiveData: MutableLiveData<Utility.Companion.TransactionStatus> =
+                MutableLiveData()
+        bg {
+            fundsLiveData.postValue(Utility.Companion.TransactionStatus.PENDING)
+            try {
+                val txReceipt = mContract.withdrawalEarningsForEvent(eventId.toBigInteger()).send()
+                fundsLiveData.postValue(Utility.Companion.TransactionStatus.COMPLETE)
+                Log.d(LOG_TAG, txReceipt.transactionHash)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                fundsLiveData.postValue(Utility.Companion.TransactionStatus.ERROR)
+            }
+        }
+
+        return fundsLiveData
     }
 
 //    fun getEventsForArea(lat: Double, long: Double): LiveData<List<IPFSEvent>> {

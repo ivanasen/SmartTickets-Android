@@ -107,6 +107,7 @@ class DiscoverEventDetailActivity : AppCompatActivity() {
         val adapter = TicketTypeAdapter(this, ticketTypes, attemptBuyTicket)
         ticketTypesRecyclerView.adapter = adapter
         ticketTypesRecyclerView.layoutManager = LinearLayoutManager(this)
+
     }
 
 }

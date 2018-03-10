@@ -14,6 +14,7 @@ import com.ivanasen.smarttickets.util.Utility
 import org.jetbrains.anko.defaultSharedPreferences
 import java.io.File
 import java.math.BigDecimal
+import java.math.BigInteger
 
 
 class AppViewModel(application: Application) : AndroidViewModel(application) {
@@ -107,5 +108,17 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
 
     fun loadInitialAppData() {
         mRepository.loadInitialAppData()
+    }
+
+    fun attemptSellTicket(ticket: Ticket): LiveData<Utility.Companion.TransactionStatus> {
+        return mRepository.sellTicket(ticket)
+    }
+
+    fun attemptWithdrawalFunds(eventId: Long): LiveData<Utility.Companion.TransactionStatus> {
+        return mRepository.withdrawalFunds(eventId)
+    }
+
+    fun convertEtherToUsd(weiValue: BigInteger): LiveData<Double> {
+        return mRepository.convertEtherToUsd(weiValue)
     }
 }

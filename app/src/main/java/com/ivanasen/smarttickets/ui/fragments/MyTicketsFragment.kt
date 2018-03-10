@@ -1,6 +1,8 @@
 package com.ivanasen.smarttickets.ui.fragments
 
 import android.arch.lifecycle.Observer
+
+
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -10,6 +12,8 @@ import android.transition.TransitionManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.ivanasen.smarttickets.R
@@ -19,7 +23,6 @@ import com.ivanasen.smarttickets.ui.adapters.TicketsAdapter
 import com.ivanasen.smarttickets.util.Utility
 import com.ivanasen.smarttickets.viewmodels.AppViewModel
 import kotlinx.android.synthetic.main.fragment_my_tickets.*
-import kotlinx.android.synthetic.main.fragment_my_wallet.*
 import kotlinx.android.synthetic.main.list_item_ticket.*
 import net.glxn.qrgen.android.QRCode
 import org.jetbrains.anko.imageBitmap
@@ -27,16 +30,9 @@ import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.support.v4.onRefresh
 import java.text.DateFormat
 
-
-/**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [MyTicketsFragment.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [MyTicketsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class MyTicketsFragment : Fragment() {
+
+    private val QR_CODE_SIZE: Int = 550
 
     private val mViewModel: AppViewModel by lazy {
         ViewModelProviders.of(this).get(AppViewModel::class.java)
@@ -90,7 +86,7 @@ class MyTicketsFragment : Fragment() {
                 .into(ticketEventImageView)
 
         val ticketIdString = ticket.ticketId.toString()
-        val ticketBitmap = QRCode.from(ticketIdString).withSize(550, 550).bitmap()
+        val ticketBitmap = QRCode.from(ticketIdString).withSize(QR_CODE_SIZE, QR_CODE_SIZE).bitmap()
         ticketQrCode.imageBitmap = ticketBitmap
 
         ticketEventName.text = event.name
@@ -99,6 +95,32 @@ class MyTicketsFragment : Fragment() {
                 .format(event.timestamp * 1000)
 
         sellTicketBtn.isEnabled = ticket.ticketType.refundable
+        sellTicketBtn.onClick {
+            mViewModel.attemptSellTicket(ticket)
+                    .observe(this@MyTicketsFragment, Observer {
+                        when(it) {
+                            Utility.Companion.TransactionStatus.PENDING -> {
+                                Toast.makeText(this@MyTicketsFragment.context,
+                                        getString(R.string.selling_ticket_text),
+                                        Toast.LENGTH_LONG)
+                                        .show()
+                            }
+                            Utility.Companion.TransactionStatus.COMPLETE -> {
+                                MaterialDialog.Builder(this@MyTicketsFragment.context!!)
+                                        .title(R.string.ticket_sell_success_title)
+                                        .content(R.string.ticket_sell_success_message)
+                                        .positiveText(R.string.OK)
+                                        .show()
+                            }
+                            Utility.Companion.TransactionStatus.ERROR -> {
+                                Toast.makeText(this@MyTicketsFragment.context,
+                                        getString(R.string.selling_ticket_error),
+                                        Toast.LENGTH_LONG)
+                                        .show()
+                            }
+                        }
+                    })
+        }
     }
 
     private fun observeLiveData() {

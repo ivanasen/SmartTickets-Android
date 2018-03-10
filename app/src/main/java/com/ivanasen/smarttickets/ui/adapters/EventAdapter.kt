@@ -20,12 +20,14 @@ import org.jetbrains.anko.sdk25.coroutines.onClick
 import java.text.SimpleDateFormat
 import android.support.v4.app.ActivityOptionsCompat
 import android.content.Intent
+import android.media.Image
 import com.ivanasen.smarttickets.ui.activities.DiscoverEventDetailActivity
 import com.ivanasen.smarttickets.util.Utility
 import java.text.DateFormat
 
 
-internal class EventAdapter(val activity: Activity, val eventsData: LiveData<MutableList<Event>>)
+internal class EventAdapter(val activity: Activity, val eventsData: LiveData<MutableList<Event>>,
+                            val eventClickCallBack: (eventId: Long, sharedView: ImageView) -> Unit)
     : RecyclerView.Adapter<EventAdapter.ViewHolder>() {
 
     private val LOG_TAG = EventAdapter::class.java.simpleName
@@ -72,13 +74,7 @@ internal class EventAdapter(val activity: Activity, val eventsData: LiveData<Mut
                 .into(holder.eventImageView)
 
         holder.view.onClick {
-            val intent = Intent(this@EventAdapter.activity, DiscoverEventDetailActivity::class.java)
-            intent.putExtra(DiscoverEventDetailActivity.EXTRA_EVENT_ID, eventId)
-
-            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                    this@EventAdapter.activity, holder.eventImageView,
-                    this@EventAdapter.activity.getString(R.string.event_transition))
-            this@EventAdapter.activity.startActivity(intent, options.toBundle())
+            eventClickCallBack(eventId, holder.eventImageView)
         }
     }
 
