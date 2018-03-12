@@ -19,6 +19,7 @@ import okhttp3.RequestBody
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.web3j.abi.datatypes.generated.Uint256
 import org.web3j.crypto.Credentials
+import org.web3j.crypto.WalletFile
 import org.web3j.crypto.WalletUtils
 import org.web3j.protocol.Web3j
 import org.web3j.protocol.core.DefaultBlockParameterName

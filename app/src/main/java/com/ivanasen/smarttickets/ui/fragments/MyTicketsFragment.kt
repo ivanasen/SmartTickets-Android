@@ -32,7 +32,7 @@ import java.text.DateFormat
 
 class MyTicketsFragment : Fragment() {
 
-    private val QR_CODE_SIZE: Int = 550
+    private val QR_CODE_SIZE: Int = 400
 
     private val mViewModel: AppViewModel by lazy {
         ViewModelProviders.of(this).get(AppViewModel::class.java)

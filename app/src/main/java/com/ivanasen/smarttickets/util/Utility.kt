@@ -82,7 +82,7 @@ class Utility {
 
             val walletUri = FileProvider.getUriForFile(context, PROVIDER_AUTHORITY, walletFile)
             sendIntent.putExtra(Intent.EXTRA_STREAM, walletUri)
-//            sendIntent.type = "text/plain"
+            sendIntent.type = "text/plain"
 
             context.startActivity(Intent.createChooser(sendIntent, "Backup To.."))
         }
