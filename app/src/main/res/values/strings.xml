@@ -98,7 +98,7 @@
     <string name="event_success_title">Event creation successful</string>
     <string name="ticket_success_title">Ticket bought successfully!</string>
     <string name="sell_ticket_btn_text">Sell Ticket</string>
-    <string name="selling_ticket_text">Selling Ticket...</string>
+    <string name="selling_ticket_text">Selling Ticket…</string>
     <string name="ticket_sell_success_title">Ticket sell success</string>
     <string name="ticket_sell_success_message">Your ticket was sold successfully! It should be removed from your \'My TIckets\' section in a few minutes.</string>
     <string name="selling_ticket_error">Error selling ticket</string>
@@ -106,4 +106,5 @@
     <string name="earnings_text">Earnings</string>
     <string name="earnings_usd_format">%s USD</string>
     <string name="earnings_eth_format">%s ETH</string>
+    <string name="default_wallet_name">wallet.json</string>
 </resources>

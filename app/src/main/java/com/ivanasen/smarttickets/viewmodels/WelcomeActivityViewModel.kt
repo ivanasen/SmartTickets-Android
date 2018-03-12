@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.content.Context
+import android.net.Uri
 import com.ivanasen.smarttickets.repositories.SmartTicketsRepository
 import com.ivanasen.smarttickets.util.Utility
 import com.ivanasen.smarttickets.util.Utility.Companion.WALLET_FILE_NAME_KEY
@@ -34,7 +35,8 @@ class WelcomeActivityViewModel : ViewModel() {
             require(isThereAWallet(appContext))
 
             bg {
-                val walletName = appContext.defaultSharedPreferences.getString(Utility.WALLET_FILE_NAME_KEY, "")
+                val walletName = appContext.defaultSharedPreferences
+                        .getString(Utility.WALLET_FILE_NAME_KEY, "")
                 val wallet = File(appContext.filesDir, walletName)
                 val wasWalletUnlocked = mRepository.unlockWallet(password, wallet)
 
@@ -49,16 +51,19 @@ class WelcomeActivityViewModel : ViewModel() {
         launch(UI) {
             require(isValidPassword(password))
             val walletName = bg { mRepository.createWallet(password, context.filesDir) }
+            saveNewWallet(context, walletName.await())
+        }
+    }
 
+    private fun saveNewWallet(context: Context, walletName: String) {
+        launch(UI) {
             val appContext = context.applicationContext
             appContext.defaultSharedPreferences
                     .edit()
-                    .putString(WALLET_FILE_NAME_KEY, walletName.await())
+                    .putString(WALLET_FILE_NAME_KEY, walletName)
                     .apply()
 
-            walletFile = File(context.filesDir, walletName.await())
-
-            credentials.value = bg { WalletUtils.loadCredentials(password, walletFile) }.await()
+            walletFile = File(context.filesDir, walletName)
             walletExists.value = true
         }
     }
@@ -83,6 +88,16 @@ class WelcomeActivityViewModel : ViewModel() {
     }
 
     fun backupWallet(context: Context) {
-        Utility.backupWallet(context, walletFile)
+        mRepository.backupWallet(context, walletFile)
+    }
+
+    fun importWallet(walletUri: Uri, context: Context): LiveData<Boolean> {
+        val liveData: MutableLiveData<Boolean> = MutableLiveData()
+        launch(UI) {
+            val wallet = bg { mRepository.importWallet(context, walletUri, context.filesDir) }
+            saveNewWallet(context, wallet.await().name)
+            liveData.postValue(true)
+        }
+        return liveData
     }
 }

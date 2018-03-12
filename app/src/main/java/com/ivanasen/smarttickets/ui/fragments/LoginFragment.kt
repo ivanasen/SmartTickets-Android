@@ -3,6 +3,7 @@ package com.ivanasen.smarttickets.ui.fragments
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
@@ -63,7 +64,8 @@ class LoginFragment : Fragment() {
 
         mViewModel.contractDeployed.observe(this, Observer {
             if (it == true) {
-                launchActivity(this@LoginFragment.context!!, MainActivity::class.java)
+                val intent = Intent(context, MainActivity::class.java)
+                context?.startActivity(intent)
             }
         })
     }
@@ -78,7 +80,7 @@ class LoginFragment : Fragment() {
         }
 
         useOtherWalletBtn.onClick {
-            (activity as WelcomeActivity).loadWalletCreationScreen()
+            (activity as WelcomeActivity).loadWalletCreationFragment()
         }
 
         unlockWalletBtn.onClick {

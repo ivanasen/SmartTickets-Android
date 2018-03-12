@@ -11,10 +11,10 @@ import android.view.*
 import android.widget.LinearLayout
 
 import com.ivanasen.smarttickets.R
-import com.ivanasen.smarttickets.ui.activities.MainActivity
+import com.ivanasen.smarttickets.ui.activities.WelcomeActivity
+import com.ivanasen.smarttickets.util.Utility.Companion.importWallet
 import com.ivanasen.smarttickets.viewmodels.WelcomeActivityViewModel
 import com.ivanasen.smarttickets.util.Utility.Companion.isValidPassword
-import com.ivanasen.smarttickets.util.Utility.Companion.launchActivity
 import kotlinx.android.synthetic.main.create_wallet_form_layout.*
 import kotlinx.android.synthetic.main.fragment_create_wallet.*
 import kotlinx.android.synthetic.main.wallet_created_layout.*
@@ -55,12 +55,6 @@ class CreateWalletFragment : Fragment() {
                 showWalletCreatedScreen()
             }
         })
-
-        mViewModel.contractDeployed.observe(this, Observer {
-            if (it == true) {
-                launchActivity(this@CreateWalletFragment.context!!, MainActivity::class.java)
-            }
-        })
     }
 
     private fun showWalletCreatedScreen() {
@@ -96,7 +90,7 @@ class CreateWalletFragment : Fragment() {
         }
 
         recoverWalletBtn.onClick {
-
+            activity?.let { importWallet(it) }
         }
 
         cancelCreateWalletBtn.onClick {
@@ -131,7 +125,7 @@ class CreateWalletFragment : Fragment() {
         }
 
         skipBackupBtn.onClick {
-            mViewModel.loadInitialAppData()
+            (activity as WelcomeActivity).loadLoginFragment()
         }
     }
 }

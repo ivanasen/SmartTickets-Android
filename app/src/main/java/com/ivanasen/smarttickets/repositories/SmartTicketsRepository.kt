@@ -2,8 +2,11 @@ package com.ivanasen.smarttickets.repositories
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
+import android.content.Context
+import android.net.Uri
 import android.util.Log
 import com.google.android.gms.maps.model.LatLng
+import com.ivanasen.smarttickets.R
 import com.ivanasen.smarttickets.contractwrappers.SmartTicketsContractProvider
 
 import com.ivanasen.smarttickets.api.SmartTicketsIPFSApi
@@ -29,6 +32,9 @@ import java.lang.IllegalArgumentException
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.nio.charset.Charset
+import java.io.BufferedReader
+import java.io.IOException
+import java.io.InputStreamReader
 
 
 object SmartTicketsRepository {
@@ -469,6 +475,35 @@ object SmartTicketsRepository {
 
         return fundsLiveData
     }
+
+    fun backupWallet(context: Context, walletFile: File) {
+        Utility.backupWallet(context, walletFile)
+    }
+
+    fun importWallet(context: Context, walletUri: Uri, destinationDirectory: File): File {
+        val walletString = readTextFromUri(context, walletUri)
+        val walletFile = File(destinationDirectory,
+                context.getString(R.string.default_wallet_name))
+        walletFile.writeText(walletString)
+        return walletFile
+    }
+
+    @Throws(IOException::class)
+    private fun readTextFromUri(context: Context, uri: Uri): String {
+        val inputStream = context.contentResolver.openInputStream(uri)
+        val reader = BufferedReader(InputStreamReader(inputStream))
+
+        val stringBuilder = StringBuilder()
+        var line = reader.readLine()
+        while (line != null) {
+            stringBuilder.append(line)
+            line = reader.readLine()
+        }
+
+        inputStream.close()
+        return stringBuilder.toString()
+    }
+
 
 //    fun getEventsForArea(lat: Double, long: Double): LiveData<List<IPFSEvent>> {
 //

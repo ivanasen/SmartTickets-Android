@@ -1,14 +1,18 @@
 package com.ivanasen.smarttickets.ui.activities
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.afollestad.materialdialogs.MaterialDialog
 import com.ivanasen.smarttickets.R
 import com.ivanasen.smarttickets.ui.fragments.CreateWalletFragment
 import com.ivanasen.smarttickets.ui.fragments.LoginFragment
+import com.ivanasen.smarttickets.util.Utility
 import com.ivanasen.smarttickets.viewmodels.WelcomeActivityViewModel
 import com.ivanasen.smarttickets.util.Utility.Companion.loadFragment
+import droidninja.filepicker.FilePickerConst
 
 class WelcomeActivity : AppCompatActivity() {
 
@@ -34,14 +38,34 @@ class WelcomeActivity : AppCompatActivity() {
 
     private fun observeLiveData() {
         if (mViewModel.isThereAWallet(this)) {
-            loadFragment(R.id.fragmentContainer, supportFragmentManager, LoginFragment())
+            loadLoginFragment()
         } else {
-            loadFragment(R.id.fragmentContainer, supportFragmentManager, CreateWalletFragment())
+            loadWalletCreationFragment()
         }
     }
 
-    fun loadWalletCreationScreen() {
+    fun loadLoginFragment() {
+        loadFragment(R.id.fragmentContainer, supportFragmentManager, LoginFragment())
+    }
+
+    fun loadWalletCreationFragment() {
         loadFragment(R.id.fragmentContainer, supportFragmentManager, CreateWalletFragment())
     }
 
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when (requestCode) {
+            Utility.IMPORT_WALLET_REQUEST_CODE -> {
+                val walletUri = data?.data
+                walletUri?.let {
+                    mViewModel.importWallet(it, this)
+                            .observe(this, Observer {
+                                if (it == true) {
+                                    loadLoginFragment()
+                                }
+                            })
+                }
+            }
+        }
+    }
 }

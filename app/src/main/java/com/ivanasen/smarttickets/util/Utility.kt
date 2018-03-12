@@ -1,5 +1,6 @@
 package com.ivanasen.smarttickets.util
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.support.annotation.IdRes
@@ -7,18 +8,12 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.content.ClipData
 import android.content.ClipboardManager
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.net.Uri
 import android.widget.Toast
 import com.ivanasen.smarttickets.R
 import java.io.File
 import com.ivanasen.smarttickets.BuildConfig
-import java.io.ByteArrayOutputStream
-import android.support.v4.content.ContextCompat.startActivity
-import org.jetbrains.anko.startActivity
-import com.ivanasen.smarttickets.ui.activities.MainActivity
 import android.support.v4.content.FileProvider
+import android.support.v4.app.ActivityCompat.startActivityForResult
 
 
 class Utility {
@@ -27,6 +22,10 @@ class Utility {
         val ONE_ETHER_IN_WEI = Math.pow(10.0, 18.0).toLong()
         val IPFS_HASH_HEADER = "ipfs-hash"
         val WALLET_FILE_NAME_KEY = "WalletFileNameKey"
+        val IPFS_URL_PATH = "ipfs"
+
+        val IMPORT_WALLET_REQUEST_CODE = 42
+
 
         private val PROVIDER_AUTHORITY = "${BuildConfig.APPLICATION_ID}.provider"
 
@@ -61,19 +60,6 @@ class Utility {
                     .show()
         }
 
-        fun launchFileShareIntent(context: Context, file: File) {
-            val uri = "file://" + file.path
-            val uploadUri = Uri.parse(uri)
-
-            val uploadIntent = Intent()
-                    .setAction(Intent.ACTION_SEND)
-                    .setType("application/txt")
-                    .putExtra(Intent.EXTRA_STREAM, uploadUri)
-
-            context.startActivity(Intent.createChooser(uploadIntent,
-                    context.getString(R.string.backup_wallet_to_text)))
-        }
-
         fun backupWallet(context: Context, walletFile: File) {
             // Create the text message with a string
             val sendIntent = Intent()
@@ -84,20 +70,19 @@ class Utility {
             sendIntent.putExtra(Intent.EXTRA_STREAM, walletUri)
             sendIntent.type = "text/plain"
 
-            context.startActivity(Intent.createChooser(sendIntent, "Backup To.."))
+            context.startActivity(Intent.createChooser(sendIntent,
+                    context.getString(R.string.backup_wallet_to_text)))
         }
 
-        fun convertBitmapToByteArray(bitmap: Bitmap): ByteArray? {
-            val stream = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
-            return stream.toByteArray()
+        fun importWallet(activity: Activity) {
+            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+            intent.addCategory(Intent.CATEGORY_OPENABLE)
+            intent.type = "text/plain"
+            startActivityForResult(activity, intent, IMPORT_WALLET_REQUEST_CODE, null)
         }
-
-        fun convertByteArrayToBitmap(byteArray: ByteArray): Bitmap? =
-                BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
 
         fun getIpfsImageUrl(imageHash: String): String =
-                "${BuildConfig.IPFS_GATEWAY_URL}/ipfs/$imageHash"
+                "${BuildConfig.IPFS_GATEWAY_URL}/$IPFS_URL_PATH/$imageHash"
     }
 
 }

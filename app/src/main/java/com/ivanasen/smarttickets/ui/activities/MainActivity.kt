@@ -48,6 +48,10 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    override fun onBackPressed() {
+        moveTaskToBack(true)
+    }
+
     private fun setupViews(savedInstanceState: Bundle?) {
         val activeFragmentId = savedInstanceState?.getInt(ACTIVE_FRAGMENT_KEY)
         if (activeFragmentId != null) {
