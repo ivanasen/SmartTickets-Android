@@ -91,7 +91,8 @@ class ManageEventDetailActivity : AppCompatActivity() {
                     })
         }
 
-        val formatDate = getDateTimeInstance(MEDIUM, SHORT).format(event.timestamp * 1000)
+        val eventTimeInMillis = event.timestamp * 1000
+        val formatDate = getDateTimeInstance(MEDIUM, SHORT).format(eventTimeInMillis)
         eventTimeView.text = formatDate
 
         eventLocationView.text = event.locationAddress
@@ -120,9 +121,9 @@ class ManageEventDetailActivity : AppCompatActivity() {
         eventEarningsEther.text = formattedEther
 
         withdrawalBtn.onClick {
-            if (event.timestamp > (Calendar.getInstance().timeInMillis / 1000)) {
+            if (eventTimeInMillis > Calendar.getInstance().timeInMillis) {
                 Toast.makeText(this@ManageEventDetailActivity,
-                        "Event should have passed in order to withdrawal funds!",
+                        getString(R.string.event_should_have_passed_msg),
                         Toast.LENGTH_LONG)
                         .show()
                 return@onClick
@@ -132,13 +133,24 @@ class ManageEventDetailActivity : AppCompatActivity() {
                     .observe(this@ManageEventDetailActivity, Observer {
                         when (it) {
                             Utility.Companion.TransactionStatus.PENDING -> {
-
+                                Toast.makeText(
+                                        this@ManageEventDetailActivity,
+                                        getString(R.string.withdrawal_funds_pending),
+                                        Toast.LENGTH_LONG)
+                                        .show()
                             }
                             Utility.Companion.TransactionStatus.COMPLETE -> {
-
+                                MaterialDialog.Builder(this@ManageEventDetailActivity)
+                                        .content(getString(R.string.withdrawal_funds_success))
+                                        .positiveText(getString(R.string.OK))
+                                        .show()
                             }
                             Utility.Companion.TransactionStatus.ERROR -> {
-
+                                Toast.makeText(
+                                        this@ManageEventDetailActivity,
+                                        getString(R.string.withdrawal_funds_error),
+                                        Toast.LENGTH_LONG)
+                                        .show()
                             }
                         }
                     })
