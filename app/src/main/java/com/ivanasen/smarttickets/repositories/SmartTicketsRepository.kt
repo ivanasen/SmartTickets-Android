@@ -6,6 +6,7 @@ import android.content.Context
 import android.net.Uri
 import android.util.Log
 import com.google.android.gms.maps.model.LatLng
+import com.google.gson.Gson
 import com.ivanasen.smarttickets.R
 import com.ivanasen.smarttickets.contractwrappers.SmartTicketsContractProvider
 
@@ -22,7 +23,7 @@ import okhttp3.RequestBody
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.web3j.abi.datatypes.generated.Uint256
 import org.web3j.crypto.Credentials
-import org.web3j.crypto.WalletFile
+import org.web3j.crypto.Hash
 import org.web3j.crypto.WalletUtils
 import org.web3j.protocol.Web3j
 import org.web3j.protocol.core.DefaultBlockParameterName
@@ -516,6 +517,38 @@ object SmartTicketsRepository {
 
         inputStream.close()
         return stringBuilder.toString()
+    }
+
+    fun validateTicket(ticket: Ticket): LiveData<Utility.Companion.TransactionStatus> {
+        val txLiveData: MutableLiveData<Utility.Companion.TransactionStatus> = MutableLiveData()
+
+        bg {
+            val ticketId = ticket.ticketId.toString()
+            val messageFixed = "\\x19Ethereum Signed Message:\n${ticketId.length}$ticketId"
+            val signature = signMessage(messageFixed)
+
+//            mContract.validateTicket()
+        }
+
+        return txLiveData
+    }
+
+    private fun signMessage(utf8message: String): String {
+        val messageSha3 = Hash.sha3String(utf8message)
+        val address = credentials.value?.address
+
+        val signatureReq = mWeb3.ethSign(address, messageSha3).send()
+
+        if (signatureReq.error != null) {
+            throw Exception("Error signing utf8message")
+        }
+
+        return signatureReq.signature
+    }
+
+    fun signTicketMessage(ticket: Ticket): String {
+        val ticketJson = Gson().toJson(ticket)
+
     }
 
 

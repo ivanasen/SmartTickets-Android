@@ -25,7 +25,9 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
@@ -68,6 +70,14 @@
             android:configChanges="orientation"
             android:parentActivityName=".ui.activities.MainActivity"
             android:screenOrientation="portrait" />
+
+        <activity android:name=".ui.activities.TicketValidatorActivity">
+            <intent-filter>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity>
 
         <provider
             android:name="android.support.v4.content.FileProvider"

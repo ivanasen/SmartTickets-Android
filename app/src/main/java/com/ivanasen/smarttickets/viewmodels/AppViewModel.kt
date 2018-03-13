@@ -103,4 +103,8 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
     fun convertEtherToUsd(weiValue: BigInteger): LiveData<Double> {
         return mRepository.convertEtherToUsd(weiValue)
     }
+
+    fun signTicketNfcMessage(ticket: Ticket): String {
+        return mRepository.signTicketMessage(ticket)
+    }
 }

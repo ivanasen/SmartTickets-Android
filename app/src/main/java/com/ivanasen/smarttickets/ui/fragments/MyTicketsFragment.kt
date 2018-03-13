@@ -4,6 +4,9 @@ import android.arch.lifecycle.Observer
 
 
 import android.arch.lifecycle.ViewModelProviders
+import android.nfc.NdefMessage
+import android.nfc.NfcAdapter
+import android.nfc.NfcEvent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -29,15 +32,23 @@ import org.jetbrains.anko.imageBitmap
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.support.v4.onRefresh
 import java.text.DateFormat
+import android.nfc.NdefRecord
+import com.google.gson.Gson
 
-class MyTicketsFragment : Fragment() {
 
+class MyTicketsFragment : Fragment(),
+        NfcAdapter.CreateNdefMessageCallback,
+        NfcAdapter.OnNdefPushCompleteCallback {
     private val QR_CODE_SIZE: Int = 400
 
     private val mViewModel: AppViewModel by lazy {
         ViewModelProviders.of(this).get(AppViewModel::class.java)
     }
 
+    private val mNfcAdapter: NfcAdapter? by lazy {
+        NfcAdapter.getDefaultAdapter(context)
+    }
+    private lateinit var mCurrentTicket: Ticket
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         activity?.title = getString(R.string.title_my_tickets)
@@ -48,6 +59,21 @@ class MyTicketsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         observeLiveData()
         setupViews()
+        setupNfcAdapter()
+    }
+
+    private fun setupNfcAdapter() {
+        if (mNfcAdapter == null) {
+            Toast.makeText(context,
+                    "nfcAdapter==null, no NFC adapter exists",
+                    Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(context,
+                    "Set Callback(s)",
+                    Toast.LENGTH_LONG).show();
+            mNfcAdapter!!.setNdefPushMessageCallback(this, activity)
+            mNfcAdapter!!.setOnNdefPushCompleteCallback(this, activity)
+        }
     }
 
     private fun setupViews() {
@@ -74,7 +100,26 @@ class MyTicketsFragment : Fragment() {
         }
     }
 
+    override fun createNdefMessage(event: NfcEvent?): NdefMessage {
+        val signedMessage = mViewModel.signTicketNfcMessage(mCurrentTicket)
+        val bytesOut = signedMessage.toByteArray()
+
+        val ndefRecordOut = NdefRecord(
+                NdefRecord.TNF_MIME_MEDIA,
+                "text/plain".toByteArray(),
+                byteArrayOf(),
+                bytesOut)
+
+        return NdefMessage(ndefRecordOut)
+    }
+
+    override fun onNdefPushComplete(p0: NfcEvent?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     private fun showTicketDetailView(event: Event, ticket: Ticket) {
+        mCurrentTicket = ticket
+
         TransitionManager.beginDelayedTransition(view as ViewGroup, Fade())
         ticketDetailView.visibility = View.VISIBLE
 
@@ -98,7 +143,7 @@ class MyTicketsFragment : Fragment() {
         sellTicketBtn.onClick {
             mViewModel.attemptSellTicket(ticket)
                     .observe(this@MyTicketsFragment, Observer {
-                        when(it) {
+                        when (it) {
                             Utility.Companion.TransactionStatus.PENDING -> {
                                 Toast.makeText(this@MyTicketsFragment.context,
                                         getString(R.string.selling_ticket_text),
