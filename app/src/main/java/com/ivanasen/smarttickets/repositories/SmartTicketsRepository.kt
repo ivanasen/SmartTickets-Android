@@ -189,12 +189,26 @@ object SmartTicketsRepository {
 
     fun unlockWallet(password: String, wallet: File): Boolean {
         return try {
-            credentials.postValue(WalletUtils.loadCredentials(password, wallet))
+            credentials.postValue(getCredentials(password, wallet))
             unlockedWallet.postValue(true)
             true
         } catch (e: Exception) {
             e.printStackTrace()
             unlockedWallet.postValue(false)
+            false
+        }
+    }
+
+    @Throws(Exception::class)
+    fun getCredentials(password: String, wallet: File): Credentials =
+            WalletUtils.loadCredentials(password, wallet)
+
+    fun checkPassword(password: String, wallet: File): Boolean {
+        return try {
+            getCredentials(password, wallet)
+            true
+        } catch (e: Exception) {
+            e.printStackTrace()
             false
         }
     }

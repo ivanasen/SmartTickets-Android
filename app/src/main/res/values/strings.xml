@@ -107,4 +107,8 @@
     <string name="earnings_usd_format">%s USD</string>
     <string name="earnings_eth_format">%s ETH</string>
     <string name="default_wallet_name">wallet.json</string>
+    <string name="wallet_private_key_title">Wallet private key</string>
+    <string name="show_text">Show</string>
+    <string name="private_key_type_password_text">Type in your password</string>
+    <string name="WRITTEN_DOWN">I\'ve written it down somewhere safe.</string>
 </resources>

@@ -11,6 +11,7 @@ import com.ivanasen.smarttickets.db.models.Ticket
 import com.ivanasen.smarttickets.db.models.TicketType
 import com.ivanasen.smarttickets.repositories.SmartTicketsRepository
 import com.ivanasen.smarttickets.util.Utility
+import com.ivanasen.smarttickets.util.Utility.Companion.WALLET_FILE_NAME_KEY
 import org.jetbrains.anko.defaultSharedPreferences
 import java.io.File
 import java.math.BigDecimal
@@ -42,36 +43,17 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
 //
 //    }
 
-    fun unlockWallet(password: String, context: Context): Boolean {
-        val appContext = context.applicationContext
-        val walletName = appContext.defaultSharedPreferences.getString(WALLET_FILE_NAME, "")
-        require(isThereAWallet(context))
+    fun checkPassword(context: Context, password: String): Boolean {
+        val walletName = context.applicationContext.defaultSharedPreferences.getString(WALLET_FILE_NAME_KEY, "")
+        require(walletName != "")
 
-        val wallet = File(appContext.filesDir, walletName)
-        return mRepository.unlockWallet(password, wallet)
-    }
-
-    fun createNewWallet(password: String, context: Context) {
-        require(password.length < MIN_PASSWORD_LENGTH)
-        val walletName = mRepository.createWallet(password, context.filesDir)
-    }
-
-    fun isThereAWallet(context: Context): Boolean {
-        val appContext = context.applicationContext
-        return try {
-            require(appContext.defaultSharedPreferences.getString(WALLET_FILE_NAME, "") != "")
-            true
-        } catch (e: IllegalArgumentException) {
-            false
-        }
+        val wallet = File(context.filesDir, walletName)
+        require(wallet.exists())
+        return mRepository.checkPassword(password, wallet)
     }
 
     fun sendEther(address: String, amount: Double) {
         mRepository.sendEtherTo(address, amount)
-    }
-
-    fun addEvent(context: Context) {
-
     }
 
     fun onPlacePicked(place: Place?) {

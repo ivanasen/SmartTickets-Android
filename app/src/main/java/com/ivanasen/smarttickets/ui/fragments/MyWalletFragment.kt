@@ -6,11 +6,13 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
+import android.text.InputType
 import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import com.afollestad.materialdialogs.DialogAction
 import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
@@ -72,20 +74,38 @@ class MyWalletFragment : Fragment() {
     }
 
     private fun showPrivateKeyDialog() {
+        val privateKeyDialog = {
+            val privateKeyString = mViewModel.credentials.value?.ecKeyPair?.privateKey?.toString(16)
+            MaterialDialog.Builder(context!!)
+                    .title(getString(R.string.wallet_private_key_title))
+                    .content(privateKeyString as CharSequence)
+                    .positiveText(getString(R.string.WRITTEN_DOWN))
+                    .show()
+        }
+
         MaterialDialog.Builder(context!!)
-                .title("")
+                .title(getString(R.string.private_key_type_password_text))
                 .input(getString(R.string.password_input_hint),
                         "",
                         false,
-                        { materialDialog: MaterialDialog, charSequence: CharSequence ->
-//                            if (mViewModel)
-                        })
-                .positiveText("Show")
-                .onPositive({ materialDialog: MaterialDialog, dialogAction: DialogAction ->
-                    materialDialog.setContent(
-                            mViewModel.credentials.value?.ecKeyPair?.privateKey?.toString(16)
-                    )
+                        { _, _ -> })
+                .inputType(InputType.TYPE_TEXT_VARIATION_PASSWORD)
+                .positiveText(getString(R.string.show_text))
+                .autoDismiss(false)
+                .onPositive({ dialog, _ ->
+                    val password = dialog.inputEditText?.text.toString()
+
+                    if (mViewModel.checkPassword(context!!, password)) {
+                        privateKeyDialog()
+                        dialog.dismiss()
+                    } else {
+                        Toast.makeText(context,
+                                getString(R.string.wrong_password_text),
+                                Toast.LENGTH_SHORT)
+                                .show()
+                    }
                 })
+                .show()
     }
 
     private fun setupViews() {
