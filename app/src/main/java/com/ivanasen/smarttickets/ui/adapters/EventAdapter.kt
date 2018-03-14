@@ -26,7 +26,7 @@ internal class EventAdapter(val activity: Activity, val eventsData: LiveData<Mut
     : RecyclerView.Adapter<EventAdapter.ViewHolder>() {
 
     private val LOG_TAG = EventAdapter::class.java.simpleName
-    private val FADE_DURATION: Long = 300
+    private val FADE_DURATION: Long = 200
 
     private var currentSize: Int = itemCount
 

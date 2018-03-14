@@ -335,8 +335,8 @@ object SmartTicketsRepository {
                 val event = getEvent(i)
                 newEvents.add(event)
                 events.postValue(newEvents)
+                areEventsFetched.postValue(Utility.Companion.TransactionStatus.COMPLETE)
             }
-            areEventsFetched.postValue(Utility.Companion.TransactionStatus.COMPLETE)
         }
     }
 
