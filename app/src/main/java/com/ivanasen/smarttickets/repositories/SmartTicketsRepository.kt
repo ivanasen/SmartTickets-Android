@@ -546,10 +546,10 @@ object SmartTicketsRepository {
         return signatureReq.signature
     }
 
-    fun signTicketMessage(ticket: Ticket): String {
-        val ticketJson = Gson().toJson(ticket)
-
-    }
+//    fun signTicketMessage(ticket: Ticket): String {
+//        val ticketJson = Gson().toJson(ticket)
+//
+//    }
 
 
 //    fun getEventsForArea(lat: Double, long: Double): LiveData<List<IPFSEvent>> {

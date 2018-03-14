@@ -105,6 +105,7 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun signTicketNfcMessage(ticket: Ticket): String {
-        return mRepository.signTicketMessage(ticket)
+//        return mRepository.signTicketMessage(ticket)
+        return ""
     }
 }

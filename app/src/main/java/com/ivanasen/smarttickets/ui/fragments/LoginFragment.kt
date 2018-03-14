@@ -12,7 +12,9 @@ import android.transition.TransitionManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.Toast
 
 import com.ivanasen.smarttickets.R
@@ -93,6 +95,8 @@ class LoginFragment : Fragment() {
         TransitionManager.beginDelayedTransition(view as ViewGroup, Fade())
         loginForm.visibility = View.GONE
         loadingScreen.visibility = View.VISIBLE
-        loginFormContrainer.layoutParams.height = LinearLayout.LayoutParams.MATCH_PARENT
+        loginFormContainer.layoutParams.height = RelativeLayout.LayoutParams.MATCH_PARENT
+        (loginFormContainer.layoutParams as RelativeLayout.LayoutParams)
+                .setMargins(0, 0, 0, 0)
     }
 }

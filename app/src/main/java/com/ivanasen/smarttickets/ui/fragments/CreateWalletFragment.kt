@@ -9,6 +9,7 @@ import android.transition.Slide
 import android.transition.TransitionManager
 import android.view.*
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 
 import com.ivanasen.smarttickets.R
 import com.ivanasen.smarttickets.ui.activities.WelcomeActivity
@@ -61,7 +62,9 @@ class CreateWalletFragment : Fragment() {
         TransitionManager.beginDelayedTransition(mRootView as ViewGroup, Fade())
         createWalletForm.visibility = View.GONE
         walletCreatedView.visibility = View.VISIBLE
-        createWalletContainer.layoutParams.height = LinearLayout.LayoutParams.MATCH_PARENT
+        createWalletContainer.layoutParams.height = RelativeLayout.LayoutParams.MATCH_PARENT
+        (createWalletContainer.layoutParams as RelativeLayout.LayoutParams)
+                .setMargins(0, 0, 0, 0)
     }
 
     private fun checkPasswords() {
