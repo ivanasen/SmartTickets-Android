@@ -115,4 +115,7 @@
     <string name="event_should_have_passed_msg">Event should have passed in order to withdrawal funds!</string>
     <string name="withdrawal_funds_error">Error withdrawaling funds!</string>
     <string name="withdrawal_funds_success">You have successfully withdrawn all of the event earnings! They should appear in your wallet in a couple of minutes.</string>
+    <string name="validate_tickets">Validate Tickets</string>
+    <string name="ticket_validator_title">Validate Tickets</string>
+    <string name="event_passed_text">This Event has passed.</string>
 </resources>

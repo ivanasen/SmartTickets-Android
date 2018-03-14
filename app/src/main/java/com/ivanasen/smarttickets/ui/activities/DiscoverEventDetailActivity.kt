@@ -6,6 +6,8 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.view.View
+import android.widget.CalendarView
 import android.widget.Toast
 import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
@@ -23,6 +25,7 @@ import org.jetbrains.anko.sdk25.coroutines.onClick
 import java.text.DateFormat
 import java.text.DateFormat.*
 import java.text.SimpleDateFormat
+import java.util.*
 
 class DiscoverEventDetailActivity : AppCompatActivity() {
 
@@ -95,7 +98,8 @@ class DiscoverEventDetailActivity : AppCompatActivity() {
                     })
         }
 
-        val formatDate = getDateTimeInstance(MEDIUM, SHORT).format(event.timestamp * 1000)
+        val eventTimestamp = event.timestamp * 1000
+        val formatDate = getDateTimeInstance(MEDIUM, SHORT).format(eventTimestamp)
         eventTimeView.text = formatDate
 
         eventLocationView.text = event.locationAddress
@@ -103,11 +107,15 @@ class DiscoverEventDetailActivity : AppCompatActivity() {
 
         eventDescriptionView.text = event.description
 
-        val ticketTypes = event.tickets
-        val adapter = TicketTypeAdapter(this, ticketTypes, attemptBuyTicket)
-        ticketTypesRecyclerView.adapter = adapter
-        ticketTypesRecyclerView.layoutManager = LinearLayoutManager(this)
-
+        if (eventTimestamp > Calendar.getInstance().timeInMillis) {
+            val ticketTypes = event.tickets
+            val adapter = TicketTypeAdapter(this, ticketTypes, attemptBuyTicket)
+            ticketTypesRecyclerView.adapter = adapter
+            ticketTypesRecyclerView.layoutManager = LinearLayoutManager(this)
+        } else {
+            ticketTypesContainer.visibility = View.GONE
+            eventPassedView.visibility = View.VISIBLE
+        }
     }
 
 }

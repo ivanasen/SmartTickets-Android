@@ -22,6 +22,7 @@ class TicketValidatorActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ticket_validator)
+        title = getString(R.string.ticket_validator_title)
 
         if (mNfcAdapter == null) {
             Toast.makeText(this,

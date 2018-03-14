@@ -18,6 +18,7 @@ import com.ivanasen.smarttickets.R
 import com.ivanasen.smarttickets.db.models.Event
 import com.ivanasen.smarttickets.ui.activities.DiscoverEventDetailActivity
 import com.ivanasen.smarttickets.ui.adapters.EventAdapter
+import com.ivanasen.smarttickets.util.Utility
 import com.ivanasen.smarttickets.viewmodels.AppViewModel
 import kotlinx.android.synthetic.main.fragment_discover.*
 import org.jetbrains.anko.support.v4.onRefresh
@@ -68,15 +69,23 @@ class DiscoverFragment : Fragment() {
     }
 
     private fun observeLiveData() {
-        mViewModel.events.observe(this, Observer {
-            if ((it ?: emptyList<Event>()).isNotEmpty()) {
-                emptyViewLayout.visibility = View.GONE
-                eventsView.visibility = View.VISIBLE
-            } else {
-                emptyViewLayout.visibility = View.VISIBLE
-                eventsView.visibility = View.GONE
+        mViewModel.areEventsFetched.observe(this, Observer {
+            when (it) {
+                Utility.Companion.TransactionStatus.COMPLETE -> {
+                    val events = mViewModel.events.value
+                    if (events != null && events.isNotEmpty()) {
+                        emptyViewLayout.visibility = View.GONE
+                        eventsView.visibility = View.VISIBLE
+                    } else {
+                        emptyViewLayout.visibility = View.VISIBLE
+                        eventsView.visibility = View.GONE
+                    }
+                    eventRefreshLayout.isRefreshing = false
+                }
+                else -> {
+                    Log.d(LOG_TAG, "Not supporting that transactionStatus.")
+                }
             }
-            eventRefreshLayout.isRefreshing = false
         })
     }
 

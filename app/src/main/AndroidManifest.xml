@@ -71,7 +71,12 @@
             android:parentActivityName=".ui.activities.MainActivity"
             android:screenOrientation="portrait" />
 
-        <activity android:name=".ui.activities.TicketValidatorActivity">
+        <activity
+            android:name=".ui.activities.TicketValidatorActivity"
+            android:configChanges="orientation"
+            android:parentActivityName=".ui.activities.MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeActionBar">
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
                 <category android:name="android.intent.category.DEFAULT" />

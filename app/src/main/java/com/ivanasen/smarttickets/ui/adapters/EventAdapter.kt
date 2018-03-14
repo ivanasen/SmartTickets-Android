@@ -13,17 +13,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.ivanasen.smarttickets.BuildConfig
 import com.ivanasen.smarttickets.R
 import com.ivanasen.smarttickets.db.models.Event
 import org.jetbrains.anko.sdk25.coroutines.onClick
-import java.text.SimpleDateFormat
-import android.support.v4.app.ActivityOptionsCompat
-import android.content.Intent
-import android.media.Image
-import com.ivanasen.smarttickets.ui.activities.DiscoverEventDetailActivity
 import com.ivanasen.smarttickets.util.Utility
 import java.text.DateFormat
+import android.view.animation.AlphaAnimation
 
 
 internal class EventAdapter(val activity: Activity, val eventsData: LiveData<MutableList<Event>>,
@@ -31,10 +26,20 @@ internal class EventAdapter(val activity: Activity, val eventsData: LiveData<Mut
     : RecyclerView.Adapter<EventAdapter.ViewHolder>() {
 
     private val LOG_TAG = EventAdapter::class.java.simpleName
+    private val FADE_DURATION: Long = 300
+
+    private var currentSize: Int = itemCount
 
     init {
         eventsData.observe(activity as LifecycleOwner, Observer {
-            notifyDataSetChanged()
+            it?.let {
+                if (it.size > currentSize) {
+                    notifyItemInserted(it.size - 1)
+                } else {
+                    notifyDataSetChanged()
+                }
+                currentSize = it.size
+            }
         })
     }
 
@@ -76,8 +81,15 @@ internal class EventAdapter(val activity: Activity, val eventsData: LiveData<Mut
         holder.view.onClick {
             eventClickCallBack(eventId, holder.eventImageView)
         }
+
+        setFadeAnimation(holder.view)
     }
 
+    private fun setFadeAnimation(view: View) {
+        val anim = AlphaAnimation(0.0f, 1.0f)
+        anim.duration = FADE_DURATION
+        view.startAnimation(anim)
+    }
 
     class ViewHolder(var view: View) : RecyclerView.ViewHolder(view) {
         val eventImageView: ImageView = view.findViewById(R.id.eventImageView)

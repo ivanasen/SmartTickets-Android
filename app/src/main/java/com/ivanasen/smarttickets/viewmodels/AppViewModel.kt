@@ -35,6 +35,11 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
     val events: LiveData<MutableList<Event>> = mRepository.events
     val tickets: LiveData<MutableList<Ticket>> = mRepository.tickets
 
+    val areEventsFetched: LiveData<Utility.Companion.TransactionStatus> =
+            mRepository.areEventsFetched
+    val areTicketsFetched: LiveData<Utility.Companion.TransactionStatus> =
+            mRepository.areTicketsFetched
+
 //    public fun refreshEvents(): LiveData<List<IPFSEvent>> {
 //
 //    }

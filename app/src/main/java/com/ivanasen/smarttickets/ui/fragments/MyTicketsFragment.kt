@@ -12,9 +12,6 @@ import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.transition.Fade
 import android.transition.TransitionManager
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
@@ -33,12 +30,17 @@ import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.support.v4.onRefresh
 import java.text.DateFormat
 import android.nfc.NdefRecord
-import com.google.gson.Gson
+import android.util.Log
+import android.view.*
+import com.ivanasen.smarttickets.ui.activities.TicketValidatorActivity
+import com.ivanasen.smarttickets.util.Utility.Companion.launchActivity
 
 
 class MyTicketsFragment : Fragment(),
         NfcAdapter.CreateNdefMessageCallback,
         NfcAdapter.OnNdefPushCompleteCallback {
+
+    private val LOG_TAG: String = MyTicketsFragment::class.java.simpleName
     private val QR_CODE_SIZE: Int = 400
 
     private val mViewModel: AppViewModel by lazy {
@@ -54,6 +56,20 @@ class MyTicketsFragment : Fragment(),
         activity?.title = getString(R.string.title_my_tickets)
         setHasOptionsMenu(true)
         return inflater.inflate(R.layout.fragment_my_tickets, container, false)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater?.inflate(R.menu.my_tickets, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.navigation_validate_tickets -> {
+                context?.let { launchActivity(it, TicketValidatorActivity::class.java) }
+            }
+        }
+        return true
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -169,15 +185,25 @@ class MyTicketsFragment : Fragment(),
     }
 
     private fun observeLiveData() {
-        mViewModel.tickets.observe(this, Observer {
-            if ((it ?: emptyList<Ticket>()).isNotEmpty()) {
-                emptyViewLayout.visibility = View.GONE
-                ticketsRecyclerView.visibility = View.VISIBLE
-            } else {
-                emptyViewLayout.visibility = View.VISIBLE
-                ticketsRecyclerView.visibility = View.GONE
+        mViewModel.areTicketsFetched.observe(this, Observer {
+            when (it) {
+                Utility.Companion.TransactionStatus.COMPLETE -> {
+                    val tickets = mViewModel.tickets.value
+
+                    if (tickets != null && tickets.isNotEmpty()) {
+                        emptyViewLayout.visibility = View.GONE
+                        ticketsRecyclerView.visibility = View.VISIBLE
+                    } else {
+                        emptyViewLayout.visibility = View.VISIBLE
+                        ticketsRecyclerView.visibility = View.GONE
+                    }
+
+                    ticketsRefreshLayout.isRefreshing = false
+                }
+                else -> {
+                    Log.d(LOG_TAG, "Not supporting this transactionStatus")
+                }
             }
-            ticketsRefreshLayout.isRefreshing = false
         })
     }
 }

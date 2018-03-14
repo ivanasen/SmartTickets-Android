@@ -89,24 +89,44 @@
 
             <include layout="@layout/seperator_view_layout" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/small_margin"
-                android:paddingEnd="@dimen/default_padding"
-                android:paddingStart="@dimen/default_padding"
-                android:paddingTop="@dimen/default_padding"
-                android:text="@string/available_tickets_text"
-                android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/ticketTypesRecyclerView"
+            <LinearLayout
+                android:id="@+id/ticketTypesContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clipChildren="false"
-                android:clipToPadding="false"
-                android:paddingBottom="@dimen/default_padding"
-                tools:listitem="@layout/list_item_ticket_type" />
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/small_margin"
+                    android:paddingEnd="@dimen/default_padding"
+                    android:paddingStart="@dimen/default_padding"
+                    android:paddingTop="@dimen/default_padding"
+                    android:text="@string/available_tickets_text"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/ticketTypesRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:paddingBottom="@dimen/default_padding"
+                    tools:listitem="@layout/list_item_ticket_type" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/eventPassedView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/big_margin"
+                android:text="@string/event_passed_text"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textColor="@android:color/secondary_text_light_nodisable"
+                android:visibility="gone" />
+
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 

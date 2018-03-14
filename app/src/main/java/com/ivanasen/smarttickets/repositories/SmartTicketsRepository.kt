@@ -36,6 +36,7 @@ import java.nio.charset.Charset
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
+import java.util.*
 
 
 object SmartTicketsRepository {
@@ -58,6 +59,9 @@ object SmartTicketsRepository {
     val myEvents: MutableLiveData<MutableList<Event>> = MutableLiveData()
     val events: MutableLiveData<MutableList<Event>> = MutableLiveData()
     val tickets: MutableLiveData<MutableList<Ticket>> = MutableLiveData()
+
+    val areEventsFetched: MutableLiveData<Utility.Companion.TransactionStatus> = MutableLiveData()
+    val areTicketsFetched: MutableLiveData<Utility.Companion.TransactionStatus> = MutableLiveData()
 
     fun createEvent(name: String,
                     description: String,
@@ -322,15 +326,17 @@ object SmartTicketsRepository {
 
     fun fetchEvents() {
         bg {
+            areEventsFetched.postValue(Utility.Companion.TransactionStatus.PENDING)
             val newEvents = mutableListOf<Event>()
             val eventCount = mContract.eventCount.send().toLong()
 
-            // We start from index 1 because at index 0 is the Genesis Event of the contract
-            for (i in 1 until eventCount + 1) {
+            // We start one index up because of genesis event in contract
+            for (i in eventCount downTo 1) {
                 val event = getEvent(i)
                 newEvents.add(event)
                 events.postValue(newEvents)
             }
+            areEventsFetched.postValue(Utility.Companion.TransactionStatus.COMPLETE)
         }
     }
 
@@ -404,6 +410,7 @@ object SmartTicketsRepository {
 
     fun fetchTickets() {
         bg {
+            areTicketsFetched.postValue(Utility.Companion.TransactionStatus.PENDING)
             val newTickets = mutableListOf<Ticket>()
             val ownerAddress = credentials.value?.address
             val ticketIds = mContract.getTicketsForOwner(ownerAddress).send()
@@ -418,6 +425,7 @@ object SmartTicketsRepository {
                     tickets.postValue(newTickets)
                 }
             }
+            areTicketsFetched.postValue(Utility.Companion.TransactionStatus.COMPLETE)
         }
     }
 
