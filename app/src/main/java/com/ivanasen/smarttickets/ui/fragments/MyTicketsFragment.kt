@@ -79,17 +79,17 @@ class MyTicketsFragment : Fragment(),
     }
 
     private fun setupNfcAdapter() {
-        if (mNfcAdapter == null) {
-            Toast.makeText(context,
-                    "nfcAdapter==null, no NFC adapter exists",
-                    Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(context,
-                    "Set Callback(s)",
-                    Toast.LENGTH_LONG).show();
-            mNfcAdapter!!.setNdefPushMessageCallback(this, activity)
-            mNfcAdapter!!.setOnNdefPushCompleteCallback(this, activity)
-        }
+//        if (mNfcAdapter == null) {
+//            Toast.makeText(context,
+//                    "nfcAdapter==null, no NFC adapter exists",
+//                    Toast.LENGTH_LONG).show();
+//        } else {
+//            Toast.makeText(context,
+//                    "Set Callback(s)",
+//                    Toast.LENGTH_LONG).show();
+//            mNfcAdapter!!.setNdefPushMessageCallback(this, activity)
+//            mNfcAdapter!!.setOnNdefPushCompleteCallback(this, activity)
+//        }
     }
 
     private fun setupViews() {

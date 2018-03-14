@@ -23,16 +23,6 @@ class TicketValidatorActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ticket_validator)
         title = getString(R.string.ticket_validator_title)
-
-        if (mNfcAdapter == null) {
-            Toast.makeText(this,
-                    "nfcAdapter==null, no NFC adapter exists",
-                    Toast.LENGTH_LONG).show()
-        } else {
-            Toast.makeText(this,
-                    "Set Callback(s)",
-                    Toast.LENGTH_LONG).show()
-        }
     }
 
     override fun onResume() {
