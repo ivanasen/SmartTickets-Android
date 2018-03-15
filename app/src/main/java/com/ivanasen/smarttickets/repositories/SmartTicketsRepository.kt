@@ -542,6 +542,15 @@ object SmartTicketsRepository {
         return Sign.signMessage(message.toByteArray(), credentials.value?.ecKeyPair)
     }
 
+    fun validateTicket(qrCodeString: String): LiveData<Utility.Companion.TransactionStatus> {
+        val validationLiveData: MutableLiveData<Utility.Companion.TransactionStatus> =
+                MutableLiveData()
+        bg {
+
+        }
+        return validationLiveData
+    }
+
 //    fun signTicketMessage(ticket: Ticket): String {
 //        val ticketJson = Gson().toJson(ticket)
 //

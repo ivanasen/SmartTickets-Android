@@ -125,4 +125,6 @@
     <string name="ticket_valid_text">Ticket is valid.</string>
     <string name="ticketvalid_content_description">ticketValid</string>
     <string name="ticket_not_valid_text">Ticket is not valid!</string>
+    <string name="qr_code_error">Error scanning QR code.</string>
+    <string name="camera_permission_message">Smart Tickets needs camera permission in order to scan a ticket</string>
 </resources>

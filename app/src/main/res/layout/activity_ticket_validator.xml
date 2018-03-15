@@ -7,7 +7,7 @@
     tools:context="com.ivanasen.smarttickets.ui.activities.TicketValidatorActivity">
 
     <pl.bclogic.pulsator4droid.library.PulsatorLayout
-        android:id="@+id/pulsator"
+        android:id="@+id/tapToScanView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -19,8 +19,9 @@
         app:pulse_startFromScratch="true">
 
         <Button
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:id="@+id/scanTicketBtn"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_centerInParent="true"
             android:background="@drawable/circle_btn_gradient"
             android:gravity="center"
@@ -82,7 +83,7 @@
             android:textColor="@android:color/secondary_text_light" />
 
         <Button
-            android:id="@+id/scanAnotherTicketBtn"
+            android:id="@id/scanTicketBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/big_margin"
@@ -94,7 +95,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/ticketValidatingFailView"
+        android:id="@+id/ticketValidatingErrorView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -120,7 +121,7 @@
             android:textColor="@android:color/secondary_text_light" />
 
         <Button
-            android:id="@id/scanAnotherTicketBtn"
+            android:id="@id/scanTicketBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/big_margin"

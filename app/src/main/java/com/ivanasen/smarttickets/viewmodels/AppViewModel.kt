@@ -117,4 +117,8 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
     fun createTicketValidationCode(ticket: Ticket): LiveData<String> {
         return mRepository.createTicketValidationCode(ticket)
     }
+
+    fun verifyTicket(qrCodeString: String): LiveData<Utility.Companion.TransactionStatus> {
+        return mRepository.validateTicket(qrCodeString)
+    }
 }
