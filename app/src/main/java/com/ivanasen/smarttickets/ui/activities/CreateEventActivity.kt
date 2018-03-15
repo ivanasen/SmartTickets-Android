@@ -160,7 +160,11 @@ class CreateEventActivity : AppCompatActivity() {
                     .observe(this@CreateEventActivity, Observer {
                         when (it) {
                             Utility.Companion.TransactionStatus.PENDING -> {
-                                showLoadingScreen()
+                                Toast.makeText(this@CreateEventActivity,
+                                        getString(R.string.event_creating_message),
+                                        Toast.LENGTH_LONG)
+                                        .show()
+                                finish()
                             }
                             Utility.Companion.TransactionStatus.COMPLETE -> {
                                 MaterialDialog.Builder(this@CreateEventActivity)
