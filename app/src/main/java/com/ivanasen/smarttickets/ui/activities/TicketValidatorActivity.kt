@@ -55,6 +55,8 @@ class TicketValidatorActivity : AppCompatActivity() {
         tapToScanView.start()
 
         scanTicketBtn.onClick { openQrScanner() }
+        scanAnotherTicketBtnError.onClick { openQrScanner() }
+        scanAnotherTicketBtnSuccess.onClick { openQrScanner() }
     }
 
     private fun openQrScanner() {
@@ -99,7 +101,7 @@ class TicketValidatorActivity : AppCompatActivity() {
     }
 
     private fun showValidationInProcessView() {
-        TransitionManager.beginDelayedTransition(contentView as ViewGroup, Fade())
+//        TransitionManager.beginDelayedTransition(contentView as ViewGroup, Fade())
         tapToScanView.visibility = View.GONE
         ticketValidatingErrorView.visibility = View.GONE
         ticketValidatingSuccessView.visibility = View.GONE
@@ -107,7 +109,7 @@ class TicketValidatorActivity : AppCompatActivity() {
     }
 
     private fun showValidationSuccessView() {
-        TransitionManager.beginDelayedTransition(contentView as ViewGroup, Fade())
+//        TransitionManager.beginDelayedTransition(contentView as ViewGroup, Fade())
         tapToScanView.visibility = View.GONE
         ticketValidatingErrorView.visibility = View.GONE
         ticketValidatingSuccessView.visibility = View.VISIBLE
@@ -115,7 +117,7 @@ class TicketValidatorActivity : AppCompatActivity() {
     }
 
     private fun showValidationErrorView() {
-        TransitionManager.beginDelayedTransition(contentView as ViewGroup, Fade())
+//        TransitionManager.beginDelayedTransition(contentView as ViewGroup, Fade())
         tapToScanView.visibility = View.GONE
         ticketValidatingErrorView.visibility = View.VISIBLE
         ticketValidatingSuccessView.visibility = View.GONE

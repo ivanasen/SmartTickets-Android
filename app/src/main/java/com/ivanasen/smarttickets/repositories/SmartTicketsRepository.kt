@@ -545,9 +545,37 @@ object SmartTicketsRepository {
     fun validateTicket(qrCodeString: String): LiveData<Utility.Companion.TransactionStatus> {
         val validationLiveData: MutableLiveData<Utility.Companion.TransactionStatus> =
                 MutableLiveData()
-        bg {
 
+        bg {
+            validationLiveData.postValue(Utility.Companion.TransactionStatus.PENDING)
+            try {
+                val ticketValidationCode = Gson().fromJson(qrCodeString,
+                        TicketValidationCode::class.java)
+
+                val ticketId = ticketValidationCode.ticket
+                val ticketHash = Hash.sha3(ticketId.toByteArray())
+
+                Log.d(LOG_TAG, ticketHash.size.toString())
+                val address = ticketValidationCode.address
+                val signature = ticketValidationCode.ticketSignature
+
+                val s = signature?.s
+                val r = signature?.r
+                val v = signature?.v
+
+                val isOwned = mContract.verifyTicket(ticketId.toBigInteger(),
+                        ticketHash, address, v?.toInt()?.toBigInteger(), r, s).send()
+                if (isOwned) {
+                    validationLiveData.postValue(Utility.Companion.TransactionStatus.COMPLETE)
+                } else {
+                    validationLiveData.postValue(Utility.Companion.TransactionStatus.ERROR)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                validationLiveData.postValue(Utility.Companion.TransactionStatus.ERROR)
+            }
         }
+
         return validationLiveData
     }
 

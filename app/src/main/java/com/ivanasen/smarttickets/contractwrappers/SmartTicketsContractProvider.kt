@@ -4,15 +4,13 @@ package com.ivanasen.smarttickets.contractwrappers
 import com.ivanasen.smarttickets.BuildConfig
 import org.web3j.crypto.Credentials
 import org.web3j.protocol.Web3j
-import org.web3j.protocol.core.DefaultBlockParameterName
-import kotlin.math.max
 
 
 object SmartTicketsContractProvider {
     // Uses Ganache
     //    private const val debugAddress: String = "0x345ca3e014aaf5dca488057592ee47305d9b3e10"
-    private const val ropstenAddress: String = "0x5Cf40Ca267A29b19Ec54D4A36A259396b81282Cb"
-    private const val debugAddress: String = "0x5Cf40Ca267A29b19Ec54D4A36A259396b81282Cb"
+    private const val ropstenAddress: String = "0x7328fc22226ac65c9a93b9d873fba0683d7d1b3e"
+    private const val debugAddress: String = "0x7328fc22226ac65c9a93b9d873fba0683d7d1b3e"
 
     fun provide(web3: Web3j, credentials: Credentials): SmartTickets {
         val address = if (BuildConfig.DEBUG) debugAddress else ropstenAddress
