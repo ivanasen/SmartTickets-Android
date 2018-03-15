@@ -119,4 +119,10 @@
     <string name="ticket_validator_title">Validate Tickets</string>
     <string name="event_passed_text">This Event has passed.</string>
     <string name="nfc_coming_soon">Validation of tickets through NFC coming soon…</string>
+    <string name="tap_to_scan_qr_code">Tap to scan ticket QR Code</string>
+    <string name="validating_ticket">Validating ticket…</string>
+    <string name="scan_another_one_text">Scan Another One</string>
+    <string name="ticket_valid_text">Ticket is valid.</string>
+    <string name="ticketvalid_content_description">ticketValid</string>
+    <string name="ticket_not_valid_text">Ticket is not valid!</string>
 </resources>

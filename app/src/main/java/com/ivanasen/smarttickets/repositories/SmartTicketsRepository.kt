@@ -22,9 +22,7 @@ import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.web3j.abi.datatypes.generated.Uint256
-import org.web3j.crypto.Credentials
-import org.web3j.crypto.Hash
-import org.web3j.crypto.WalletUtils
+import org.web3j.crypto.*
 import org.web3j.protocol.Web3j
 import org.web3j.protocol.core.DefaultBlockParameterName
 import org.web3j.tuples.generated.Tuple6
@@ -36,7 +34,6 @@ import java.nio.charset.Charset
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
-import java.util.*
 
 
 object SmartTicketsRepository {
@@ -527,31 +524,22 @@ object SmartTicketsRepository {
         return stringBuilder.toString()
     }
 
-    fun validateTicket(ticket: Ticket): LiveData<Utility.Companion.TransactionStatus> {
-        val txLiveData: MutableLiveData<Utility.Companion.TransactionStatus> = MutableLiveData()
-
+    fun createTicketValidationCode(ticket: Ticket): LiveData<String> {
+        val codeLiveData: MutableLiveData<String> = MutableLiveData()
         bg {
-            val ticketId = ticket.ticketId.toString()
-            val messageFixed = "\\x19Ethereum Signed Message:\n${ticketId.length}$ticketId"
-            val signature = signMessage(messageFixed)
+            val signature = signMessage(ticket.ticketId.toString())
 
-//            mContract.validateTicket()
+            val validation = TicketValidationCode(
+                    ticket.ticketId.toString(),
+                    signature,
+                    credentials.value?.address!!)
+            codeLiveData.postValue(Gson().toJson(validation))
         }
-
-        return txLiveData
+        return codeLiveData
     }
 
-    private fun signMessage(utf8message: String): String {
-        val messageSha3 = Hash.sha3String(utf8message)
-        val address = credentials.value?.address
-
-        val signatureReq = mWeb3.ethSign(address, messageSha3).send()
-
-        if (signatureReq.error != null) {
-            throw Exception("Error signing utf8message")
-        }
-
-        return signatureReq.signature
+    private fun signMessage(message: String): Sign.SignatureData? {
+        return Sign.signMessage(message.toByteArray(), credentials.value?.ecKeyPair)
     }
 
 //    fun signTicketMessage(ticket: Ticket): String {

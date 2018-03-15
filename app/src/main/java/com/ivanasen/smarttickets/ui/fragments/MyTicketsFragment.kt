@@ -146,9 +146,12 @@ class MyTicketsFragment : Fragment(),
                         .centerCrop())
                 .into(ticketEventImageView)
 
-        val ticketIdString = ticket.ticketId.toString()
-        val ticketBitmap = QRCode.from(ticketIdString).withSize(QR_CODE_SIZE, QR_CODE_SIZE).bitmap()
-        ticketQrCode.imageBitmap = ticketBitmap
+        mViewModel.createTicketValidationCode(ticket).observe(this, Observer {
+            it?.let {
+                val ticketBitmap = QRCode.from(it).withSize(QR_CODE_SIZE, QR_CODE_SIZE).bitmap()
+                ticketQrCode.imageBitmap = ticketBitmap
+            }
+        })
 
         ticketEventName.text = event.name
         ticketEventLocation.text = event.locationName

@@ -113,4 +113,8 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
 //        return mRepository.signTicketMessage(ticket)
         return ""
     }
+
+    fun createTicketValidationCode(ticket: Ticket): LiveData<String> {
+        return mRepository.createTicketValidationCode(ticket)
+    }
 }

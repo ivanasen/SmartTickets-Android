@@ -9,12 +9,14 @@ import android.widget.Toast
 import com.ivanasen.smarttickets.R
 import android.nfc.NdefRecord
 import android.util.Log
+import kotlinx.android.synthetic.main.activity_ticket_validator.*
 
 
 class TicketValidatorActivity : AppCompatActivity() {
 
     private val LOG_TAG = TicketValidatorActivity::class.java.simpleName
 
+    private val REQUEST_CODE_QR_SCAN = 101
     private val mNfcAdapter: NfcAdapter? by lazy {
         NfcAdapter.getDefaultAdapter(this)
     }
@@ -23,6 +25,9 @@ class TicketValidatorActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ticket_validator)
         title = getString(R.string.ticket_validator_title)
+
+
+        pulsator.start()
     }
 
     override fun onResume() {
