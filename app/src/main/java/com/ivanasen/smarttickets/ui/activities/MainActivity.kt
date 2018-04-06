@@ -23,13 +23,14 @@ import kotlinx.android.synthetic.main.fragment_my_tickets.*
 
 class MainActivity : AppCompatActivity() {
 
-    private val LOG_TAG = MainActivity::class.simpleName
+    companion object {
+        private val LOG_TAG = MainActivity::class.simpleName
+        private const val ACTIVE_FRAGMENT_KEY = "activeFragment"
+    }
 
     private val mViewModel by lazy {
         ViewModelProviders.of(this).get(AppViewModel::class.java)
     }
-
-    private val ACTIVE_FRAGMENT_KEY = "activeFragment"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

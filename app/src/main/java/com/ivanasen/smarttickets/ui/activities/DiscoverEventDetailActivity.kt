@@ -30,10 +30,9 @@ import java.util.*
 class DiscoverEventDetailActivity : AppCompatActivity() {
 
     companion object {
-        val EXTRA_EVENT_ID = "ExtraEventId"
+        const val EXTRA_EVENT_ID = "ExtraEventId"
+        private val LOG_TAG = DiscoverEventDetailActivity::class.java.simpleName
     }
-
-    private val LOG_TAG = DiscoverEventDetailActivity::class.java.simpleName
 
     private val mViewModel: AppViewModel by lazy {
         ViewModelProviders.of(this).get(AppViewModel::class.java)

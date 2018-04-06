@@ -10,9 +10,6 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import com.google.android.gms.location.places.GeoDataClient
-import com.google.android.gms.location.places.PlaceDetectionClient
-import com.google.android.gms.location.places.Places
 import com.google.android.gms.location.places.ui.PlacePicker
 import com.ivanasen.smarttickets.R
 import com.ivanasen.smarttickets.viewmodels.CreateEventActivityViewModel
@@ -42,25 +39,27 @@ import java.text.SimpleDateFormat
 
 class CreateEventActivity : AppCompatActivity() {
 
-    private val LOG_TAG: String = CreateEventActivity::class.java.simpleName
+    companion object {
+        private val LOG_TAG: String = CreateEventActivity::class.java.simpleName
 
-    private val PLACE_PICKER_REQUEST = 1
-    private val PERMISSIONS_REQUEST_WRITE_STORAGE = 2
-    private val MAX_EVENT_IMAGES = 5
+        private const val PLACE_PICKER_REQUEST = 1
+        private const val PERMISSIONS_REQUEST_WRITE_STORAGE = 2
+        private const val MAX_EVENT_IMAGES = 5
+    }
 
     private lateinit var mAdapter: ImageAdapter
     val viewModel: CreateEventActivityViewModel by lazy {
         ViewModelProviders.of(this).get(CreateEventActivityViewModel::class.java)
     }
 
-    private val mGeoDataClient: GeoDataClient by lazy {
-        Places.getGeoDataClient(this, null)
-    }
+//    private val mGeoDataClient: GeoDataClient by lazy {
+//        Places.getGeoDataClient(this, null)
+//    }
 
 
-    private val mPlaceDetectionClient: PlaceDetectionClient by lazy {
-        Places.getPlaceDetectionClient(this, null)
-    }
+//    private val mPlaceDetectionClient: PlaceDetectionClient by lazy {
+//        Places.getPlaceDetectionClient(this, null)
+//    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -188,11 +187,11 @@ class CreateEventActivity : AppCompatActivity() {
 
     }
 
-    private fun showLoadingScreen() {
-        TransitionManager.beginDelayedTransition(rootView as ViewGroup, Fade())
-        contentView.visibility = View.GONE
-        eventProgressBar.visibility = View.VISIBLE
-    }
+//    private fun showLoadingScreen() {
+//        TransitionManager.beginDelayedTransition(rootView as ViewGroup, Fade())
+//        contentView.visibility = View.GONE
+//        eventProgressBar.visibility = View.VISIBLE
+//    }
 
     private fun hideLoadingScreen() {
         TransitionManager.beginDelayedTransition(rootView as ViewGroup, Fade())

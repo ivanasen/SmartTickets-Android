@@ -41,7 +41,7 @@
                 android:layout_marginBottom="@dimen/small_margin"
                 android:text="@string/unlock_wallet_text"
                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                android:textColor="@color/textGrey" />
+                android:textColor="@color/textGray" />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -59,7 +59,7 @@
                     android:imeOptions="actionDone"
                     android:inputType="textPassword"
                     android:maxLines="1"
-                    android:textColor="@color/dark_grey"
+                    android:textColor="@color/blackGray"
                     android:textSize="24sp" />
 
             </android.support.design.widget.TextInputLayout>

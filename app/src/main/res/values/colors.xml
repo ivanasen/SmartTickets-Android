@@ -6,8 +6,10 @@
 
     <color name="appOrangePink">#ff626d</color>
     <color name="appOrange">#ffbf71</color>
-    <color name="textGrey">#616161</color>
+    <color name="textGray">#616161</color>
 
-    <color name="lightGrey">#bdbdbd</color>
+    <color name="lightGray">#bdbdbd</color>
+    <color name="blackGray">#282828</color>
     <color name="transparentDark">#32000000</color>
+    <color name="white">#FFFFFF</color>
 </resources>

@@ -14,7 +14,7 @@
         android:layout_marginBottom="@dimen/small_margin"
         android:text="@string/create_new_wallet_title"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-        android:textColor="@color/textGrey" />
+        android:textColor="@color/textGray" />
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"

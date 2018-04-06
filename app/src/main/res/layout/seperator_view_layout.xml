@@ -4,5 +4,5 @@
     android:layout_height="0.5dp"
     android:layout_marginEnd="@dimen/default_margin"
     android:layout_marginStart="@dimen/default_margin"
-    android:background="@color/light_grey"
+    android:background="@color/lightGray"
     android:padding="@dimen/small_padding" />
