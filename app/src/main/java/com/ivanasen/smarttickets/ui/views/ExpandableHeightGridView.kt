@@ -16,12 +16,8 @@ class ExpandableHeightGridView : GridView {
                 defStyle: Int) : super(context, attrs, defStyle)
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        // HACK! TAKE THAT ANDROID!
         if (isExpanded) {
-            // Calculate entire height by providing a very large height hint.
-            // View.MEASURED_SIZE_MASK represents the largest height possible.
-            val expandSpec = MeasureSpec.makeMeasureSpec(MEASURED_SIZE_MASK,
-                    MeasureSpec.AT_MOST)
+            val expandSpec = MeasureSpec.makeMeasureSpec(MEASURED_SIZE_MASK, MeasureSpec.AT_MOST)
             super.onMeasure(widthMeasureSpec, expandSpec)
 
             val params = layoutParams

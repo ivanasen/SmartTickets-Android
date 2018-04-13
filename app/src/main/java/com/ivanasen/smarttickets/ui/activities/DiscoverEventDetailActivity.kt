@@ -7,24 +7,19 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
-import android.widget.CalendarView
 import android.widget.Toast
 import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.gms.maps.model.LatLng
 import com.ivanasen.smarttickets.R
-import com.ivanasen.smarttickets.db.models.Event
 import com.ivanasen.smarttickets.db.models.TicketType
 import com.ivanasen.smarttickets.ui.adapters.TicketTypeAdapter
 import com.ivanasen.smarttickets.util.Utility
-import com.ivanasen.smarttickets.util.Utility.Companion.launchActivity
 import com.ivanasen.smarttickets.viewmodels.AppViewModel
 import kotlinx.android.synthetic.main.activity_discover_event_detail.*
 import org.jetbrains.anko.sdk25.coroutines.onClick
-import java.text.DateFormat
 import java.text.DateFormat.*
-import java.text.SimpleDateFormat
 import java.util.*
 
 class DiscoverEventDetailActivity : AppCompatActivity() {
