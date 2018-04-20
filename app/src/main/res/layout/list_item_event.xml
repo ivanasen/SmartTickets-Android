@@ -26,6 +26,8 @@
                 android:id="@+id/eventImageView"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/event_list_item_image_height"
+                android:background="@drawable/gradient_background"
+                android:src="@drawable/empty_view"
                 android:transitionName="@string/event_transition"
                 app:riv_corner_radius="6dp" />
 

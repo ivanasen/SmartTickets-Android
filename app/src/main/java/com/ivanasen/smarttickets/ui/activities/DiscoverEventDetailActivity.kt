@@ -58,12 +58,14 @@ class DiscoverEventDetailActivity : AppCompatActivity() {
 
         title = event.name
 
-        val imageUrl = Utility.getIpfsImageUrl(event.images[0])
-        Glide.with(this)
-                .load(imageUrl)
-                .apply(RequestOptions()
-                        .centerCrop())
-                .into(eventImage)
+        if (event.images.isNotEmpty()) {
+            val imageUrl = Utility.getIpfsImageUrl(event.images[0])
+            Glide.with(this)
+                    .load(imageUrl)
+                    .apply(RequestOptions()
+                            .centerCrop())
+                    .into(eventImage)
+        }
 
         val attemptBuyTicket: (ticketType: TicketType) -> Unit = {
             mViewModel.attemptToBuyTicket(it)

@@ -66,17 +66,19 @@ internal class EventAdapter(val activity: Activity, val eventsData: LiveData<Mut
         val cheapestTicket = eventsData.value!![position].tickets.minBy { it.priceInUSDCents }
         holder.eventTicketView.text = String.format(activity.getString(R.string.starting_from_text),
                 (cheapestTicket?.priceInUSDCents!!.toDouble() / 100))
-        val imageHash = eventsData.value!![position].images[0]
-        val imageUrl = Utility.getIpfsImageUrl(imageHash)
+        if (eventsData.value!![position].images.isNotEmpty()) {
+            val imageHash = eventsData.value!![position].images[0]
+            val imageUrl = Utility.getIpfsImageUrl(imageHash)
+            Glide.with(activity)
+                    .load(imageUrl)
+                    .apply(RequestOptions()
+                            .centerCrop())
+                    .into(holder.eventImageView)
+        }
 
         holder.eventNameView.text = eventName
         holder.eventLocation.text = location
         holder.eventDateView.text = formattedDate
-        Glide.with(activity)
-                .load(imageUrl)
-                .apply(RequestOptions()
-                        .centerCrop())
-                .into(holder.eventImageView)
 
         holder.view.onClick {
             eventClickCallBack(eventId, holder.eventImageView)

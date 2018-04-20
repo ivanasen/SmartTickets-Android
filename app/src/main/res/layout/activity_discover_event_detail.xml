@@ -28,6 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
                 android:adjustViewBounds="true"
+                android:src="@drawable/empty_view"
                 android:contentDescription="@string/event_image_content_description"
                 android:fitsSystemWindows="true"
                 android:transitionName="@string/event_transition"
