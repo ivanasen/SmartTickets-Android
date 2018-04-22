@@ -94,7 +94,7 @@ class DiscoverEventDetailActivity : AppCompatActivity() {
                     })
         }
 
-        val eventTimestamp = event.timestamp * 1000
+        val eventTimestamp = event.timestamp
         val formatDate = getDateTimeInstance(MEDIUM, SHORT).format(eventTimestamp)
         eventTimeView.text = formatDate
 

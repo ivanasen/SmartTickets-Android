@@ -55,7 +55,7 @@ internal class TicketsAdapter(val context: Context?, private val tickets: LiveDa
             val imageUrl = Utility.getIpfsImageUrl(event.images[0])
             val eventName = event.name
             val formatDate = SimpleDateFormat(context?.getString(R.string.date_format))
-            val eventTimestamp = event.timestamp * 1000
+            val eventTimestamp = event.timestamp
             val eventDate = formatDate.format(eventTimestamp)
             val location = event.locationName
 

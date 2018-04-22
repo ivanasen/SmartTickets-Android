@@ -144,22 +144,22 @@ class MyTicketsFragment : Fragment(),
                 .load(imageUrl)
                 .apply(RequestOptions()
                         .centerCrop())
-                .into(ticketEventImageView)
+                .into(ticketEventImageViewDetail)
 
         mViewModel.createTicketValidationCode(ticket).observe(this, Observer {
             it?.let {
                 val ticketBitmap = QRCode.from(it).withSize(QR_CODE_SIZE, QR_CODE_SIZE).bitmap()
-                ticketQrCode.imageBitmap = ticketBitmap
+                ticketQrCodeDetail.imageBitmap = ticketBitmap
             }
         })
 
-        ticketEventName.text = event.name
-        ticketEventLocation.text = event.locationName
-        ticketEventDate.text = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT)
-                .format(event.timestamp * 1000)
+        ticketEventNameDetail.text = event.name
+        eventLocationViewDetail.text = event.locationName
+        eventDateViewDetail.text = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT)
+                .format(event.timestamp)
 
-        sellTicketBtn.isEnabled = ticket.ticketType.refundable
-        sellTicketBtn.onClick {
+        sellTicketBtnDetail.isEnabled = ticket.ticketType.refundable
+        sellTicketBtnDetail.onClick {
             mViewModel.attemptSellTicket(ticket)
                     .observe(this@MyTicketsFragment, Observer {
                         when (it) {

@@ -3,7 +3,6 @@ package com.ivanasen.smarttickets.viewmodels
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.Observer
 import android.content.Context
 import com.google.android.gms.location.places.Place
 import com.ivanasen.smarttickets.db.models.Event
@@ -31,12 +30,12 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
     val etherBalance: LiveData<BigDecimal> = mRepository.etherBalance
     val usdBalance: LiveData<Double> = mRepository.usdBalance
 
-    val myEvents: LiveData<MutableList<Event>> = mRepository.myEvents
+    val myEvents: LiveData<MutableList<Event>> = mRepository.createdEvents
     val events: LiveData<MutableList<Event>> = mRepository.events
     val tickets: LiveData<MutableList<Ticket>> = mRepository.tickets
 
     val areEventsFetched: LiveData<Utility.Companion.TransactionStatus> =
-            mRepository.areEventsFetched
+            mRepository.eventsFetchStatus
     val areTicketsFetched: LiveData<Utility.Companion.TransactionStatus> =
             mRepository.areTicketsFetched
 

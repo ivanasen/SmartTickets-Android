@@ -53,11 +53,11 @@ object SmartTicketsRepository {
     val etherBalance: MutableLiveData<BigDecimal> = MutableLiveData()
     val usdBalance: MutableLiveData<Double> = MutableLiveData()
 
-    val myEvents: MutableLiveData<MutableList<Event>> = MutableLiveData()
+    val createdEvents: MutableLiveData<MutableList<Event>> = MutableLiveData()
     val events: MutableLiveData<MutableList<Event>> = MutableLiveData()
     val tickets: MutableLiveData<MutableList<Ticket>> = MutableLiveData()
 
-    val areEventsFetched: MutableLiveData<Utility.Companion.TransactionStatus> = MutableLiveData()
+    val eventsFetchStatus: MutableLiveData<Utility.Companion.TransactionStatus> = MutableLiveData()
     val areTicketsFetched: MutableLiveData<Utility.Companion.TransactionStatus> = MutableLiveData()
 
     fun createEvent(name: String,
@@ -289,7 +289,7 @@ object SmartTicketsRepository {
     private fun getEvent(id: Long): Event {
         val event = mContract.getEvent(BigInteger.valueOf(id)).send()
 
-        val timestamp = event.value1.toLong()
+        val timestamp = event.value1.toLong() * 1000 // Convert to milliseconds
         val ipfsHash = event.value2.toString(Charset.forName("UTF-8"))
         val cancelled = event.value3
 
@@ -323,7 +323,7 @@ object SmartTicketsRepository {
 
     fun fetchEvents() {
         bg {
-            areEventsFetched.postValue(Utility.Companion.TransactionStatus.PENDING)
+            eventsFetchStatus.postValue(Utility.Companion.TransactionStatus.PENDING)
             val newEvents = mutableListOf<Event>()
             val eventCount = mContract.eventCount.send().toLong()
 
@@ -332,7 +332,7 @@ object SmartTicketsRepository {
                 val event = getEvent(i)
                 newEvents.add(event)
                 events.postValue(newEvents)
-                areEventsFetched.postValue(Utility.Companion.TransactionStatus.COMPLETE)
+                eventsFetchStatus.postValue(Utility.Companion.TransactionStatus.COMPLETE)
             }
         }
     }
@@ -455,7 +455,7 @@ object SmartTicketsRepository {
                 val event = getEvent(id.toLong())
                 events.add(event)
             }
-            myEvents.postValue(events)
+            createdEvents.postValue(events)
         }
     }
 

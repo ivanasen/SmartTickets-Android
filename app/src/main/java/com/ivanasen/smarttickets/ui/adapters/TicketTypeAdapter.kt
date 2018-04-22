@@ -1,7 +1,6 @@
 package com.ivanasen.smarttickets.ui.adapters
 
 import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.Observer
 import android.content.Context
 import android.support.v7.widget.RecyclerView
@@ -17,7 +16,7 @@ import org.jetbrains.anko.sdk25.coroutines.onClick
 import java.text.DecimalFormat
 
 internal class TicketTypeAdapter(val context: Context, val data: List<TicketType>,
-                                 val onTicketBuyListener: (ticketType: TicketType) -> Unit)
+                                 private val onTicketBuyListener: (ticketType: TicketType) -> Unit)
     : RecyclerView.Adapter<TicketTypeAdapter.ViewHolder>() {
 
     private val ethFormat = DecimalFormat(context.getString(R.string.eth_format))
@@ -34,17 +33,15 @@ internal class TicketTypeAdapter(val context: Context, val data: List<TicketType
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val ticketType = data[position]
 
-        val ticketPriceInUsd = ticketType.priceInUSDCents
-        val remainingTickets = ticketType.currentSupply
-        val refundable = ticketType.refundable
+        val (_, _, priceInUSDCents, _, currentSupply, refundable) = ticketType
 
-        SmartTicketsRepository.fetchEtherValueOfUsd(ticketPriceInUsd.toBigDecimal())
+        SmartTicketsRepository.fetchEtherValueOfUsd(priceInUSDCents.toBigDecimal())
                 .observe(context as LifecycleOwner, Observer {
                     holder.ticketPriceInEtherView.text = ethFormat.format(it)
                 })
-        holder.ticketPriceInUsdView.text = usdFormat.format(ticketPriceInUsd.toDouble() / 100)
+        holder.ticketPriceInUsdView.text = usdFormat.format(priceInUSDCents.toDouble() / 100)
         holder.ticketSupplyTextView.text =
-                String.format(context.getString(R.string.tickets_remaining_text), remainingTickets)
+                String.format(context.getString(R.string.tickets_remaining_text), currentSupply)
         holder.ticketRefundable.text =
                 if (refundable)
                     context.getString(R.string.refundable_text)
@@ -58,10 +55,10 @@ internal class TicketTypeAdapter(val context: Context, val data: List<TicketType
 
 
     class ViewHolder(var view: View) : RecyclerView.ViewHolder(view) {
-        var ticketPriceInEtherView = view.findViewById<TextView>(R.id.ticketPriceInEtherView)
-        var ticketPriceInUsdView = view.findViewById<TextView>(R.id.ticketPriceInUsdView)
-        var ticketSupplyTextView = view.findViewById<TextView>(R.id.ticketSupplyTextView)
-        var ticketRefundable = view.findViewById<TextView>(R.id.ticketRefundableTextView)
-        var buyTicketBtn = view.findViewById<Button>(R.id.buyTicketButton)
+        val ticketPriceInEtherView: TextView = view.findViewById(R.id.ticketPriceInEtherView)
+        val ticketPriceInUsdView: TextView = view.findViewById(R.id.ticketPriceInUsdView)
+        val ticketSupplyTextView: TextView = view.findViewById(R.id.ticketSupplyTextView)
+        val ticketRefundable: TextView = view.findViewById(R.id.ticketRefundableTextView)
+        val buyTicketBtn: Button = view.findViewById(R.id.buyTicketButton)
     }
 }
