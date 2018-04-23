@@ -13,7 +13,7 @@ import org.acra.config.DialogConfigurationBuilder
 
 @AcraCore(buildConfigClass = BuildConfig::class)
 @AcraDialog
-@AcraMailSender(mailTo = "ivanasenchakarov@gmail.com", reportAsFile = false)
+@AcraMailSender(mailTo = BuildConfig.DEVELOPERS_EMAIL, reportAsFile = false)
 open class SmartTicketsApplication : Application() {
     override fun attachBaseContext(base: Context) {
         super.attachBaseContext(base)
