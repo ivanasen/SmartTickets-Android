@@ -30,7 +30,7 @@ class Utility {
         private val PROVIDER_AUTHORITY = "${BuildConfig.APPLICATION_ID}.provider"
 
         enum class TransactionStatus {
-            PENDING, COMPLETE, ERROR
+            PENDING, SUCCESS, FAILURE, ERROR
         }
 
         fun loadFragment(@IdRes containerViewId: Int, fragmentManager: FragmentManager, fragment: Fragment) {

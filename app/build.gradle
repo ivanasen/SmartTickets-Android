@@ -18,11 +18,13 @@ android {
     }
     buildTypes {
         def ETHEREUM_NODE_URL = "ETHEREUM_NODE_URL"
+        def IPFS_GATEWAY_URL = "IPFS_GATEWAY_URL"
+        def CONTRACT_ADDRESS = "CONTRACT_ADDRESS"
 
         debug {
-//            buildConfigField "String", ETHEREUM_NODE_URL, "\"http://10.0.2.2:7545\""
             buildConfigField "String", ETHEREUM_NODE_URL, "\"https://ropsten.infura.io/YAcKUvG0v0T60082XYEO\""
-            buildConfigField "String", "IPFS_GATEWAY_URL", "\"http://159.65.87.154:8080/\""
+            buildConfigField "String", IPFS_GATEWAY_URL, "\"http://159.65.87.154:8080/\""
+            buildConfigField "String", CONTRACT_ADDRESS, "\"0x7328fc22226ac65c9a93b9d873fba0683d7d1b3e\""
         }
 
         release {
@@ -30,7 +32,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             buildConfigField "String", ETHEREUM_NODE_URL, "\"https://ropsten.infura.io/YAcKUvG0v0T60082XYEO\""
-            buildConfigField "String", "IPFS_GATEWAY_URL", "\"http://159.65.87.154:8080/\""
+            buildConfigField "String", IPFS_GATEWAY_URL, "\"http://159.65.87.154:8080/\""
+            buildConfigField "String", CONTRACT_ADDRESS, "\"0x7328fc22226ac65c9a93b9d873fba0683d7d1b3e\""
         }
 
     }

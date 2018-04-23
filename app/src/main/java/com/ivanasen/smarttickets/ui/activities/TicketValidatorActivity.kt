@@ -12,17 +12,11 @@ import android.widget.Toast
 import com.ivanasen.smarttickets.R
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
-import android.transition.Fade
-import android.transition.Slide
-import android.transition.TransitionManager
 import android.util.Log
-import android.view.Gravity
 import android.view.View
-import android.view.ViewGroup
 import com.blikoon.qrcodescanner.QrCodeActivity
 import com.ivanasen.smarttickets.util.Utility
 import com.ivanasen.smarttickets.viewmodels.AppViewModel
-import kotlinx.android.synthetic.main.activity_create_event.*
 import kotlinx.android.synthetic.main.activity_ticket_validator.*
 import org.jetbrains.anko.sdk25.coroutines.onClick
 
@@ -94,7 +88,9 @@ class TicketValidatorActivity : AppCompatActivity() {
         mViewModel.verifyTicket(qrCodeString).observe(this, Observer {
             when (it) {
                 Utility.Companion.TransactionStatus.PENDING -> showValidationInProcessView()
-                Utility.Companion.TransactionStatus.COMPLETE -> showValidationSuccessView()
+                Utility.Companion.TransactionStatus.SUCCESS -> showValidationSuccessView()
+                Utility.Companion.TransactionStatus.FAILURE -> {
+                }
                 Utility.Companion.TransactionStatus.ERROR -> showValidationErrorView()
             }
         })

@@ -23,7 +23,6 @@ import com.ivanasen.smarttickets.ui.adapters.TicketsAdapter
 import com.ivanasen.smarttickets.util.Utility
 import com.ivanasen.smarttickets.viewmodels.AppViewModel
 import kotlinx.android.synthetic.main.fragment_my_tickets.*
-import kotlinx.android.synthetic.main.list_item_ticket.*
 import net.glxn.qrgen.android.QRCode
 import org.jetbrains.anko.imageBitmap
 import org.jetbrains.anko.sdk25.coroutines.onClick
@@ -169,7 +168,7 @@ class MyTicketsFragment : Fragment(),
                                         Toast.LENGTH_LONG)
                                         .show()
                             }
-                            Utility.Companion.TransactionStatus.COMPLETE -> {
+                            Utility.Companion.TransactionStatus.SUCCESS -> {
                                 MaterialDialog.Builder(this@MyTicketsFragment.context!!)
                                         .title(R.string.ticket_sell_success_title)
                                         .content(R.string.ticket_sell_success_message)
@@ -190,7 +189,7 @@ class MyTicketsFragment : Fragment(),
     private fun observeLiveData() {
         mViewModel.areTicketsFetched.observe(this, Observer {
             when (it) {
-                Utility.Companion.TransactionStatus.COMPLETE -> {
+                Utility.Companion.TransactionStatus.SUCCESS -> {
                     val tickets = mViewModel.tickets.value
 
                     if (tickets != null && tickets.isNotEmpty()) {

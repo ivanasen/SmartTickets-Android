@@ -7,5 +7,5 @@ import org.web3j.protocol.http.HttpService
 
 
 object Web3JProvider {
-    public val instance: Web3j = Web3jFactory.build(HttpService(BuildConfig.ETHEREUM_NODE_URL))
+    val instance: Web3j = Web3jFactory.build(HttpService(BuildConfig.ETHEREUM_NODE_URL))
 }

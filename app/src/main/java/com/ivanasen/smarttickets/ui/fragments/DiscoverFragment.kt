@@ -1,21 +1,15 @@
 package com.ivanasen.smarttickets.ui.fragments
 
-import android.app.SearchManager
-import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.content.Context
 import android.content.Intent
 import android.support.v4.app.Fragment
 import android.os.Bundle
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.SearchView
 import android.util.Log
 import android.view.*
-import android.widget.ImageView
 import com.ivanasen.smarttickets.R
-import com.ivanasen.smarttickets.db.models.Event
 import com.ivanasen.smarttickets.ui.activities.DiscoverEventDetailActivity
 import com.ivanasen.smarttickets.ui.adapters.EventAdapter
 import com.ivanasen.smarttickets.util.Utility
@@ -71,7 +65,7 @@ class DiscoverFragment : Fragment() {
     private fun observeLiveData() {
         mViewModel.areEventsFetched.observe(this, Observer {
             when (it) {
-                Utility.Companion.TransactionStatus.COMPLETE -> {
+                Utility.Companion.TransactionStatus.SUCCESS -> {
                     val events = mViewModel.events.value
                     if (events != null && events.isNotEmpty()) {
                         emptyViewLayout.visibility = View.GONE

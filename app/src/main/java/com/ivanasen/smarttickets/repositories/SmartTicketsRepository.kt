@@ -38,10 +38,8 @@ import java.io.InputStreamReader
 
 object SmartTicketsRepository {
     private val LOG_TAG = SmartTicketsRepository::class.simpleName
-    private const val DATA_FETCH_PERIOD_MILLIS: Long = 60000
     private val mWeb3: Web3j = Web3JProvider.instance
     private val mIpfsApi: SmartTicketsIPFSApi = SmartTicketsIPFSApi.instance
-
 
     private lateinit var mContract: SmartTickets
 
@@ -73,25 +71,31 @@ object SmartTicketsRepository {
         bg {
             try {
                 txStatusLiveData.postValue(Utility.Companion.TransactionStatus.PENDING)
+
                 val imageHashes = uploadImages(imagePaths)
 
                 val event = IPFSEvent(name, description, timestamp, latLong, locationName,
                         locationAddress, imageHashes, tickets)
                 val eventMetadataHash = postEventToIpfs(event)
 
-                Log.d(LOG_TAG, eventMetadataHash.toString(Charset.forName("UTF-8")))
+                Log.d(LOG_TAG, eventMetadataHash.toString(Charset.defaultCharset()))
 
                 val ticketPrices = tickets.map { it.priceInUSDCents }
                 val ticketSupplies = tickets.map { it.initialSupply }
                 val ticketRefundables = tickets.map {
-                    BigInteger.valueOf(if (it.refundable) 1 else 0)
+                    (if (it.refundable) 1 else 0).toBigInteger()
                 }
 
-                val eventTxReceipt = mContract.createEvent(BigInteger.valueOf(timestamp),
-                        eventMetadataHash, ticketPrices, ticketSupplies, ticketRefundables).send()
-                txStatusLiveData.postValue(Utility.Companion.TransactionStatus.COMPLETE)
+                val eventTxReceipt = mContract.createEvent(
+                        timestamp.toBigInteger(),
+                        eventMetadataHash,
+                        ticketPrices,
+                        ticketSupplies,
+                        ticketRefundables)
+                        .send()
                 Log.d(LOG_TAG, eventTxReceipt.transactionHash)
 
+                txStatusLiveData.postValue(Utility.Companion.TransactionStatus.SUCCESS)
             } catch (e: Exception) {
                 Log.e(LOG_TAG, e.message)
                 txStatusLiveData.postValue(Utility.Companion.TransactionStatus.ERROR)
@@ -101,20 +105,22 @@ object SmartTicketsRepository {
         return txStatusLiveData
     }
 
-    private fun addTicketTypeForEvent(eventId: BigInteger, ticketType: TicketType) {
-        bg {
-            val txReceipt = mContract.addTicketForEvent(
-                    eventId,
-                    ticketType.priceInUSDCents,
-                    ticketType.initialSupply,
-                    BigInteger.valueOf(if (ticketType.refundable) 1 else 0)
-            ).send()
-        }
-    }
+//    private fun addTicketTypeForEvent(eventId: BigInteger, ticketType: TicketType) {
+//        bg {
+//            val txReceipt = mContract.addTicketForEvent(
+//                    eventId,
+//                    ticketType.priceInUSDCents,
+//                    ticketType.initialSupply,
+//                    BigInteger.valueOf(if (ticketType.refundable) 1 else 0)
+//            ).send()
+//        }
+//    }
 
     private fun postEventToIpfs(event: IPFSEvent): ByteArray {
-        val response = mIpfsApi.postEvent(event).execute()
-        return response.headers().get(Utility.IPFS_HASH_HEADER)
+        val response = mIpfsApi.postEvent(event)
+                .execute()
+        return response.headers()
+                .get(Utility.IPFS_HASH_HEADER)
                 .toString()
                 .toByteArray()
     }
@@ -150,7 +156,19 @@ object SmartTicketsRepository {
 //    }
 
     fun loadInitialAppData() {
-        initialiseContract()
+        bg {
+            val contract = SmartTicketsContractProvider.provide(mWeb3, credentials.value!!)
+            mContract = contract
+            try {
+                val isValid = mContract.isValid
+                contractDeployed.postValue(isValid)
+
+                fetchContractData()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                contractDeployed.postValue(false)
+            }
+        }
     }
 
     private fun fetchContractData() {
@@ -172,23 +190,6 @@ object SmartTicketsRepository {
 //    }
 
 
-    private fun initialiseContract() {
-        bg {
-            val contract = SmartTicketsContractProvider.provide(mWeb3, credentials.value!!)
-            mContract = contract
-            try {
-                val isValid = mContract.isValid
-                contractDeployed.postValue(isValid)
-
-                fetchContractData()
-            } catch (e: Exception) {
-                e.printStackTrace()
-                contractDeployed.postValue(false)
-            }
-        }
-
-    }
-
     fun unlockWallet(password: String, wallet: File): Boolean {
         return try {
             credentials.postValue(getCredentials(password, wallet))
@@ -201,8 +202,8 @@ object SmartTicketsRepository {
         }
     }
 
-    @Throws(Exception::class)
-    fun getCredentials(password: String, wallet: File): Credentials =
+
+    private fun getCredentials(password: String, wallet: File): Credentials =
             WalletUtils.loadCredentials(password, wallet)
 
     fun checkPassword(password: String, wallet: File): Boolean {
@@ -241,7 +242,6 @@ object SmartTicketsRepository {
         bg {
             val oneUsdCentInWei = mContract.oneUSDCentInWei.send()
             usdBalance.postValue((getWeiBalance() / oneUsdCentInWei).toDouble() / 100)
-            Log.d(LOG_TAG, "Fetch usd called!")
         }
     }
 
@@ -332,7 +332,7 @@ object SmartTicketsRepository {
                 val event = getEvent(i)
                 newEvents.add(event)
                 events.postValue(newEvents)
-                eventsFetchStatus.postValue(Utility.Companion.TransactionStatus.COMPLETE)
+                eventsFetchStatus.postValue(Utility.Companion.TransactionStatus.SUCCESS)
             }
         }
     }
@@ -386,7 +386,7 @@ object SmartTicketsRepository {
                 val txReceipt = mContract.buyTicket(ticketType.ticketTypeId,
                         totalPrice).send()
                 Log.d(LOG_TAG, txReceipt.transactionHash.toString())
-                txStatusLiveData.postValue(Utility.Companion.TransactionStatus.COMPLETE)
+                txStatusLiveData.postValue(Utility.Companion.TransactionStatus.SUCCESS)
             } catch (e: Exception) {
                 Log.e(LOG_TAG, e.message)
                 Log.d(LOG_TAG, "Balance: " + balanceInWei.toBigDecimal()
@@ -422,7 +422,7 @@ object SmartTicketsRepository {
                     tickets.postValue(newTickets)
                 }
             }
-            areTicketsFetched.postValue(Utility.Companion.TransactionStatus.COMPLETE)
+            areTicketsFetched.postValue(Utility.Companion.TransactionStatus.SUCCESS)
         }
     }
 
@@ -467,7 +467,7 @@ object SmartTicketsRepository {
             try {
                 val ticketId = ticket.ticketId
                 val txReceipt = mContract.refundTicket(ticketId).send()
-                ticketLiveData.postValue(Utility.Companion.TransactionStatus.COMPLETE)
+                ticketLiveData.postValue(Utility.Companion.TransactionStatus.SUCCESS)
                 Log.d(LOG_TAG, txReceipt.transactionHash)
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -485,7 +485,7 @@ object SmartTicketsRepository {
             fundsLiveData.postValue(Utility.Companion.TransactionStatus.PENDING)
             try {
                 val txReceipt = mContract.withdrawalEarningsForEvent(eventId.toBigInteger()).send()
-                fundsLiveData.postValue(Utility.Companion.TransactionStatus.COMPLETE)
+                fundsLiveData.postValue(Utility.Companion.TransactionStatus.SUCCESS)
                 Log.d(LOG_TAG, txReceipt.transactionHash)
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -538,9 +538,8 @@ object SmartTicketsRepository {
         return codeLiveData
     }
 
-    private fun signMessage(message: String): Sign.SignatureData? {
-        return Sign.signMessage(message.toByteArray(), credentials.value?.ecKeyPair)
-    }
+    private fun signMessage(message: String): Sign.SignatureData? =
+            Sign.signMessage(message.toByteArray(), credentials.value?.ecKeyPair)
 
     fun validateTicket(qrCodeString: String): LiveData<Utility.Companion.TransactionStatus> {
         val validationLiveData: MutableLiveData<Utility.Companion.TransactionStatus> =
@@ -552,7 +551,7 @@ object SmartTicketsRepository {
                 val ticketValidationCode = Gson().fromJson(qrCodeString,
                         TicketValidationCode::class.java)
 
-                val ticketId = ticketValidationCode.ticket
+                val ticketId = ticketValidationCode.ticket.toBigInteger()
                 val ticketHash = Hash.sha3(ticketId.toByteArray())
 
                 Log.d(LOG_TAG, ticketHash.size.toString())
@@ -561,12 +560,12 @@ object SmartTicketsRepository {
 
                 val s = signature?.s
                 val r = signature?.r
-                val v = signature?.v
+                val v = signature?.v?.toInt()?.toBigInteger()
 
-                val isOwned = mContract.verifyTicket(ticketId.toBigInteger(),
-                        ticketHash, address, v?.toInt()?.toBigInteger(), r, s).send()
+                val isOwned = mContract.verifyTicket(ticketId,
+                        ticketHash, address, v, r, s).send()
                 if (isOwned) {
-                    validationLiveData.postValue(Utility.Companion.TransactionStatus.COMPLETE)
+                    validationLiveData.postValue(Utility.Companion.TransactionStatus.SUCCESS)
                 } else {
                     validationLiveData.postValue(Utility.Companion.TransactionStatus.ERROR)
                 }

@@ -121,13 +121,10 @@ class CreateEventActivity : AppCompatActivity() {
 
         viewModel.eventTime.postValue(GregorianCalendar.getInstance() as GregorianCalendar)
 
-        // use a linear layout manager
         val layoutManager = LinearLayoutManager(this)
         ticketsRecyclerView.layoutManager = layoutManager
-        // specify an adapter (see also next example)
         val ticketTypesAdapter = TicketCreationTypeAdapter(this, viewModel.ticketTypes)
         ticketsRecyclerView.adapter = ticketTypesAdapter
-
 
         eventDateView.onClick {
             showDatePickerDialog()
@@ -165,7 +162,7 @@ class CreateEventActivity : AppCompatActivity() {
                                         .show()
                                 finish()
                             }
-                            Utility.Companion.TransactionStatus.COMPLETE -> {
+                            Utility.Companion.TransactionStatus.SUCCESS -> {
                                 MaterialDialog.Builder(this@CreateEventActivity)
                                         .title(getString(R.string.event_success_title))
                                         .content(getString(R.string.event_creation_message))
@@ -173,6 +170,9 @@ class CreateEventActivity : AppCompatActivity() {
                                         .onPositive({ _, _ ->
                                             finish()
                                         })
+                            }
+                            Utility.Companion.TransactionStatus.FAILURE -> {
+
                             }
                             Utility.Companion.TransactionStatus.ERROR -> {
                                 hideLoadingScreen()
@@ -245,24 +245,21 @@ class CreateEventActivity : AppCompatActivity() {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         when (requestCode) {
             PERMISSIONS_REQUEST_WRITE_STORAGE -> {
-                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     openImagePicker()
-                } else {
-
                 }
-                return
             }
         }
     }
 
     private fun showDatePickerDialog() {
-        val newFragment = DatePickerFragment()
-        newFragment.show(fragmentManager, "datePicker")
+        val dateFragment = DatePickerFragment()
+        dateFragment.show(fragmentManager, "datePicker")
     }
 
     private fun showTimePickerDialog() {
-        val newFragment = TimePickerFragment()
-        newFragment.show(fragmentManager, "timePicker")
+        val timeFragment = TimePickerFragment()
+        timeFragment.show(fragmentManager, "timePicker")
         viewModel.eventTime.value
     }
 

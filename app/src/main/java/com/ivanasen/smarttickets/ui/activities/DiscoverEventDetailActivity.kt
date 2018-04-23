@@ -77,12 +77,15 @@ class DiscoverEventDetailActivity : AppCompatActivity() {
                                         Toast.LENGTH_LONG)
                                         .show()
                             }
-                            Utility.Companion.TransactionStatus.COMPLETE -> {
+                            Utility.Companion.TransactionStatus.SUCCESS -> {
                                 MaterialDialog.Builder(this)
                                         .title(getString(R.string.ticket_success_title))
                                         .content(getString(R.string.ticket_success))
                                         .positiveText(getString(R.string.OK))
                                         .show()
+                            }
+                            Utility.Companion.TransactionStatus.FAILURE -> {
+
                             }
                             Utility.Companion.TransactionStatus.ERROR -> {
                                 Toast.makeText(applicationContext,
@@ -93,6 +96,7 @@ class DiscoverEventDetailActivity : AppCompatActivity() {
                         }
                     })
         }
+
 
         val eventTimestamp = event.timestamp
         val formatDate = getDateTimeInstance(MEDIUM, SHORT).format(eventTimestamp)

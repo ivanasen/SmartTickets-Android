@@ -19,8 +19,6 @@ import java.math.BigInteger
 
 class AppViewModel(application: Application) : AndroidViewModel(application) {
     private val mRepository = SmartTicketsRepository
-    private val WALLET_FILE_NAME = "WalletFileName"
-    private val MIN_PASSWORD_LENGTH = 8
 
     val credentials = mRepository.credentials
 

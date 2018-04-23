@@ -19,7 +19,6 @@ import com.ivanasen.smarttickets.ui.adapters.TicketTypeAdapter
 import com.ivanasen.smarttickets.util.Utility
 import com.ivanasen.smarttickets.viewmodels.AppViewModel
 import kotlinx.android.synthetic.main.activity_manage_event_detail.*
-import kotlinx.android.synthetic.main.fragment_my_wallet.*
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import java.text.DateFormat.MEDIUM
 import java.text.DateFormat.getDateTimeInstance
@@ -74,12 +73,15 @@ class ManageEventDetailActivity : AppCompatActivity() {
                                         Toast.LENGTH_LONG)
                                         .show()
                             }
-                            Utility.Companion.TransactionStatus.COMPLETE -> {
+                            Utility.Companion.TransactionStatus.SUCCESS -> {
                                 MaterialDialog.Builder(this)
                                         .title(getString(R.string.ticket_success_title))
                                         .content(getString(R.string.ticket_success))
                                         .positiveText(getString(R.string.OK))
                                         .show()
+                            }
+                            Utility.Companion.TransactionStatus.FAILURE -> {
+
                             }
                             Utility.Companion.TransactionStatus.ERROR -> {
                                 Toast.makeText(applicationContext,
@@ -139,7 +141,7 @@ class ManageEventDetailActivity : AppCompatActivity() {
                                         Toast.LENGTH_LONG)
                                         .show()
                             }
-                            Utility.Companion.TransactionStatus.COMPLETE -> {
+                            Utility.Companion.TransactionStatus.SUCCESS -> {
                                 MaterialDialog.Builder(this@ManageEventDetailActivity)
                                         .content(getString(R.string.withdrawal_funds_success))
                                         .positiveText(getString(R.string.OK))
