@@ -2,13 +2,13 @@
 <resources>
     <color name="colorPrimary">#ff8a65</color>
     <color name="colorPrimaryDark">#ff7043</color>
-    <color name="colorAccent">@color/colorPrimary</color>
+    <color name="colorAccent">@color/pink</color>
 
-    <color name="appOrangePink">#ff626d</color>
-    <color name="appOrange">#ffbf71</color>
+    <color name="pink">#ff4081</color>
+    <color name="orange">#ffbf71</color>
     <color name="textGray">#616161</color>
 
-    <color name="lightGray">#bdbdbd</color>
+    <color name="lightGray">#83bdbdbd</color>
     <color name="blackGray">#282828</color>
     <color name="transparentDark">#32000000</color>
     <color name="white">#FFFFFF</color>

@@ -59,6 +59,8 @@
         android:layout_gravity="bottom"
         android:background="@android:color/white"
         app:elevation="8dp"
+        app:itemIconTint="@drawable/nav_item_color_state"
+        app:itemTextColor="@drawable/nav_item_color_state"
         app:menu="@menu/navigation" />
 
 </android.support.design.widget.CoordinatorLayout>

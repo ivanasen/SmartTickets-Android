@@ -5,8 +5,8 @@
         <shape android:shape="oval">
             <gradient
                 android:angle="45"
-                android:endColor="@color/appOrange"
-                android:startColor="@color/appOrangePink" />
+                android:endColor="@color/orange"
+                android:startColor="@color/pink" />
             <!-- make the button corners rounded-->
             <corners android:radius="25dp" />
         </shape>

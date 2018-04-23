@@ -1,6 +1,5 @@
 package com.ivanasen.smarttickets.ui.fragments
 
-import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
@@ -10,7 +9,6 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.*
-import android.widget.ImageView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.ivanasen.smarttickets.R
 import com.ivanasen.smarttickets.db.models.Event
@@ -70,9 +68,9 @@ class ManageEventsFragment : Fragment() {
             launchActivity(this@ManageEventsFragment.context!!, CreateEventActivity::class.java)
         }
 
-        manageEventsRefreshLayout.setColorSchemeColors(resources.getColor(R.color.appOrangePink),
-                resources.getColor(R.color.appOrange),
-                resources.getColor(R.color.appOrangePink))
+        manageEventsRefreshLayout.setColorSchemeColors(resources.getColor(R.color.pink),
+                resources.getColor(R.color.orange),
+                resources.getColor(R.color.pink))
         manageEventsRefreshLayout.isRefreshing = true
         manageEventsRefreshLayout.onRefresh {
             mViewModel.fetchMyEvents()

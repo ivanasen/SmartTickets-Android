@@ -13,7 +13,6 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import com.afollestad.materialdialogs.DialogAction
 import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
 import com.ivanasen.smarttickets.R
@@ -124,9 +123,9 @@ class MyWalletFragment : Fragment() {
 
         sendEtherBtn.onClick { showSendEtherDialog() }
 
-        walletRefreshLayout.setColorSchemeColors(resources.getColor(R.color.appOrangePink),
-                resources.getColor(R.color.appOrange),
-                resources.getColor(R.color.appOrangePink))
+        walletRefreshLayout.setColorSchemeColors(resources.getColor(R.color.pink),
+                resources.getColor(R.color.orange),
+                resources.getColor(R.color.pink))
         walletRefreshLayout.isRefreshing = true
         walletRefreshLayout.onRefresh {
             mViewModel.fetchBalance()

@@ -96,9 +96,9 @@ class DiscoverFragment : Fragment() {
         })
         eventsView.adapter = mAdapter
 
-        eventRefreshLayout.setColorSchemeColors(resources.getColor(R.color.appOrangePink),
-                resources.getColor(R.color.appOrange),
-                resources.getColor(R.color.appOrangePink))
+        eventRefreshLayout.setColorSchemeColors(resources.getColor(R.color.pink),
+                resources.getColor(R.color.orange),
+                resources.getColor(R.color.pink))
 
         eventRefreshLayout.isRefreshing = true
         eventRefreshLayout.onRefresh {

@@ -92,9 +92,9 @@ class MyTicketsFragment : Fragment(),
     }
 
     private fun setupViews() {
-        ticketsRefreshLayout.setColorSchemeColors(resources.getColor(R.color.appOrangePink),
-                resources.getColor(R.color.appOrange),
-                resources.getColor(R.color.appOrangePink))
+        ticketsRefreshLayout.setColorSchemeColors(resources.getColor(R.color.pink),
+                resources.getColor(R.color.orange),
+                resources.getColor(R.color.pink))
         ticketsRefreshLayout.isRefreshing = true
         ticketsRefreshLayout.onRefresh {
             mViewModel.refreshTickets()

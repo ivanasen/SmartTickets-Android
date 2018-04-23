@@ -55,7 +55,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/passwords_don_t_match_text"
-        android:textColor="@color/appOrangePink"
+        android:textColor="@color/pink"
         android:visibility="invisible" />
 
     <LinearLayout
