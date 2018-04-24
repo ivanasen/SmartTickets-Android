@@ -5,14 +5,14 @@
     android:layout_height="wrap_content"
     android:clipToPadding="false"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/default_margin">
+    android:paddingBottom="@dimen/default_margin"
+    android:paddingEnd="@dimen/default_padding"
+    android:paddingStart="@dimen/default_padding">
 
     <android.support.v7.widget.CardView
         android:id="@+id/eventImageViewContainer"
         android:layout_width="match_parent"
         android:layout_height="@dimen/event_list_item_image_height"
-        android:layout_marginEnd="12dp"
-        android:layout_marginStart="12dp"
         android:layout_marginTop="@dimen/default_margin"
         android:background="@drawable/dark_gradient_background"
         android:elevation="@dimen/cardview_default_elevation"
@@ -35,11 +35,11 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/eventDescriptionView"
         android:layout_marginBottom="@dimen/small_margin"
-        android:paddingStart="24dp"
-        android:paddingEnd="24dp"
         android:elevation="5dp"
         android:ellipsize="end"
         android:maxLines="1"
+        android:paddingEnd="24dp"
+        android:paddingStart="24dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         android:textColor="@color/white" />
 
@@ -49,8 +49,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/eventImageViewContainer"
-        android:layout_marginEnd="12dp"
-        android:layout_marginStart="12dp"
+        android:layout_marginTop="@dimen/small_margin"
         android:padding="@dimen/small_padding">
 
         <TextView
@@ -60,8 +59,10 @@
             android:layout_margin="@dimen/small_margin"
             android:drawablePadding="4dp"
             android:drawableStart="@drawable/ic_date_range_black_24dp"
+            android:drawableTint="@color/blackGray"
             android:gravity="center"
-            android:text="From 30 JUL" />
+            android:text="30 JUL"
+            android:textColor="@color/blackGray" />
 
         <TextView
             android:id="@+id/eventTicketPriceView"
@@ -70,8 +71,10 @@
             android:layout_alignParentEnd="true"
             android:layout_margin="@dimen/small_margin"
             android:drawableStart="@drawable/ic_attach_money_black_24dp"
+            android:drawableTint="@color/blackGray"
             android:gravity="center"
-            android:text="@string/starting_from_text" />
+            android:text="@string/starting_from_text"
+            android:textColor="@color/blackGray" />
 
         <TextView
             android:id="@+id/eventLocationView"
@@ -81,7 +84,9 @@
             android:layout_margin="@dimen/small_margin"
             android:drawablePadding="4dp"
             android:drawableStart="@drawable/ic_location_on_black_24dp"
-            android:text="St Leaonar C Of E Church London" />
+            android:drawableTint="@color/blackGray"
+            android:text="St Leaonar C Of E Church London"
+            android:textColor="@color/blackGray" />
 
     </RelativeLayout>
 
@@ -89,5 +94,6 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_alignParentTop="true"
-        android:background="@color/lightGray" />
+        android:background="@color/lightGrayTransparent" />
+
 </RelativeLayout>

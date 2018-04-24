@@ -36,8 +36,8 @@
     <style name="AppTheme.OrangeInput" parent="AppTheme">
         <item name="android:textColor">@color/blackGray</item>
         <item name="colorControlNormal">#c5c5c5</item>
-        <item name="colorControlActivated">@color/colorPrimaryDark</item>
-        <item name="colorControlHighlight">@color/colorPrimaryDark</item>
+        <item name="colorControlActivated">@color/colorAccent</item>
+        <item name="colorControlHighlight">@color/colorAccent</item>
     </style>
 
     <style name="AlertDialogCustom" parent="android:Theme.Material.Light.Dialog.Alert">
