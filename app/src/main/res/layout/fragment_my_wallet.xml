@@ -5,163 +5,184 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:orientation="vertical"
-        android:padding="24dp"
-        tools:context="com.ivanasen.smarttickets.ui.fragments.MyWalletFragment">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/default_margin"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/walletIdenticonView"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                app:civ_border_width="0dp"
-                android:layout_marginBottom="@dimen/default_margin"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/wallet_balance_text"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                    android:textColor="@android:color/secondary_text_light_nodisable" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/etherBalanceView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="2.36"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                        android:textColor="@color/colorPrimary"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/small_margin"
-                        android:text="@string/eth_symbol"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                        android:textColor="@android:color/secondary_text_light_nodisable"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/etherInUsdView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="2,053.94"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/small_margin"
-                        android:text="@string/usd_symbol"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                        android:textColor="@android:color/secondary_text_light_nodisable"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
-
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/default_margin"
-            app:cardBackgroundColor="#f2f2f2"
-            app:cardCornerRadius="30dp"
-            app:cardElevation="0dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="8dp"
-                android:paddingEnd="24dp"
-                android:paddingStart="24dp">
-
-                <TextView
-                    android:id="@+id/walletAddressView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:maxWidth="220dp"
-                    android:text="0xf17f52151ebef6c7334fad080c5704d77216b732" />
-
-                <ImageButton
-                    android:id="@+id/showQrCodeBtn"
-                    style="@style/Base.Widget.AppCompat.Button.Borderless"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:src="@drawable/ic_qrcode"
-                    android:tint="@color/colorPrimary" />
-
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
-
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clipToPadding="false"
-            android:orientation="horizontal"
-            android:paddingBottom="@dimen/default_padding"
-            android:paddingEnd="@dimen/default_padding"
-            android:paddingStart="@dimen/default_padding">
+            android:orientation="vertical"
+            android:padding="24dp"
+            tools:context="com.ivanasen.smarttickets.ui.fragments.MyWalletFragment">
 
-            <Button
-                android:id="@+id/receiveEtherBtn"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/default_margin"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/walletIdenticonView"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_marginBottom="@dimen/default_margin"
+                    app:civ_border_width="0dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/wallet_balance_text"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                        android:textColor="@android:color/secondary_text_light_nodisable" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/etherBalanceView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                            android:textColor="@color/colorPrimary"
+                            android:textStyle="bold"
+                            tools:text="2.36" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/small_margin"
+                            android:text="@string/eth_symbol"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                            android:textColor="@android:color/secondary_text_light_nodisable"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/etherInUsdView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                            android:textStyle="bold"
+                            tools:text="2,053.94" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/small_margin"
+                            android:text="@string/usd_symbol"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                            android:textColor="@android:color/secondary_text_light_nodisable"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/default_margin"
+                app:cardBackgroundColor="#f2f2f2"
+                app:cardCornerRadius="30dp"
+                app:cardElevation="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="8dp"
+                    android:paddingEnd="24dp"
+                    android:paddingStart="24dp">
+
+                    <TextView
+                        android:id="@+id/walletAddressView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:maxWidth="220dp"
+                        tools:text="0xf17f52151ebef6c7334fad080c5704d77216b732" />
+
+                    <ImageButton
+                        android:id="@+id/showQrCodeBtn"
+                        style="@style/Base.Widget.AppCompat.Button.Borderless"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:src="@drawable/ic_qrcode"
+                        android:tint="@color/colorPrimary" />
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/default_padding"
+                android:paddingEnd="@dimen/default_padding"
+                android:paddingStart="@dimen/default_padding">
+
+                <Button
+                    android:id="@+id/receiveEtherBtn"
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/default_margin"
+                    android:background="@drawable/rounded_btn_gradient"
+                    android:drawableStart="@drawable/ic_arrow_downward_black_24dp"
+                    android:paddingEnd="@dimen/default_padding"
+                    android:paddingStart="@dimen/default_padding"
+                    android:text="@string/receive_text"
+                    android:textColor="@android:color/white" />
+
+                <Button
+                    android:id="@+id/sendEtherBtn"
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/default_margin"
+                    android:background="@drawable/rounded_btn_gradient"
+                    android:drawableStart="@drawable/ic_arrow_upward_white_24dp"
+                    android:paddingEnd="@dimen/default_padding"
+                    android:paddingStart="@dimen/default_padding"
+                    android:text="@string/send_text"
+                    android:textColor="@android:color/white" />
+
+            </LinearLayout>
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/default_margin"
-                android:layout_weight="1"
-                android:background="@drawable/rounded_btn_gradient"
-                android:maxWidth="150dp"
-                android:text="@string/receive_text"
-                android:textColor="@android:color/white" />
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/default_margin"
+                android:text="@string/transaction_history_label" />
 
-            <Button
-                android:id="@+id/sendEtherBtn"
-                android:layout_width="wrap_content"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/transactionHistoryRecyclerView"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/default_margin"
-                android:layout_weight="1"
-                android:background="@drawable/rounded_btn_gradient"
-                android:maxWidth="150dp"
-                android:text="@string/send_text"
-                android:textColor="@android:color/white" />
+                tools:listitem="@layout/list_item_transaction" />
 
         </LinearLayout>
-
-    </LinearLayout>
+    </ScrollView>
 </android.support.v4.widget.SwipeRefreshLayout>

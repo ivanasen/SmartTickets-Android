@@ -92,7 +92,7 @@
                     android:enabled="false"
                     android:paddingEnd="30dp"
                     android:paddingStart="30dp"
-                    android:text="@string/unlock_wallet_text"
+                    android:text="@string/unlock_text"
                     android:textColor="@android:color/white" />
 
             </LinearLayout>

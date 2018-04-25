@@ -129,4 +129,6 @@
     <string name="camera_permission_message">Smart Tickets needs camera permission in order to scan a ticket</string>
     <string name="event_creating_message">Creating event. May take a while to appear…</string>
     <string name="acra_dialog_text">Sorry, but the application has crashed. A bug report will been sent to the developers.</string>
+    <string name="transaction_history_label">Transaction History</string>
+    <string name="unlock_text">Unlock</string>
 </resources>
