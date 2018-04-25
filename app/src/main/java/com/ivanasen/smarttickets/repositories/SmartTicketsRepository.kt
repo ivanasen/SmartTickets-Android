@@ -554,7 +554,6 @@ object SmartTicketsRepository {
                 val ticketId = ticketValidationCode.ticket.toBigInteger()
                 val ticketHash = Hash.sha3(ticketId.toByteArray())
 
-                Log.d(LOG_TAG, ticketHash.size.toString())
                 val address = ticketValidationCode.address
                 val signature = ticketValidationCode.ticketSignature
 

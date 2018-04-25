@@ -97,7 +97,7 @@
     <string name="event_error_message">Error creating event.</string>
     <string name="event_success_title">Event creation successful</string>
     <string name="ticket_success_title">Ticket bought successfully!</string>
-    <string name="sell_ticket_btn_text">Sell Ticket</string>
+    <string name="refund_ticket_btn_text">Refund Ticket</string>
     <string name="selling_ticket_text">Selling Ticket…</string>
     <string name="ticket_sell_success_title">Ticket sell success</string>
     <string name="ticket_sell_success_message">Your ticket was sold successfully! It should be removed from your \'My TIckets\' section in a few minutes.</string>

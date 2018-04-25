@@ -15,7 +15,7 @@
         android:layout_height="@dimen/event_list_item_image_height"
         android:layout_marginTop="@dimen/default_margin"
         android:background="@drawable/dark_gradient_background"
-        android:elevation="@dimen/cardview_default_elevation"
+        app:cardElevation="@dimen/cardview_default_elevation"
         app:cardCornerRadius="8dp">
 
         <ImageView

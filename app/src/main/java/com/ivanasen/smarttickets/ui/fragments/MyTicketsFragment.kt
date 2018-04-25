@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer
 
 
 import android.arch.lifecycle.ViewModelProviders
+import android.content.res.Resources
 import android.nfc.NdefMessage
 import android.nfc.NfcAdapter
 import android.nfc.NfcEvent
@@ -29,10 +30,12 @@ import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.support.v4.onRefresh
 import java.text.DateFormat
 import android.nfc.NdefRecord
+import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.view.*
 import com.ivanasen.smarttickets.ui.activities.TicketValidatorActivity
 import com.ivanasen.smarttickets.util.Utility.Companion.launchActivity
+import kotlinx.android.synthetic.main.ticket_detail_layout.*
 
 
 class MyTicketsFragment : Fragment(),
@@ -40,7 +43,7 @@ class MyTicketsFragment : Fragment(),
         NfcAdapter.OnNdefPushCompleteCallback {
 
     private val LOG_TAG: String = MyTicketsFragment::class.java.simpleName
-    private val QR_CODE_SIZE: Int = 400
+    private val QR_CODE_SIZE: Int = 500
 
     private val mViewModel: AppViewModel by lazy {
         ViewModelProviders.of(this).get(AppViewModel::class.java)
@@ -147,18 +150,23 @@ class MyTicketsFragment : Fragment(),
 
         mViewModel.createTicketValidationCode(ticket).observe(this, Observer {
             it?.let {
-                val ticketBitmap = QRCode.from(it).withSize(QR_CODE_SIZE, QR_CODE_SIZE).bitmap()
+                val ticketBitmap = QRCode.from(it)
+                        .withSize(QR_CODE_SIZE, QR_CODE_SIZE)
+                        .withColor(ContextCompat.getColor(context!!, R.color.pinkDark), 1)
+                        .bitmap()
                 ticketQrCodeDetail.imageBitmap = ticketBitmap
             }
         })
 
         ticketEventNameDetail.text = event.name
-        eventLocationViewDetail.text = event.locationName
-        eventDateViewDetail.text = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT)
+        ticketEventLocationDetail.text = event.locationName
+        eventDateViewDetail.text = DateFormat.getDateInstance(DateFormat.MEDIUM)
+                .format(event.timestamp)
+        eventTimeViewDetail.text = DateFormat.getTimeInstance(DateFormat.MEDIUM)
                 .format(event.timestamp)
 
-        sellTicketBtnDetail.isEnabled = ticket.ticketType.refundable
-        sellTicketBtnDetail.onClick {
+        refundTicketBtnDetail.isEnabled = ticket.ticketType.refundable
+        refundTicketBtnDetail.onClick {
             mViewModel.attemptSellTicket(ticket)
                     .observe(this@MyTicketsFragment, Observer {
                         when (it) {

@@ -30,8 +30,8 @@
             android:id="@+id/loginForm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:clipToPadding="false"
             android:clipChildren="false"
+            android:clipToPadding="false"
             android:orientation="vertical"
             android:padding="@dimen/default_padding">
 
@@ -110,7 +110,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:indeterminateTint="@color/colorPrimary" />
+                android:indeterminateTint="@color/colorAccent" />
         </FrameLayout>
 
 

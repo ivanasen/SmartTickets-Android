@@ -14,4 +14,5 @@
     <dimen name="small_padding">6dp</dimen>
     <dimen name="back_btn_size">42dp</dimen>
     <dimen name="bottom_navigation_height_with_padding">70dp</dimen>
+    <dimen name="elevation_big">12dp</dimen>
 </resources>

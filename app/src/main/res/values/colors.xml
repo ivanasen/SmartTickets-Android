@@ -5,6 +5,7 @@
     <color name="colorAccent">@color/pink</color>
 
     <color name="pink">#ef467f</color>
+    <color name="pinkDark">#880e4f</color>
     <color name="orange">#ffbf71</color>
     <color name="textGray">#616161</color>
 

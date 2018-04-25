@@ -85,6 +85,7 @@ class TicketValidatorActivity : AppCompatActivity() {
     }
 
     private fun verifyTicket(qrCodeString: String) {
+        Log.d(LOG_TAG, qrCodeString)
         mViewModel.verifyTicket(qrCodeString).observe(this, Observer {
             when (it) {
                 Utility.Companion.TransactionStatus.PENDING -> showValidationInProcessView()
