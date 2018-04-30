@@ -7,9 +7,7 @@ import android.support.v4.app.Fragment
 import android.transition.Fade
 import android.transition.Slide
 import android.transition.TransitionManager
-import android.util.TypedValue
 import android.view.*
-import android.widget.LinearLayout
 import android.widget.RelativeLayout
 
 import com.ivanasen.smarttickets.R
@@ -17,15 +15,11 @@ import com.ivanasen.smarttickets.ui.activities.WelcomeActivity
 import com.ivanasen.smarttickets.util.Utility.Companion.importWallet
 import com.ivanasen.smarttickets.viewmodels.WelcomeActivityViewModel
 import com.ivanasen.smarttickets.util.Utility.Companion.isValidPassword
-import com.ivanasen.smarttickets.util.toPx
 import kotlinx.android.synthetic.main.create_wallet_form_layout.*
 import kotlinx.android.synthetic.main.fragment_create_wallet.*
 import kotlinx.android.synthetic.main.wallet_created_layout.*
-import kotlinx.android.synthetic.main.welcome_layout.*
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.sdk25.coroutines.textChangedListener
-import android.opengl.ETC1.getHeight
-import android.opengl.ETC1.getWidth
 import android.view.animation.ScaleAnimation
 
 

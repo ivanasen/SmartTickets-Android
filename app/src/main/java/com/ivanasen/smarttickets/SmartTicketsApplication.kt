@@ -15,16 +15,4 @@ import org.acra.config.DialogConfigurationBuilder
 //@AcraDialog
 //@AcraMailSender(mailTo = BuildConfig.DEVELOPERS_EMAIL, reportAsFile = false)
 open class SmartTicketsApplication : Application() {
-    override fun attachBaseContext(base: Context) {
-        super.attachBaseContext(base)
-
-//        val builder = CoreConfigurationBuilder(this)
-//        builder.setBuildConfigClass(BuildConfig::class.java).setReportFormat(StringFormat.JSON)
-//        builder.getPluginConfigurationBuilder(DialogConfigurationBuilder::class.java)
-//                .setResText(R.string.acra_dialog_text)
-//        ACRA.init(this, builder)
-
-        // The following line triggers the initialization of ACRA
-//        ACRA.init(this)
-    }
 }
