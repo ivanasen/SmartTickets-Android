@@ -37,16 +37,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        observeLiveData()
         setupViews(savedInstanceState)
-    }
-
-    private fun observeLiveData() {
-        mViewModel.contractExists.observe(this, Observer {
-            if (it == true) {
-                Log.d(LOG_TAG, "Contract loaded successfully!")
-            }
-        })
     }
 
     override fun onBackPressed() {
