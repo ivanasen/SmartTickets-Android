@@ -69,7 +69,7 @@ class ManageEventsFragment : Fragment() {
         }
 
         manageEventsRefreshLayout.setColorSchemeColors(resources.getColor(R.color.pink),
-                resources.getColor(R.color.orange),
+                resources.getColor(R.color.yellow),
                 resources.getColor(R.color.pink))
         manageEventsRefreshLayout.isRefreshing = true
         manageEventsRefreshLayout.onRefresh {

@@ -63,8 +63,8 @@ public class SmartTickets extends Contract {
 
     public List<EventCreationEventResponse> getEventCreationEvents(TransactionReceipt transactionReceipt) {
         final Event event = new Event("EventCreation", 
-                Arrays.<TypeReference<?>>asList(),
-                Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<DynamicBytes>() {}, new TypeReference<Address>() {}));
+                Arrays.asList(),
+                Arrays.asList(new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<DynamicBytes>() {}, new TypeReference<Address>() {}));
         List<EventValues> valueList = extractEventParameters(event, transactionReceipt);
         ArrayList<EventCreationEventResponse> responses = new ArrayList<EventCreationEventResponse>(valueList.size());
         for (EventValues eventValues : valueList) {
@@ -80,8 +80,8 @@ public class SmartTickets extends Contract {
 
     public Observable<EventCreationEventResponse> eventCreationEventObservable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
         final Event event = new Event("EventCreation", 
-                Arrays.<TypeReference<?>>asList(),
-                Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<DynamicBytes>() {}, new TypeReference<Address>() {}));
+                Arrays.asList(),
+                Arrays.asList(new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<DynamicBytes>() {}, new TypeReference<Address>() {}));
         EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
         filter.addSingleTopic(EventEncoder.encode(event));
         return web3j.ethLogObservable(filter).map(new Func1<Log, EventCreationEventResponse>() {
@@ -100,8 +100,8 @@ public class SmartTickets extends Contract {
 
     public List<EventCancelationEventResponse> getEventCancelationEvents(TransactionReceipt transactionReceipt) {
         final Event event = new Event("EventCancelation", 
-                Arrays.<TypeReference<?>>asList(),
-                Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
+                Arrays.asList(),
+                Arrays.asList(new TypeReference<Uint256>() {}));
         List<EventValues> valueList = extractEventParameters(event, transactionReceipt);
         ArrayList<EventCancelationEventResponse> responses = new ArrayList<EventCancelationEventResponse>(valueList.size());
         for (EventValues eventValues : valueList) {
@@ -114,8 +114,8 @@ public class SmartTickets extends Contract {
 
     public Observable<EventCancelationEventResponse> eventCancelationEventObservable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
         final Event event = new Event("EventCancelation", 
-                Arrays.<TypeReference<?>>asList(),
-                Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
+                Arrays.asList(),
+                Arrays.asList(new TypeReference<Uint256>() {}));
         EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
         filter.addSingleTopic(EventEncoder.encode(event));
         return web3j.ethLogObservable(filter).map(new Func1<Log, EventCancelationEventResponse>() {
@@ -131,8 +131,8 @@ public class SmartTickets extends Contract {
 
     public List<TicketTypeCreationEventResponse> getTicketTypeCreationEvents(TransactionReceipt transactionReceipt) {
         final Event event = new Event("TicketTypeCreation", 
-                Arrays.<TypeReference<?>>asList(),
-                Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint8>() {}));
+                Arrays.asList(),
+                Arrays.asList(new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint8>() {}));
         List<EventValues> valueList = extractEventParameters(event, transactionReceipt);
         ArrayList<TicketTypeCreationEventResponse> responses = new ArrayList<TicketTypeCreationEventResponse>(valueList.size());
         for (EventValues eventValues : valueList) {
@@ -149,8 +149,8 @@ public class SmartTickets extends Contract {
 
     public Observable<TicketTypeCreationEventResponse> ticketTypeCreationEventObservable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
         final Event event = new Event("TicketTypeCreation", 
-                Arrays.<TypeReference<?>>asList(),
-                Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint8>() {}));
+                Arrays.asList(),
+                Arrays.asList(new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint8>() {}));
         EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
         filter.addSingleTopic(EventEncoder.encode(event));
         return web3j.ethLogObservable(filter).map(new Func1<Log, TicketTypeCreationEventResponse>() {
@@ -170,8 +170,8 @@ public class SmartTickets extends Contract {
 
     public List<TicketPurchaseEventResponse> getTicketPurchaseEvents(TransactionReceipt transactionReceipt) {
         final Event event = new Event("TicketPurchase", 
-                Arrays.<TypeReference<?>>asList(),
-                Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}, new TypeReference<Address>() {}));
+                Arrays.asList(),
+                Arrays.asList(new TypeReference<Uint256>() {}, new TypeReference<Address>() {}));
         List<EventValues> valueList = extractEventParameters(event, transactionReceipt);
         ArrayList<TicketPurchaseEventResponse> responses = new ArrayList<TicketPurchaseEventResponse>(valueList.size());
         for (EventValues eventValues : valueList) {
@@ -185,8 +185,8 @@ public class SmartTickets extends Contract {
 
     public Observable<TicketPurchaseEventResponse> ticketPurchaseEventObservable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
         final Event event = new Event("TicketPurchase", 
-                Arrays.<TypeReference<?>>asList(),
-                Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}, new TypeReference<Address>() {}));
+                Arrays.asList(),
+                Arrays.asList(new TypeReference<Uint256>() {}, new TypeReference<Address>() {}));
         EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
         filter.addSingleTopic(EventEncoder.encode(event));
         return web3j.ethLogObservable(filter).map(new Func1<Log, TicketPurchaseEventResponse>() {
@@ -203,8 +203,8 @@ public class SmartTickets extends Contract {
 
     public List<WithdrawalEventResponse> getWithdrawalEvents(TransactionReceipt transactionReceipt) {
         final Event event = new Event("Withdrawal", 
-                Arrays.<TypeReference<?>>asList(),
-                Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}));
+                Arrays.asList(),
+                Arrays.asList(new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}));
         List<EventValues> valueList = extractEventParameters(event, transactionReceipt);
         ArrayList<WithdrawalEventResponse> responses = new ArrayList<WithdrawalEventResponse>(valueList.size());
         for (EventValues eventValues : valueList) {
@@ -218,8 +218,8 @@ public class SmartTickets extends Contract {
 
     public Observable<WithdrawalEventResponse> withdrawalEventObservable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
         final Event event = new Event("Withdrawal", 
-                Arrays.<TypeReference<?>>asList(),
-                Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}));
+                Arrays.asList(),
+                Arrays.asList(new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}));
         EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
         filter.addSingleTopic(EventEncoder.encode(event));
         return web3j.ethLogObservable(filter).map(new Func1<Log, WithdrawalEventResponse>() {
@@ -236,8 +236,8 @@ public class SmartTickets extends Contract {
 
     public List<ContractUpgradeEventResponse> getContractUpgradeEvents(TransactionReceipt transactionReceipt) {
         final Event event = new Event("ContractUpgrade", 
-                Arrays.<TypeReference<?>>asList(),
-                Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {}));
+                Arrays.asList(),
+                Arrays.asList(new TypeReference<Address>() {}));
         List<EventValues> valueList = extractEventParameters(event, transactionReceipt);
         ArrayList<ContractUpgradeEventResponse> responses = new ArrayList<ContractUpgradeEventResponse>(valueList.size());
         for (EventValues eventValues : valueList) {
@@ -250,8 +250,8 @@ public class SmartTickets extends Contract {
 
     public Observable<ContractUpgradeEventResponse> contractUpgradeEventObservable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
         final Event event = new Event("ContractUpgrade", 
-                Arrays.<TypeReference<?>>asList(),
-                Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {}));
+                Arrays.asList(),
+                Arrays.asList(new TypeReference<Address>() {}));
         EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
         filter.addSingleTopic(EventEncoder.encode(event));
         return web3j.ethLogObservable(filter).map(new Func1<Log, ContractUpgradeEventResponse>() {
@@ -267,8 +267,8 @@ public class SmartTickets extends Contract {
 
     public List<PauseEventResponse> getPauseEvents(TransactionReceipt transactionReceipt) {
         final Event event = new Event("Pause", 
-                Arrays.<TypeReference<?>>asList(),
-                Arrays.<TypeReference<?>>asList());
+                Arrays.asList(),
+                Arrays.asList());
         List<EventValues> valueList = extractEventParameters(event, transactionReceipt);
         ArrayList<PauseEventResponse> responses = new ArrayList<PauseEventResponse>(valueList.size());
         for (EventValues eventValues : valueList) {
@@ -280,8 +280,8 @@ public class SmartTickets extends Contract {
 
     public Observable<PauseEventResponse> pauseEventObservable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
         final Event event = new Event("Pause", 
-                Arrays.<TypeReference<?>>asList(),
-                Arrays.<TypeReference<?>>asList());
+                Arrays.asList(),
+                Arrays.asList());
         EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
         filter.addSingleTopic(EventEncoder.encode(event));
         return web3j.ethLogObservable(filter).map(new Func1<Log, PauseEventResponse>() {
@@ -296,8 +296,8 @@ public class SmartTickets extends Contract {
 
     public List<UnpauseEventResponse> getUnpauseEvents(TransactionReceipt transactionReceipt) {
         final Event event = new Event("Unpause", 
-                Arrays.<TypeReference<?>>asList(),
-                Arrays.<TypeReference<?>>asList());
+                Arrays.asList(),
+                Arrays.asList());
         List<EventValues> valueList = extractEventParameters(event, transactionReceipt);
         ArrayList<UnpauseEventResponse> responses = new ArrayList<UnpauseEventResponse>(valueList.size());
         for (EventValues eventValues : valueList) {
@@ -309,8 +309,8 @@ public class SmartTickets extends Contract {
 
     public Observable<UnpauseEventResponse> unpauseEventObservable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
         final Event event = new Event("Unpause", 
-                Arrays.<TypeReference<?>>asList(),
-                Arrays.<TypeReference<?>>asList());
+                Arrays.asList(),
+                Arrays.asList());
         EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
         filter.addSingleTopic(EventEncoder.encode(event));
         return web3j.ethLogObservable(filter).map(new Func1<Log, UnpauseEventResponse>() {
@@ -325,8 +325,8 @@ public class SmartTickets extends Contract {
 
     public List<OwnershipTransferredEventResponse> getOwnershipTransferredEvents(TransactionReceipt transactionReceipt) {
         final Event event = new Event("OwnershipTransferred", 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {}, new TypeReference<Address>() {}),
-                Arrays.<TypeReference<?>>asList());
+                Arrays.asList(new TypeReference<Address>() {}, new TypeReference<Address>() {}),
+                Arrays.asList());
         List<EventValues> valueList = extractEventParameters(event, transactionReceipt);
         ArrayList<OwnershipTransferredEventResponse> responses = new ArrayList<OwnershipTransferredEventResponse>(valueList.size());
         for (EventValues eventValues : valueList) {
@@ -340,8 +340,8 @@ public class SmartTickets extends Contract {
 
     public Observable<OwnershipTransferredEventResponse> ownershipTransferredEventObservable(DefaultBlockParameter startBlock, DefaultBlockParameter endBlock) {
         final Event event = new Event("OwnershipTransferred", 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {}, new TypeReference<Address>() {}),
-                Arrays.<TypeReference<?>>asList());
+                Arrays.asList(new TypeReference<Address>() {}, new TypeReference<Address>() {}),
+                Arrays.asList());
         EthFilter filter = new EthFilter(startBlock, endBlock, getContractAddress());
         filter.addSingleTopic(EventEncoder.encode(event));
         return web3j.ethLogObservable(filter).map(new Func1<Log, OwnershipTransferredEventResponse>() {
@@ -358,122 +358,122 @@ public class SmartTickets extends Contract {
 
     public RemoteCall<String> cfoAddress() {
         Function function = new Function("cfoAddress", 
-                Arrays.<Type>asList(), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {}));
+                Arrays.asList(),
+                Arrays.asList(new TypeReference<Address>() {}));
         return executeRemoteCallSingleValueReturn(function, String.class);
     }
 
     public RemoteCall<String> ceoAddress() {
         Function function = new Function("ceoAddress", 
-                Arrays.<Type>asList(), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {}));
+                Arrays.asList(),
+                Arrays.asList(new TypeReference<Address>() {}));
         return executeRemoteCallSingleValueReturn(function, String.class);
     }
 
     public RemoteCall<TransactionReceipt> removeAdmin(String _organizer) {
         Function function = new Function(
                 "removeAdmin", 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(_organizer)), 
-                Collections.<TypeReference<?>>emptyList());
+                Arrays.asList(new org.web3j.abi.datatypes.Address(_organizer)),
+                Collections.emptyList());
         return executeRemoteCallTransaction(function);
     }
 
     public RemoteCall<TransactionReceipt> setCEO(String _newCEO) {
         Function function = new Function(
                 "setCEO", 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(_newCEO)), 
-                Collections.<TypeReference<?>>emptyList());
+                Arrays.asList(new org.web3j.abi.datatypes.Address(_newCEO)),
+                Collections.emptyList());
         return executeRemoteCallTransaction(function);
     }
 
     public RemoteCall<TransactionReceipt> setCOO(String _newCOO) {
         Function function = new Function(
                 "setCOO", 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(_newCOO)), 
-                Collections.<TypeReference<?>>emptyList());
+                Arrays.asList(new org.web3j.abi.datatypes.Address(_newCOO)),
+                Collections.emptyList());
         return executeRemoteCallTransaction(function);
     }
 
     public RemoteCall<TransactionReceipt> unpause() {
         Function function = new Function(
                 "unpause", 
-                Arrays.<Type>asList(), 
-                Collections.<TypeReference<?>>emptyList());
+                Arrays.asList(),
+                Collections.emptyList());
         return executeRemoteCallTransaction(function);
     }
 
     public RemoteCall<String> fiatContract() {
         Function function = new Function("fiatContract", 
-                Arrays.<Type>asList(), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {}));
+                Arrays.asList(),
+                Arrays.asList(new TypeReference<Address>() {}));
         return executeRemoteCallSingleValueReturn(function, String.class);
     }
 
     public RemoteCall<TransactionReceipt> setCFO(String _newCFO) {
         Function function = new Function(
                 "setCFO", 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(_newCFO)), 
-                Collections.<TypeReference<?>>emptyList());
+                Arrays.asList(new org.web3j.abi.datatypes.Address(_newCFO)),
+                Collections.emptyList());
         return executeRemoteCallTransaction(function);
     }
 
     public RemoteCall<Boolean> paused() {
         Function function = new Function("paused", 
-                Arrays.<Type>asList(), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Bool>() {}));
+                Arrays.asList(),
+                Arrays.asList(new TypeReference<Bool>() {}));
         return executeRemoteCallSingleValueReturn(function, Boolean.class);
     }
 
     public RemoteCall<String> newContractAddress() {
         Function function = new Function("newContractAddress", 
-                Arrays.<Type>asList(), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {}));
+                Arrays.asList(),
+                Arrays.asList(new TypeReference<Address>() {}));
         return executeRemoteCallSingleValueReturn(function, String.class);
     }
 
     public RemoteCall<TransactionReceipt> setNewAddress(String _v2Address) {
         Function function = new Function(
                 "setNewAddress", 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(_v2Address)), 
-                Collections.<TypeReference<?>>emptyList());
+                Arrays.asList(new org.web3j.abi.datatypes.Address(_v2Address)),
+                Collections.emptyList());
         return executeRemoteCallTransaction(function);
     }
 
     public RemoteCall<TransactionReceipt> pause() {
         Function function = new Function(
                 "pause", 
-                Arrays.<Type>asList(), 
-                Collections.<TypeReference<?>>emptyList());
+                Arrays.asList(),
+                Collections.emptyList());
         return executeRemoteCallTransaction(function);
     }
 
     public RemoteCall<String> owner() {
         Function function = new Function("owner", 
-                Arrays.<Type>asList(), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {}));
+                Arrays.asList(),
+                Arrays.asList(new TypeReference<Address>() {}));
         return executeRemoteCallSingleValueReturn(function, String.class);
     }
 
     public RemoteCall<String> cooAddress() {
         Function function = new Function("cooAddress", 
-                Arrays.<Type>asList(), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {}));
+                Arrays.asList(),
+                Arrays.asList(new TypeReference<Address>() {}));
         return executeRemoteCallSingleValueReturn(function, String.class);
     }
 
     public RemoteCall<TransactionReceipt> addEventCreators(String _organizer) {
         Function function = new Function(
                 "addEventCreators", 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(_organizer)), 
-                Collections.<TypeReference<?>>emptyList());
+                Arrays.asList(new org.web3j.abi.datatypes.Address(_organizer)),
+                Collections.emptyList());
         return executeRemoteCallTransaction(function);
     }
 
     public RemoteCall<TransactionReceipt> transferOwnership(String newOwner) {
         Function function = new Function(
                 "transferOwnership", 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(newOwner)), 
-                Collections.<TypeReference<?>>emptyList());
+                Arrays.asList(new org.web3j.abi.datatypes.Address(newOwner)),
+                Collections.emptyList());
         return executeRemoteCallTransaction(function);
     }
 
@@ -488,52 +488,52 @@ public class SmartTickets extends Contract {
     public RemoteCall<TransactionReceipt> setFiatContractAddress(String _newAddress) {
         Function function = new Function(
                 "setFiatContractAddress", 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(_newAddress)), 
-                Collections.<TypeReference<?>>emptyList());
+                Arrays.asList(new org.web3j.abi.datatypes.Address(_newAddress)),
+                Collections.emptyList());
         return executeRemoteCallTransaction(function);
     }
 
     public RemoteCall<BigInteger> balanceOf(String _owner) {
         Function function = new Function("balanceOf", 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(_owner)), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
+                Arrays.asList(new org.web3j.abi.datatypes.Address(_owner)),
+                Arrays.asList(new TypeReference<Uint256>() {}));
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
     public RemoteCall<List> getTicketsForOwner(String _owner) {
         Function function = new Function("getTicketsForOwner", 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(_owner)), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<DynamicArray<Uint256>>() {}));
+                Arrays.asList(new org.web3j.abi.datatypes.Address(_owner)),
+                Arrays.asList(new TypeReference<DynamicArray<Uint256>>() {}));
         return executeRemoteCallSingleValueReturn(function, List.class);
     }
 
     public RemoteCall<BigInteger> getTicketIdForOwner(String _owner, BigInteger _index) {
         Function function = new Function("getTicketIdForOwner", 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(_owner), 
+                Arrays.asList(new org.web3j.abi.datatypes.Address(_owner),
                 new org.web3j.abi.datatypes.generated.Uint256(_index)), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
+                Arrays.asList(new TypeReference<Uint256>() {}));
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
     public RemoteCall<BigInteger> getUsdCourse() {
         Function function = new Function("getUsdCourse", 
-                Arrays.<Type>asList(), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
+                Arrays.asList(),
+                Arrays.asList(new TypeReference<Uint256>() {}));
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
     public RemoteCall<TransactionReceipt> buyTicket(BigInteger _ticketTypeId, BigInteger weiValue) {
         Function function = new Function(
                 "buyTicket", 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(_ticketTypeId)), 
-                Collections.<TypeReference<?>>emptyList());
+                Arrays.asList(new org.web3j.abi.datatypes.generated.Uint256(_ticketTypeId)),
+                Collections.emptyList());
         return executeRemoteCallTransaction(function, weiValue);
     }
 
     public RemoteCall<TransactionReceipt> createEvent(BigInteger _date, byte[] _metaDescriptionHash, List<BigInteger> _ticketPricesInUSDCents, List<BigInteger> _ticketSupplies, List<BigInteger> _ticketRefundables) {
         Function function = new Function(
                 "createEvent", 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(_date), 
+                Arrays.asList(new org.web3j.abi.datatypes.generated.Uint256(_date),
                 new org.web3j.abi.datatypes.DynamicBytes(_metaDescriptionHash), 
                 new org.web3j.abi.datatypes.DynamicArray<org.web3j.abi.datatypes.generated.Uint256>(
                         org.web3j.abi.Utils.typeMap(_ticketPricesInUSDCents, org.web3j.abi.datatypes.generated.Uint256.class)), 
@@ -541,86 +541,86 @@ public class SmartTickets extends Contract {
                         org.web3j.abi.Utils.typeMap(_ticketSupplies, org.web3j.abi.datatypes.generated.Uint256.class)), 
                 new org.web3j.abi.datatypes.DynamicArray<org.web3j.abi.datatypes.generated.Uint8>(
                         org.web3j.abi.Utils.typeMap(_ticketRefundables, org.web3j.abi.datatypes.generated.Uint8.class))), 
-                Collections.<TypeReference<?>>emptyList());
+                Collections.emptyList());
         return executeRemoteCallTransaction(function);
     }
 
     public RemoteCall<TransactionReceipt> addTicketForEvent(BigInteger _eventId, BigInteger _priceInUSDCents, BigInteger _initialSupply, BigInteger _refundable) {
         Function function = new Function(
                 "addTicketForEvent", 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(_eventId), 
+                Arrays.asList(new org.web3j.abi.datatypes.generated.Uint256(_eventId),
                 new org.web3j.abi.datatypes.generated.Uint256(_priceInUSDCents), 
                 new org.web3j.abi.datatypes.generated.Uint256(_initialSupply), 
                 new org.web3j.abi.datatypes.generated.Uint8(_refundable)), 
-                Collections.<TypeReference<?>>emptyList());
+                Collections.emptyList());
         return executeRemoteCallTransaction(function);
     }
 
     public RemoteCall<TransactionReceipt> refundTicket(BigInteger _ticketId) {
         Function function = new Function(
                 "refundTicket", 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(_ticketId)), 
-                Collections.<TypeReference<?>>emptyList());
+                Arrays.asList(new org.web3j.abi.datatypes.generated.Uint256(_ticketId)),
+                Collections.emptyList());
         return executeRemoteCallTransaction(function);
     }
 
     public RemoteCall<TransactionReceipt> cancelEvent(BigInteger _eventId) {
         Function function = new Function(
                 "cancelEvent", 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(_eventId)), 
-                Collections.<TypeReference<?>>emptyList());
+                Arrays.asList(new org.web3j.abi.datatypes.generated.Uint256(_eventId)),
+                Collections.emptyList());
         return executeRemoteCallTransaction(function);
     }
 
     public RemoteCall<TransactionReceipt> withdrawalEarningsForEvent(BigInteger _eventId) {
         Function function = new Function(
                 "withdrawalEarningsForEvent", 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(_eventId)), 
-                Collections.<TypeReference<?>>emptyList());
+                Arrays.asList(new org.web3j.abi.datatypes.generated.Uint256(_eventId)),
+                Collections.emptyList());
         return executeRemoteCallTransaction(function);
     }
 
     public RemoteCall<TransactionReceipt> changeEventDate(BigInteger _id, BigInteger _date) {
         Function function = new Function(
                 "changeEventDate", 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(_id), 
+                Arrays.asList(new org.web3j.abi.datatypes.generated.Uint256(_id),
                 new org.web3j.abi.datatypes.generated.Uint256(_date)), 
-                Collections.<TypeReference<?>>emptyList());
+                Collections.emptyList());
         return executeRemoteCallTransaction(function);
     }
 
     public RemoteCall<TransactionReceipt> changeEventMetaDescriptionHash(BigInteger _id, byte[] _hash) {
         Function function = new Function(
                 "changeEventMetaDescriptionHash", 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(_id), 
+                Arrays.asList(new org.web3j.abi.datatypes.generated.Uint256(_id),
                 new org.web3j.abi.datatypes.DynamicBytes(_hash)), 
-                Collections.<TypeReference<?>>emptyList());
+                Collections.emptyList());
         return executeRemoteCallTransaction(function);
     }
 
     public RemoteCall<BigInteger> getEventCount() {
         Function function = new Function("getEventCount", 
-                Arrays.<Type>asList(), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
+                Arrays.asList(),
+                Arrays.asList(new TypeReference<Uint256>() {}));
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
     public RemoteCall<BigInteger> getTicketTypesCountForEvent(BigInteger _eventId) {
         Function function = new Function("getTicketTypesCountForEvent", 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(_eventId)), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
+                Arrays.asList(new org.web3j.abi.datatypes.generated.Uint256(_eventId)),
+                Arrays.asList(new TypeReference<Uint256>() {}));
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
     public RemoteCall<Tuple6<BigInteger, BigInteger, BigInteger, BigInteger, BigInteger, BigInteger>> getTicketType(BigInteger _ticketTypeId) {
         final Function function = new Function("getTicketType", 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(_ticketTypeId)), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint8>() {}));
+                Arrays.asList(new org.web3j.abi.datatypes.generated.Uint256(_ticketTypeId)),
+                Arrays.asList(new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint8>() {}));
         return new RemoteCall<Tuple6<BigInteger, BigInteger, BigInteger, BigInteger, BigInteger, BigInteger>>(
                 new Callable<Tuple6<BigInteger, BigInteger, BigInteger, BigInteger, BigInteger, BigInteger>>() {
                     @Override
                     public Tuple6<BigInteger, BigInteger, BigInteger, BigInteger, BigInteger, BigInteger> call() throws Exception {
-                        List<Type> results = executeCallMultipleValueReturn(function);;
+                        List<Type> results = executeCallMultipleValueReturn(function);
                         return new Tuple6<BigInteger, BigInteger, BigInteger, BigInteger, BigInteger, BigInteger>(
                                 (BigInteger) results.get(0).getValue(), 
                                 (BigInteger) results.get(1).getValue(), 
@@ -634,13 +634,13 @@ public class SmartTickets extends Contract {
 
     public RemoteCall<Tuple5<BigInteger, byte[], BigInteger, BigInteger, BigInteger>> getEvent(BigInteger _eventId) {
         final Function function = new Function("getEvent", 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(_eventId)), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}, new TypeReference<DynamicBytes>() {}, new TypeReference<Uint8>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}));
+                Arrays.asList(new org.web3j.abi.datatypes.generated.Uint256(_eventId)),
+                Arrays.asList(new TypeReference<Uint256>() {}, new TypeReference<DynamicBytes>() {}, new TypeReference<Uint8>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}));
         return new RemoteCall<Tuple5<BigInteger, byte[], BigInteger, BigInteger, BigInteger>>(
                 new Callable<Tuple5<BigInteger, byte[], BigInteger, BigInteger, BigInteger>>() {
                     @Override
                     public Tuple5<BigInteger, byte[], BigInteger, BigInteger, BigInteger> call() throws Exception {
-                        List<Type> results = executeCallMultipleValueReturn(function);;
+                        List<Type> results = executeCallMultipleValueReturn(function);
                         return new Tuple5<BigInteger, byte[], BigInteger, BigInteger, BigInteger>(
                                 (BigInteger) results.get(0).getValue(), 
                                 (byte[]) results.get(1).getValue(), 
@@ -653,20 +653,20 @@ public class SmartTickets extends Contract {
 
     public RemoteCall<List> getEventIdsForCreator(String _creator) {
         Function function = new Function("getEventIdsForCreator", 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(_creator)), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<DynamicArray<Uint256>>() {}));
+                Arrays.asList(new org.web3j.abi.datatypes.Address(_creator)),
+                Arrays.asList(new TypeReference<DynamicArray<Uint256>>() {}));
         return executeRemoteCallSingleValueReturn(function, List.class);
     }
 
     public RemoteCall<Tuple6<BigInteger, BigInteger, BigInteger, BigInteger, BigInteger, BigInteger>> getTicketTypeForTicket(BigInteger _ticketId) {
         final Function function = new Function("getTicketTypeForTicket", 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(_ticketId)), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint8>() {}));
+                Arrays.asList(new org.web3j.abi.datatypes.generated.Uint256(_ticketId)),
+                Arrays.asList(new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint8>() {}));
         return new RemoteCall<Tuple6<BigInteger, BigInteger, BigInteger, BigInteger, BigInteger, BigInteger>>(
                 new Callable<Tuple6<BigInteger, BigInteger, BigInteger, BigInteger, BigInteger, BigInteger>>() {
                     @Override
                     public Tuple6<BigInteger, BigInteger, BigInteger, BigInteger, BigInteger, BigInteger> call() throws Exception {
-                        List<Type> results = executeCallMultipleValueReturn(function);;
+                        List<Type> results = executeCallMultipleValueReturn(function);
                         return new Tuple6<BigInteger, BigInteger, BigInteger, BigInteger, BigInteger, BigInteger>(
                                 (BigInteger) results.get(0).getValue(), 
                                 (BigInteger) results.get(1).getValue(), 
@@ -680,14 +680,14 @@ public class SmartTickets extends Contract {
 
     public RemoteCall<Tuple6<BigInteger, BigInteger, BigInteger, BigInteger, BigInteger, BigInteger>> getTicketTypeForEvent(BigInteger _eventId, BigInteger _index) {
         final Function function = new Function("getTicketTypeForEvent", 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(_eventId), 
+                Arrays.asList(new org.web3j.abi.datatypes.generated.Uint256(_eventId),
                 new org.web3j.abi.datatypes.generated.Uint256(_index)), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint8>() {}));
+                Arrays.asList(new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint8>() {}));
         return new RemoteCall<Tuple6<BigInteger, BigInteger, BigInteger, BigInteger, BigInteger, BigInteger>>(
                 new Callable<Tuple6<BigInteger, BigInteger, BigInteger, BigInteger, BigInteger, BigInteger>>() {
                     @Override
                     public Tuple6<BigInteger, BigInteger, BigInteger, BigInteger, BigInteger, BigInteger> call() throws Exception {
-                        List<Type> results = executeCallMultipleValueReturn(function);;
+                        List<Type> results = executeCallMultipleValueReturn(function);
                         return new Tuple6<BigInteger, BigInteger, BigInteger, BigInteger, BigInteger, BigInteger>(
                                 (BigInteger) results.get(0).getValue(), 
                                 (BigInteger) results.get(1).getValue(), 
@@ -701,27 +701,27 @@ public class SmartTickets extends Contract {
 
     public RemoteCall<BigInteger> getTicketTypeCount() {
         Function function = new Function("getTicketTypeCount", 
-                Arrays.<Type>asList(), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
+                Arrays.asList(),
+                Arrays.asList(new TypeReference<Uint256>() {}));
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
     public RemoteCall<BigInteger> getOneUSDCentInWei() {
         Function function = new Function("getOneUSDCentInWei", 
-                Arrays.<Type>asList(), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
+                Arrays.asList(),
+                Arrays.asList(new TypeReference<Uint256>() {}));
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
     public RemoteCall<Boolean> verifyTicket(BigInteger _ticketId, byte[] _ticketIdHash, String _addr, BigInteger _v, byte[] _r, byte[] _s) {
         Function function = new Function("verifyTicket", 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(_ticketId), 
+                Arrays.asList(new org.web3j.abi.datatypes.generated.Uint256(_ticketId),
                 new org.web3j.abi.datatypes.generated.Bytes32(_ticketIdHash), 
                 new org.web3j.abi.datatypes.Address(_addr), 
                 new org.web3j.abi.datatypes.generated.Uint8(_v), 
                 new org.web3j.abi.datatypes.generated.Bytes32(_r), 
                 new org.web3j.abi.datatypes.generated.Bytes32(_s)), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Bool>() {}));
+                Arrays.asList(new TypeReference<Bool>() {}));
         return executeRemoteCallSingleValueReturn(function, Boolean.class);
     }
 

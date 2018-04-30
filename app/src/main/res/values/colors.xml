@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#ff8a65</color>
+    <color name="colorPrimary">@color/orange</color>
     <color name="colorPrimaryDark">#ff7043</color>
     <color name="colorAccent">@color/pink</color>
 
     <color name="pink">#ef467f</color>
     <color name="pinkDark">#880e4f</color>
-    <color name="orange">#ffbf71</color>
+    <color name="orange">#ff8a65</color>
+    <color name="yellow">#ffbf71</color>
     <color name="textGray">#616161</color>
 
     <color name="lightGray">#bdbdbd</color>
     <color name="lightGrayTransparent">#83bdbdbd</color>
-    <color name="blackGray">#282828</color>
+    <color name="blackGray">#424242</color>
     <color name="transparentDark">#32000000</color>
     <color name="white">#FFFFFF</color>
+    <color name="white_transparent">#c8ffffff</color>
 </resources>

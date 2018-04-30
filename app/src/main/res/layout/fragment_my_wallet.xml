@@ -14,35 +14,52 @@
             android:layout_height="wrap_content"
             android:clipToPadding="false"
             android:orientation="vertical"
-            android:padding="24dp"
+            android:padding="@dimen/default_padding"
             tools:context="com.ivanasen.smarttickets.ui.fragments.MyWalletFragment">
 
-            <LinearLayout
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/default_margin"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/walletIdenticonView"
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
-                    android:layout_marginBottom="@dimen/default_margin"
-                    app:civ_border_width="0dp" />
+                app:cardCornerRadius="12dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                    android:background="@drawable/gradient_background"
+                    android:orientation="vertical"
+                    android:padding="@dimen/default_padding">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/wallet_balance_text"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                        android:textColor="@android:color/secondary_text_light_nodisable" />
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="@color/white_transparent" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/etherInUsdView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            tools:text="2,053.94" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/small_margin"
+                            android:text="@string/usd_symbol"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                            android:textColor="@color/white_transparent"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -54,7 +71,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                            android:textColor="@color/colorPrimary"
+                            android:textColor="@color/white"
                             android:textStyle="bold"
                             tools:text="2.36" />
 
@@ -64,30 +81,7 @@
                             android:layout_marginStart="@dimen/small_margin"
                             android:text="@string/eth_symbol"
                             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                            android:textColor="@android:color/secondary_text_light_nodisable"
-                            android:textStyle="bold" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:id="@+id/etherInUsdView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                            android:textStyle="bold"
-                            tools:text="2,053.94" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/small_margin"
-                            android:text="@string/usd_symbol"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                            android:textColor="@android:color/secondary_text_light_nodisable"
+                            android:textColor="@color/white_transparent"
                             android:textStyle="bold" />
 
                     </LinearLayout>
@@ -95,12 +89,13 @@
 
                 </LinearLayout>
 
-            </LinearLayout>
+            </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/default_margin"
+                android:visibility="gone"
                 app:cardBackgroundColor="#f2f2f2"
                 app:cardCornerRadius="30dp"
                 app:cardElevation="0dp">
@@ -149,24 +144,26 @@
                     android:layout_width="130dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/default_margin"
-                    android:background="@drawable/rounded_btn_gradient"
+                    android:background="@drawable/rounded_btn"
                     android:drawableStart="@drawable/ic_arrow_downward_black_24dp"
+                    android:drawableTint="@color/colorAccent"
                     android:paddingEnd="@dimen/default_padding"
                     android:paddingStart="@dimen/default_padding"
                     android:text="@string/receive_text"
-                    android:textColor="@android:color/white" />
+                    android:textColor="@color/colorAccent" />
 
                 <Button
                     android:id="@+id/sendEtherBtn"
                     android:layout_width="130dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/default_margin"
-                    android:background="@drawable/rounded_btn_gradient"
+                    android:background="@drawable/rounded_btn"
                     android:drawableStart="@drawable/ic_arrow_upward_white_24dp"
+                    android:drawableTint="@color/colorPrimary"
                     android:paddingEnd="@dimen/default_padding"
                     android:paddingStart="@dimen/default_padding"
                     android:text="@string/send_text"
-                    android:textColor="@android:color/white" />
+                    android:textColor="@color/colorPrimary" />
 
             </LinearLayout>
 

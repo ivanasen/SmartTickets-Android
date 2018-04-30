@@ -8,12 +8,14 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.content.ClipData
 import android.content.ClipboardManager
+import android.content.res.Resources
 import android.widget.Toast
 import com.ivanasen.smarttickets.R
 import java.io.File
 import com.ivanasen.smarttickets.BuildConfig
 import android.support.v4.content.FileProvider
 import android.support.v4.app.ActivityCompat.startActivityForResult
+import android.util.TypedValue
 
 
 class Utility {
@@ -83,6 +85,13 @@ class Utility {
 
         fun getIpfsImageUrl(imageHash: String): String =
                 "${BuildConfig.IPFS_GATEWAY_URL}/$IPFS_URL_PATH/$imageHash"
-    }
 
+
+    }
 }
+
+val Int.toPx: Int
+    get() = (this * Resources.getSystem().displayMetrics.density).toInt()
+
+val Int.toDp: Int
+    get() = (this / Resources.getSystem().displayMetrics.density).toInt()

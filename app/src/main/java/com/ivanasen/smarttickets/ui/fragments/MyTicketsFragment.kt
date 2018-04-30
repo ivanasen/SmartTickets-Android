@@ -4,7 +4,6 @@ import android.arch.lifecycle.Observer
 
 
 import android.arch.lifecycle.ViewModelProviders
-import android.content.res.Resources
 import android.nfc.NdefMessage
 import android.nfc.NfcAdapter
 import android.nfc.NfcEvent
@@ -35,6 +34,7 @@ import android.util.Log
 import android.view.*
 import com.ivanasen.smarttickets.ui.activities.TicketValidatorActivity
 import com.ivanasen.smarttickets.util.Utility.Companion.launchActivity
+import com.ivanasen.smarttickets.util.toPx
 import kotlinx.android.synthetic.main.ticket_detail_layout.*
 
 
@@ -43,7 +43,7 @@ class MyTicketsFragment : Fragment(),
         NfcAdapter.OnNdefPushCompleteCallback {
 
     private val LOG_TAG: String = MyTicketsFragment::class.java.simpleName
-    private val QR_CODE_SIZE: Int = 500
+    private val QR_CODE_SIZE: Int = 160.toPx
 
     private val mViewModel: AppViewModel by lazy {
         ViewModelProviders.of(this).get(AppViewModel::class.java)
@@ -96,7 +96,7 @@ class MyTicketsFragment : Fragment(),
 
     private fun setupViews() {
         ticketsRefreshLayout.setColorSchemeColors(resources.getColor(R.color.pink),
-                resources.getColor(R.color.orange),
+                resources.getColor(R.color.yellow),
                 resources.getColor(R.color.pink))
         ticketsRefreshLayout.isRefreshing = true
         ticketsRefreshLayout.onRefresh {

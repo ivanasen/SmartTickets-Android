@@ -32,7 +32,7 @@
     <string name="unlock_wallet_text">Unlock Wallet</string>
     <string name="wrong_password_text">Wrong Password</string>
     <string name="use_another_wallet_text">Use Another Wallet</string>
-    <string name="wallet_balance_text">Wallet Balance</string>
+    <string name="wallet_balance_text">Your Wallet Balance is:</string>
     <string name="receive_text">Receive</string>
     <string name="send_text">Send</string>
     <string name="gravatar_url"><![CDATA[http://www.gravatar.com/avatar/%s?s=150&d=identicon&r=PG]]></string>
@@ -87,7 +87,7 @@
     <string name="test_message">Since Smart Tickets is still unstable and in active development we\'re using the Ropsten Test Network of Ethereum. You can obtain test Ether from a faucet. Please don\'t send any real Ether to this wallet.</string>
     <string name="OK">Okay</string>
     <string name="test_dialog_title">Important Notice</string>
-    <string name="it_s_empty_here_text">It\'s empty here :(</string>
+    <string name="it_s_empty_here_text">It\'s empty here…</string>
     <string name="back_up_wallet">Back up wallet</string>
     <string name="event_creation_test_message">The Event Management and Creation functionality is restricted only to addresses registered as Event Organisers but for testing purposes everyone is able to create events right now.</string>
     <string name="ticket_success">Your successfully bought a ticket. It will appear in your \'My Tickets\' section in a couple of minutes.</string>
@@ -128,7 +128,9 @@
     <string name="qr_code_error">Error scanning QR code.</string>
     <string name="camera_permission_message">Smart Tickets needs camera permission in order to scan a ticket</string>
     <string name="event_creating_message">Creating event. May take a while to appear…</string>
-    <string name="acra_dialog_text">Sorry, but the application has crashed. A bug report will been sent to the developers.</string>
+    <string name="acra_dialog_text">Sorry, but the application has crashed. A bug report will now been sent to the developers through your email.</string>
     <string name="transaction_history_label">Transaction History</string>
     <string name="unlock_text">Unlock</string>
+    <string name="invalid_address_msg">Invalid Address. Make sure you\'ve spelled the address correctly!</string>
+    <string name="invalid_amount_msg">Invalid Amount!</string>
 </resources>

@@ -14,12 +14,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.afollestad.materialdialogs.MaterialDialog
-import com.bumptech.glide.Glide
 import com.ivanasen.smarttickets.R
 import com.ivanasen.smarttickets.util.Utility
 import com.ivanasen.smarttickets.util.Utility.Companion.WALLET_FILE_NAME_KEY
 import com.ivanasen.smarttickets.viewmodels.AppViewModel
 import com.ivanasen.smarttickets.util.Utility.Companion.copyToClipboard
+import com.ivanasen.smarttickets.util.toPx
 import kotlinx.android.synthetic.main.fragment_my_wallet.*
 import net.glxn.qrgen.android.QRCode
 import org.jetbrains.anko.defaultSharedPreferences
@@ -34,7 +34,7 @@ import java.text.DecimalFormat
 class MyWalletFragment : Fragment() {
 
     private val LOG_TAG = MyWalletFragment::class.java.simpleName
-    private val DIALOG_WIDTH: Int = 1000
+    private val QR_CODE_SIZE = 260.toPx
 
     private val mViewModel: AppViewModel by lazy {
         ViewModelProviders.of(activity as FragmentActivity).get(AppViewModel::class.java)
@@ -44,6 +44,8 @@ class MyWalletFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         activity?.title = getString(R.string.title_wallet)
         setHasOptionsMenu(true)
+
+
         return inflater.inflate(R.layout.fragment_my_wallet, container, false)
     }
 
@@ -113,18 +115,13 @@ class MyWalletFragment : Fragment() {
 
         walletAddressView.text = walletAddress
 
-        val gravatarUrl = getGravatarUrl(walletAddress ?: "")
-        Glide.with(this)
-                .load(gravatarUrl)
-                .into(walletIdenticonView)
-
         showQrCodeBtn.onClick { showAddressDialog() }
         receiveEtherBtn.onClick { showAddressDialog() }
 
         sendEtherBtn.onClick { showSendEtherDialog() }
 
         walletRefreshLayout.setColorSchemeColors(resources.getColor(R.color.pink),
-                resources.getColor(R.color.orange),
+                resources.getColor(R.color.yellow),
                 resources.getColor(R.color.pink))
         walletRefreshLayout.isRefreshing = true
         walletRefreshLayout.onRefresh {
@@ -141,21 +138,29 @@ class MyWalletFragment : Fragment() {
             MaterialDialog.Builder(it)
                     .title(R.string.send_ether_dialog_title)
                     .customView(R.layout.send_ether_layout, true)
+                    .autoDismiss(false)
                     .positiveText(getString(R.string.send_text))
-                    .positiveColor(resources.getColor(R.color.colorPrimary))
+                    .onNegative({ dialog, _ -> dialog.dismiss() })
                     .onPositive({ dialog, _ ->
                         val address = dialog.customView!!.findViewById<TextView>(R.id.inputAddress)
                                 .text.toString()
                         val amount = dialog.customView!!.findViewById<TextView>(R.id.etherAmount)
                                 .text.toString()
-                                .toDouble()
 
-                        require(WalletUtils.isValidAddress(address))
-                        require(amount > 0)
-
-                        Log.d(LOG_TAG, "$address, $amount")
-
-                        mViewModel.sendEther(address, amount)
+                        if (!WalletUtils.isValidAddress(address)) {
+                            Toast.makeText(context,
+                                    getString(R.string.invalid_address_msg),
+                                    Toast.LENGTH_LONG)
+                                    .show()
+                        } else if (!amount.isNotEmpty() || amount.toDouble() <= 0) {
+                            Toast.makeText(context,
+                                    getString(R.string.invalid_amount_msg),
+                                    Toast.LENGTH_LONG)
+                                    .show()
+                        } else {
+                            mViewModel.sendEther(address, amount.toDouble())
+                            dialog.dismiss()
+                        }
                     })
                     .negativeText(getString(R.string.cancel_text))
                     .show()
@@ -182,16 +187,13 @@ class MyWalletFragment : Fragment() {
                     .create()
             dialog.show()
 
-            dialog.window.setLayout(DIALOG_WIDTH,
-                    ViewGroup.LayoutParams.WRAP_CONTENT)
-
             val walletAddressQrView = dialog.findViewById<ImageView>(R.id.walletAddressQr)
             val walletAddressTextView = dialog.findViewById<TextView>(R.id.walletAddressTextView)
             val copyBtn = dialog.findViewById<Button>(R.id.copyAddressBtn)
 
             val address = walletAddressView.text.toString()
-            val walletBitmap = QRCode.from(address).withSize(800, 800).bitmap()
-            walletAddressQrView.imageBitmap = walletBitmap
+            val walletQrCode = QRCode.from(address).withSize(QR_CODE_SIZE, QR_CODE_SIZE).bitmap()
+            walletAddressQrView.imageBitmap = walletQrCode
             walletAddressTextView.text = address
 
             copyBtn.onClick {

@@ -3,22 +3,21 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:gravity="center"
-    android:orientation="vertical"
-    android:padding="@dimen/default_padding"
-    android:paddingBottom="0dp">
+    android:paddingBottom="@dimen/default_padding"
+    android:orientation="vertical">
 
     <ImageView
         android:id="@+id/walletAddressQr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:maxHeight="200dp"
-        android:maxWidth="200dp" />
+        android:maxHeight="260dp"
+        android:maxWidth="260dp" />
 
     <TextView
         android:id="@+id/walletAddressTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:maxWidth="180dp" />
+        android:maxWidth="260dp" />
 
     <Button
         android:id="@+id/copyAddressBtn"
@@ -26,6 +25,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/copy_text"
-        android:textColor="@color/colorPrimary" />
+        android:textColor="@color/colorAccent" />
 
 </LinearLayout>

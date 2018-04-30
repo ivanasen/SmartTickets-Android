@@ -5,10 +5,10 @@
         <shape android:shape="rectangle">
             <gradient
                 android:angle="45"
-                android:endColor="@color/orange"
+                android:endColor="@color/yellow"
                 android:startColor="@color/pink" />
             <!-- make the button corners rounded-->
-            <corners android:radius="25dp" />
+            <corners android:radius="30dp" />
         </shape>
     </item>
 </ripple>
