@@ -45,13 +45,8 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="backgroundColor" value="a62e18" />
                                       <entry key="backgroundImage" value="$USER_HOME$/Downloads/output1.png" />
-                                      <entry key="foregroundImage" value="$USER_HOME$/Downloads/SmartTickets.png" />
-                                      <entry key="generateRoundIcon" value="false" />
-                                      <entry key="legacyIconShape" value="NONE" />
-                                      <entry key="previewDensity" value="XXXHIGH" />
-                                      <entry key="webIconShape" value="NONE" />
+                                      <entry key="foregroundImage" value="$USER_HOME$/Desktop/SmartTickets.png" />
                                     </map>
                                   </option>
                                 </PersistentState>

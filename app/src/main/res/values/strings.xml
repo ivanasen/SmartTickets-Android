@@ -93,7 +93,7 @@
     <string name="ticket_success">Your successfully bought a ticket. It will appear in your \'My Tickets\' section in a couple of minutes.</string>
     <string name="buying_ticket_text">Buying Ticket…</string>
     <string name="tx_error_text">Error processing transaction</string>
-    <string name="event_creation_message">Event creation successfully submited. Your event will be live in a couple of minutes.</string>
+    <string name="event_creation_message">Event creation successfully submitted. Your event will be live in a couple of minutes.</string>
     <string name="event_error_message">Error creating event.</string>
     <string name="event_success_title">Event creation successful</string>
     <string name="ticket_success_title">Ticket bought successfully!</string>

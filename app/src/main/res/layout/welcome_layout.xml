@@ -8,9 +8,9 @@
 
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginBottom="16dp"
+        android:layout_width="240dp"
+        android:layout_height="240dp"
+        android:layout_marginBottom="@dimen/default_margin"
         android:contentDescription="@string/app_name"
         app:srcCompat="@drawable/welcome_screen_logo" />
 
