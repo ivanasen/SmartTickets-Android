@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment
 import android.transition.Fade
 import android.transition.Slide
 import android.transition.TransitionManager
+import android.util.TypedValue
 import android.view.*
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
@@ -16,15 +17,23 @@ import com.ivanasen.smarttickets.ui.activities.WelcomeActivity
 import com.ivanasen.smarttickets.util.Utility.Companion.importWallet
 import com.ivanasen.smarttickets.viewmodels.WelcomeActivityViewModel
 import com.ivanasen.smarttickets.util.Utility.Companion.isValidPassword
+import com.ivanasen.smarttickets.util.toPx
 import kotlinx.android.synthetic.main.create_wallet_form_layout.*
 import kotlinx.android.synthetic.main.fragment_create_wallet.*
 import kotlinx.android.synthetic.main.wallet_created_layout.*
+import kotlinx.android.synthetic.main.welcome_layout.*
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.sdk25.coroutines.textChangedListener
+import android.opengl.ETC1.getHeight
+import android.opengl.ETC1.getWidth
+import android.view.animation.ScaleAnimation
+
 
 class CreateWalletFragment : Fragment() {
 
     private val LOG_TAG = CreateWalletFragment::class.java.simpleName
+
+    private val WELCOME_LAYOUT_ANIMATION_SCALE = 0.7f
 
     private lateinit var mRootView: View
     private val mViewModel: WelcomeActivityViewModel by lazy {
@@ -82,6 +91,8 @@ class CreateWalletFragment : Fragment() {
             invalidPasswordsView.text = getString(R.string.password_too_short_text)
             invalidPasswordsView.visibility = View.VISIBLE
             attemptCreateWalletBtn.isEnabled = false
+        } else if (password != null && confirmPassword != null && password.isEmpty() && confirmPassword.isEmpty()) {
+            invalidPasswordsView.visibility = View.INVISIBLE
         }
     }
 
@@ -90,6 +101,16 @@ class CreateWalletFragment : Fragment() {
             TransitionManager.beginDelayedTransition(mRootView as ViewGroup, Slide(Gravity.BOTTOM))
             createWalletContainer.visibility = View.VISIBLE
             walletCreationView.visibility = View.GONE
+
+            val scale = WELCOME_LAYOUT_ANIMATION_SCALE
+            val scaleAnimation = ScaleAnimation(1f, scale, 1f, scale,
+                    welcomeLayout.width / 2.0f, welcomeLayout.height / 2.0f)
+            scaleAnimation.duration =
+                    resources.getInteger(R.integer.scale_animation_duration).toLong()
+            scaleAnimation.fillAfter = true
+            scaleAnimation.setInterpolator(this@CreateWalletFragment.context,
+                    android.R.interpolator.accelerate_decelerate)
+            welcomeLayout.startAnimation(scaleAnimation)
         }
 
         recoverWalletBtn.onClick {
@@ -100,6 +121,16 @@ class CreateWalletFragment : Fragment() {
             TransitionManager.beginDelayedTransition(mRootView as ViewGroup, Slide(Gravity.BOTTOM))
             createWalletContainer.visibility = View.GONE
             walletCreationView.visibility = View.VISIBLE
+
+            val scale = WELCOME_LAYOUT_ANIMATION_SCALE
+            val scaleAnimation = ScaleAnimation(scale, 1f, scale, 1f,
+                    welcomeLayout.width / 2.0f, welcomeLayout.height / 2.0f)
+            scaleAnimation.fillAfter = true
+            scaleAnimation.duration =
+                    resources.getInteger(R.integer.scale_animation_duration).toLong()
+            scaleAnimation.setInterpolator(this@CreateWalletFragment.context,
+                    android.R.interpolator.accelerate_decelerate)
+            welcomeLayout.startAnimation(scaleAnimation)
 
             inputPassword.setText("")
             confirmPassword.setText("")
