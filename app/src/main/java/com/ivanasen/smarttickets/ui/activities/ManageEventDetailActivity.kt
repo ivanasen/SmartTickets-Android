@@ -93,7 +93,7 @@ class ManageEventDetailActivity : AppCompatActivity() {
                     })
         }
 
-        val eventTimeInMillis = event.timestamp * 1000
+        val eventTimeInMillis = event.timestamp
         val formatDate = getDateTimeInstance(MEDIUM, SHORT).format(eventTimeInMillis)
         eventTimeView.text = formatDate
 
