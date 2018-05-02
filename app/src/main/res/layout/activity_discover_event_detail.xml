@@ -28,11 +28,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/event_list_item_image_height"
                 android:adjustViewBounds="true"
+                android:background="@drawable/gradient_background"
                 android:contentDescription="@string/event_image_content_description"
                 android:fitsSystemWindows="true"
-                android:background="@drawable/gradient_background"
                 android:src="@drawable/empty_view"
                 android:transitionName="@string/event_transition"
+                app:layout_collapseMode="parallax" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/event_list_item_image_height"
+                android:adjustViewBounds="true"
+                android:fitsSystemWindows="true"
+                android:src="@drawable/dark_gradient_background"
                 app:layout_collapseMode="parallax" />
 
             <android.support.v7.widget.Toolbar
