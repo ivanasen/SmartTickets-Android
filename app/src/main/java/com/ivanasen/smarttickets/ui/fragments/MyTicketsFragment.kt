@@ -98,7 +98,6 @@ class MyTicketsFragment : Fragment(),
         ticketsRefreshLayout.setColorSchemeColors(resources.getColor(R.color.pink),
                 resources.getColor(R.color.yellow),
                 resources.getColor(R.color.pink))
-        ticketsRefreshLayout.isRefreshing = true
         ticketsRefreshLayout.onRefresh {
             mViewModel.refreshTickets()
         }
@@ -195,23 +194,23 @@ class MyTicketsFragment : Fragment(),
     }
 
     private fun observeLiveData() {
-        mViewModel.areTicketsFetched.observe(this, Observer {
+        mViewModel.ticketsFetchStatus.observe(this, Observer {
             when (it) {
+                Utility.Companion.TransactionStatus.PENDING -> {
+                    ticketsRefreshLayout.isRefreshing = true
+                }
+
                 Utility.Companion.TransactionStatus.SUCCESS -> {
-                    val tickets = mViewModel.tickets.value
-
-                    if (tickets != null && tickets.isNotEmpty()) {
-                        emptyViewLayout.visibility = View.GONE
-                        ticketsRecyclerView.visibility = View.VISIBLE
-                    } else {
-                        emptyViewLayout.visibility = View.VISIBLE
-                        ticketsRecyclerView.visibility = View.GONE
-                    }
-
+                    emptyViewLayout.visibility = View.GONE
+                    ticketsRecyclerView.visibility = View.VISIBLE
                     ticketsRefreshLayout.isRefreshing = false
                 }
-                else -> {
-                    Log.d(LOG_TAG, "Not supporting this transactionStatus")
+
+                Utility.Companion.TransactionStatus.FAILURE,
+                Utility.Companion.TransactionStatus.ERROR -> {
+                    emptyViewLayout.visibility = View.VISIBLE
+                    ticketsRecyclerView.visibility = View.GONE
+                    ticketsRefreshLayout.isRefreshing = false
                 }
             }
         })

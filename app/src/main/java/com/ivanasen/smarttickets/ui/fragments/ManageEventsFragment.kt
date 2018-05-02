@@ -16,6 +16,7 @@ import com.ivanasen.smarttickets.ui.activities.CreateEventActivity
 import com.ivanasen.smarttickets.ui.activities.DiscoverEventDetailActivity
 import com.ivanasen.smarttickets.ui.activities.ManageEventDetailActivity
 import com.ivanasen.smarttickets.ui.adapters.EventAdapter
+import com.ivanasen.smarttickets.util.Utility
 import com.ivanasen.smarttickets.util.Utility.Companion.launchActivity
 import com.ivanasen.smarttickets.viewmodels.AppViewModel
 import kotlinx.android.synthetic.main.fragment_manage_events.*
@@ -51,15 +52,23 @@ class ManageEventsFragment : Fragment() {
     }
 
     private fun observeLiveData() {
-        mViewModel.myEvents.observe(this, Observer {
-            if ((it ?: emptyList<Event>()).isNotEmpty()) {
-                emptyViewLayout.visibility = View.GONE
-                eventsView.visibility = View.VISIBLE
-            } else {
-                emptyViewLayout.visibility = View.VISIBLE
-                eventsView.visibility = View.GONE
+        mViewModel.myEventsFetchStatus.observe(this, Observer {
+            when (it) {
+                Utility.Companion.TransactionStatus.PENDING -> {
+                    manageEventsRefreshLayout.isRefreshing = true
+                }
+                Utility.Companion.TransactionStatus.SUCCESS -> {
+                    emptyViewLayout.visibility = View.GONE
+                    eventsView.visibility = View.VISIBLE
+                    manageEventsRefreshLayout.isRefreshing = false
+                }
+                Utility.Companion.TransactionStatus.ERROR,
+                Utility.Companion.TransactionStatus.FAILURE -> {
+                    emptyViewLayout.visibility = View.VISIBLE
+                    eventsView.visibility = View.GONE
+                    manageEventsRefreshLayout.isRefreshing = false
+                }
             }
-            manageEventsRefreshLayout.isRefreshing = false
         })
     }
 
@@ -71,7 +80,6 @@ class ManageEventsFragment : Fragment() {
         manageEventsRefreshLayout.setColorSchemeColors(resources.getColor(R.color.pink),
                 resources.getColor(R.color.yellow),
                 resources.getColor(R.color.pink))
-        manageEventsRefreshLayout.isRefreshing = true
         manageEventsRefreshLayout.onRefresh {
             mViewModel.fetchMyEvents()
         }

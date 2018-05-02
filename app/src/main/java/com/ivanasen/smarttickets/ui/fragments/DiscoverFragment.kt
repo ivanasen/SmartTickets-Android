@@ -63,21 +63,23 @@ class DiscoverFragment : Fragment() {
     }
 
     private fun observeLiveData() {
-        mViewModel.areEventsFetched.observe(this, Observer {
+        mViewModel.eventsFetchStatus.observe(this, Observer {
             when (it) {
+                Utility.Companion.TransactionStatus.PENDING -> {
+                    eventRefreshLayout.isRefreshing = true
+                }
+
                 Utility.Companion.TransactionStatus.SUCCESS -> {
-                    val events = mViewModel.events.value
-                    if (events != null && events.isNotEmpty()) {
-                        emptyViewLayout.visibility = View.GONE
-                        eventsView.visibility = View.VISIBLE
-                    } else {
-                        emptyViewLayout.visibility = View.VISIBLE
-                        eventsView.visibility = View.GONE
-                    }
+                    emptyViewLayout.visibility = View.GONE
+                    eventsView.visibility = View.VISIBLE
                     eventRefreshLayout.isRefreshing = false
                 }
-                else -> {
-                    Log.d(LOG_TAG, "Not supporting that transactionStatus.")
+
+                Utility.Companion.TransactionStatus.FAILURE,
+                Utility.Companion.TransactionStatus.ERROR -> {
+                    emptyViewLayout.visibility = View.VISIBLE
+                    eventsView.visibility = View.GONE
+                    eventRefreshLayout.isRefreshing = false
                 }
             }
         })
@@ -100,7 +102,6 @@ class DiscoverFragment : Fragment() {
                 resources.getColor(R.color.yellow),
                 resources.getColor(R.color.pink))
 
-        eventRefreshLayout.isRefreshing = true
         eventRefreshLayout.onRefresh {
             mViewModel.refreshEvents()
         }

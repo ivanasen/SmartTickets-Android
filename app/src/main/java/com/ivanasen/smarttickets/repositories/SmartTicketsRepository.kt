@@ -55,8 +55,9 @@ object SmartTicketsRepository {
     val events: MutableLiveData<MutableList<Event>> = MutableLiveData()
     val tickets: MutableLiveData<MutableList<Ticket>> = MutableLiveData()
 
-    val eventsFetchStatus: MutableLiveData<Utility.Companion.TransactionStatus> = MutableLiveData()
-    val areTicketsFetched: MutableLiveData<Utility.Companion.TransactionStatus> = MutableLiveData()
+    val eventsFetchStatus by lazy { MutableLiveData<Utility.Companion.TransactionStatus>() }
+    val ticketsFetchStatus by lazy { MutableLiveData<Utility.Companion.TransactionStatus>() }
+    val myEventsFetchStatus by lazy { MutableLiveData<Utility.Companion.TransactionStatus>() }
 
     fun createEvent(name: String,
                     description: String,
@@ -83,8 +84,11 @@ object SmartTicketsRepository {
                 val ticketPrices = tickets.map { it.priceInUSDCents }
                 val ticketSupplies = tickets.map { it.initialSupply }
                 val ticketRefundables = tickets.map {
-                    (if (it.refundable) 1 else 0).toBigInteger()
+                    (if (it.refundable) 1 else 0)
+                            .toBigInteger()
                 }
+                val p = Boolean::class.javaPrimitiveType
+
 
                 val eventTxReceipt = mContract.createEvent(
                         timestamp.toBigInteger(),
@@ -94,6 +98,7 @@ object SmartTicketsRepository {
                         ticketRefundables)
                         .send()
                 Log.d(LOG_TAG, eventTxReceipt.transactionHash)
+
 
                 txStatusLiveData.postValue(Utility.Companion.TransactionStatus.SUCCESS)
             } catch (e: Exception) {
@@ -297,7 +302,8 @@ object SmartTicketsRepository {
 
         val ticketTypes = getTicketTypesForEvent(id)
 
-        if (cancelled.toInt() == 0 && eventData != null &&
+        if (cancelled.toInt() == 0
+                && eventData != null &&
                 eventData.name != null &&
                 eventData.latLong != null &&
                 eventData.locationAddress != null &&
@@ -325,14 +331,25 @@ object SmartTicketsRepository {
         bg {
             eventsFetchStatus.postValue(Utility.Companion.TransactionStatus.PENDING)
             val newEvents = mutableListOf<Event>()
-            val eventCount = mContract.eventCount.send().toLong()
+            try {
+                val eventCount = mContract.eventCount.send().toLong()
 
-            // We start one index up because of genesis event in contract
-            for (i in eventCount downTo 1) {
-                val event = getEvent(i)
-                newEvents.add(event)
-                events.postValue(newEvents)
-                eventsFetchStatus.postValue(Utility.Companion.TransactionStatus.SUCCESS)
+                // We start one index up because of genesis event in contract
+                for (i in eventCount downTo 1) {
+                    val event = getEvent(i)
+                    newEvents.add(event)
+                    events.postValue(newEvents)
+                    eventsFetchStatus.postValue(Utility.Companion.TransactionStatus.SUCCESS)
+                }
+
+                if (newEvents.isEmpty()) {
+                    eventsFetchStatus.postValue(Utility.Companion.TransactionStatus.FAILURE)
+                } else {
+                    eventsFetchStatus.postValue(Utility.Companion.TransactionStatus.SUCCESS)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                eventsFetchStatus.postValue(Utility.Companion.TransactionStatus.ERROR)
             }
         }
     }
@@ -407,22 +424,31 @@ object SmartTicketsRepository {
 
     fun fetchTickets() {
         bg {
-            areTicketsFetched.postValue(Utility.Companion.TransactionStatus.PENDING)
+            ticketsFetchStatus.postValue(Utility.Companion.TransactionStatus.PENDING)
             val newTickets = mutableListOf<Ticket>()
-            val ownerAddress = credentials.value?.address
-            val ticketIds = mContract.getTicketsForOwner(ownerAddress).send()
+            try {
+                val ownerAddress = credentials.value?.address
+                val ticketIds = mContract.getTicketsForOwner(ownerAddress).send()
 
-            ticketIds.forEach {
-                val id = (it as Uint256).value
-                val ticketTypeTuple = mContract.getTicketTypeForTicket(id).send()
-                val ticketType = convertTupleToTicketType(ticketTypeTuple)
+                ticketIds.forEach {
+                    val id = (it as Uint256).value
+                    val ticketTypeTuple = mContract.getTicketTypeForTicket(id).send()
+                    val ticketType = convertTupleToTicketType(ticketTypeTuple)
 
-                if (ticketType.eventId.toLong() > 0) {
-                    newTickets.add(Ticket(id, ticketType))
-                    tickets.postValue(newTickets)
+                    if (ticketType.eventId.toLong() > 0) {
+                        newTickets.add(Ticket(id, ticketType))
+                        tickets.postValue(newTickets)
+                    }
                 }
+                if (newTickets.isEmpty()) {
+                    ticketsFetchStatus.postValue(Utility.Companion.TransactionStatus.FAILURE)
+                } else {
+                    ticketsFetchStatus.postValue(Utility.Companion.TransactionStatus.SUCCESS)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                ticketsFetchStatus.postValue(Utility.Companion.TransactionStatus.ERROR)
             }
-            areTicketsFetched.postValue(Utility.Companion.TransactionStatus.SUCCESS)
         }
     }
 
@@ -433,7 +459,7 @@ object SmartTicketsRepository {
         val price = ticketTypeTuple?.value3
         val initialSupply = ticketTypeTuple?.value4
         val currentSupply = ticketTypeTuple?.value5
-        val refundable = ticketTypeTuple?.value6?.toInt() == 1
+        val refundable = ticketTypeTuple?.value6 ?: false
 
         return TicketType(
                 ticketTypeId!!,
@@ -441,21 +467,32 @@ object SmartTicketsRepository {
                 price!!,
                 initialSupply!!,
                 currentSupply!!,
-                refundable)
+                refundable == 1)
     }
 
     fun fetchMyEvents() {
         bg {
+            myEventsFetchStatus.postValue(Utility.Companion.TransactionStatus.PENDING)
             val events = mutableListOf<Event>()
             val ownerAddress = credentials.value?.address
-            val eventIds = mContract.getEventIdsForCreator(ownerAddress).send()
+            try {
+                val eventIds = mContract.getEventIdsForCreator(ownerAddress).send()
 
-            eventIds.forEach {
-                val id = (it as Uint256).value
-                val event = getEvent(id.toLong())
-                events.add(event)
+                eventIds.forEach {
+                    val id = it as BigInteger
+                    val event = getEvent(id.toLong())
+                    events.add(event)
+                }
+                createdEvents.postValue(events)
+                if (events.isEmpty()) {
+                    myEventsFetchStatus.postValue(Utility.Companion.TransactionStatus.FAILURE)
+                } else {
+                    myEventsFetchStatus.postValue(Utility.Companion.TransactionStatus.SUCCESS)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                myEventsFetchStatus.postValue(Utility.Companion.TransactionStatus.ERROR)
             }
-            createdEvents.postValue(events)
         }
     }
 

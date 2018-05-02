@@ -23,8 +23,6 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
     val credentials = mRepository.credentials
 
 
-    var contractExists = mRepository.contractDeployed
-
     val etherBalance: LiveData<BigDecimal> = mRepository.etherBalance
     val usdBalance: LiveData<Double> = mRepository.usdBalance
 
@@ -32,10 +30,12 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
     val events: LiveData<MutableList<Event>> = mRepository.events
     val tickets: LiveData<MutableList<Ticket>> = mRepository.tickets
 
-    val areEventsFetched: LiveData<Utility.Companion.TransactionStatus> =
+    val eventsFetchStatus: LiveData<Utility.Companion.TransactionStatus> =
             mRepository.eventsFetchStatus
-    val areTicketsFetched: LiveData<Utility.Companion.TransactionStatus> =
-            mRepository.areTicketsFetched
+    val ticketsFetchStatus: LiveData<Utility.Companion.TransactionStatus> =
+            mRepository.ticketsFetchStatus
+    val myEventsFetchStatus: LiveData<Utility.Companion.TransactionStatus> =
+            mRepository.myEventsFetchStatus
 
 //    public fun refreshEvents(): LiveData<List<IPFSEvent>> {
 //
