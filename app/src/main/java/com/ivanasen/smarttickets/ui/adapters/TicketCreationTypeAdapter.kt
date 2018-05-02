@@ -10,10 +10,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.ivanasen.smarttickets.R
-import com.ivanasen.smarttickets.models.TicketTypeIpfs
+import com.ivanasen.smarttickets.models.TicketType
 
 internal class TicketCreationTypeAdapter(val context: Context,
-                                         val data: LiveData<MutableList<TicketTypeIpfs>>)
+                                         val data: LiveData<MutableList<TicketType>>)
     : RecyclerView.Adapter<TicketCreationTypeAdapter.ViewHolder>() {
     init {
         data.observe(context as LifecycleOwner, Observer {

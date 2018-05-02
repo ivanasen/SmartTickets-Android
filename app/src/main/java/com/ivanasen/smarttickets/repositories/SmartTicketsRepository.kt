@@ -68,7 +68,7 @@ object SmartTicketsRepository {
                     locationName: String,
                     locationAddress: String,
                     imagePaths: List<String>,
-                    tickets: List<TicketTypeIpfs>): LiveData<Utility.Companion.TransactionStatus> {
+                    tickets: List<TicketType>): LiveData<Utility.Companion.TransactionStatus> {
         val txStatusLiveData: MutableLiveData<Utility.Companion.TransactionStatus> =
                 MutableLiveData()
         bg {
@@ -77,8 +77,8 @@ object SmartTicketsRepository {
 
                 val imageHashes = uploadImages(imagePaths)
 
-                val event = IPFSEvent(name, description, timestamp, latLong, locationName,
-                        locationAddress, imageHashes, tickets)
+                val event = IPFSEvent(name, description, latLong, locationName,
+                        locationAddress, imageHashes)
                 val eventMetadataHash = postEventToIpfs(event)
 
                 Log.d(LOG_TAG, eventMetadataHash.toString(Charset.defaultCharset()))
@@ -89,8 +89,6 @@ object SmartTicketsRepository {
                     (if (it.refundable) 1 else 0)
                             .toBigInteger()
                 }
-                val p = Boolean::class.javaPrimitiveType
-
 
                 val eventTxReceipt = mContract.createEvent(
                         timestamp.toBigInteger(),
@@ -179,19 +177,10 @@ object SmartTicketsRepository {
     }
 
     private fun fetchContractData() {
-        fetchTickets()
         fetchEvents()
+        fetchTickets()
         fetchBalance()
         fetchMyEvents()
-        fetchEventsApi()
-    }
-
-    private fun fetchEventsApi() {
-        bg {
-            val eventResponse = mApi.getEvents("recent", 0, 25).execute()
-            val resBody = eventResponse.body()
-
-        }
     }
 
 //    fun getEvent(id: Int): IPFSEvent {
@@ -320,8 +309,7 @@ object SmartTicketsRepository {
                 eventData.name != null &&
                 eventData.latLong != null &&
                 eventData.locationAddress != null &&
-                eventData.locationName != null &&
-                eventData.tickets != null) {
+                eventData.locationName != null) {
 
             return Event(
                     id,
@@ -340,20 +328,17 @@ object SmartTicketsRepository {
         throw IllegalArgumentException("Event not found")
     }
 
-    fun fetchEvents() {
+    fun fetchEvents(order: String = SmartTicketsApi.EVENT_ORDER_POPULARITY,
+                    page: Int = SmartTicketsApi.EVENT_PAGE_DEFAULT,
+                    limit: Int = SmartTicketsApi.EVENT_LIMIT_DEFAULT) {
         bg {
             eventsFetchStatus.postValue(Utility.Companion.TransactionStatus.PENDING)
-//            val newEvents = mutableListOf<Event>()
             try {
-                val eventResponse = mApi.getEvents("recent", 0, 25).execute()
+                val eventResponse = mApi.getEvents(order, page, limit).execute()
 
                 if (eventResponse.isSuccessful) {
                     val resBody = eventResponse.body()
                     if (resBody != null && resBody.isNotEmpty()) {
-
-                        // TODO: Fix timestamp in posting of events
-                        resBody.forEach { it.timestamp = it.timestamp * 1000 }
-
                         events.postValue(resBody.toMutableList())
                         eventsFetchStatus.postValue(Utility.Companion.TransactionStatus.SUCCESS)
                     } else {
@@ -487,29 +472,29 @@ object SmartTicketsRepository {
     }
 
     fun fetchMyEvents() {
-//        bg {
-//            myEventsFetchStatus.postValue(Utility.Companion.TransactionStatus.PENDING)
-//            val events = mutableListOf<Event>()
-//            val ownerAddress = credentials.value?.address
-//            try {
-//                val eventIds = mContract.getEventIdsForCreator(ownerAddress).send()
-//
-//                eventIds.forEach {
-//                    val id = it as BigInteger
-//                    val event = getEvent(id.toLong())
-//                    events.add(event)
-//                }
-//                createdEvents.postValue(events)
-//                if (events.isEmpty()) {
-//                    myEventsFetchStatus.postValue(Utility.Companion.TransactionStatus.FAILURE)
-//                } else {
-//                    myEventsFetchStatus.postValue(Utility.Companion.TransactionStatus.SUCCESS)
-//                }
-//            } catch (e: Exception) {
-//                e.printStackTrace()
-//                myEventsFetchStatus.postValue(Utility.Companion.TransactionStatus.ERROR)
-//            }
-//        }
+        bg {
+            myEventsFetchStatus.postValue(Utility.Companion.TransactionStatus.PENDING)
+            val events = mutableListOf<Event>()
+            val ownerAddress = credentials.value?.address
+            try {
+                val eventIds = mContract.getEventIdsForCreator(ownerAddress).send()
+
+                eventIds.forEach {
+                    val id = it as BigInteger
+                    val event = getEvent(id.toLong())
+                    events.add(event)
+                }
+                createdEvents.postValue(events)
+                if (events.isEmpty()) {
+                    myEventsFetchStatus.postValue(Utility.Companion.TransactionStatus.FAILURE)
+                } else {
+                    myEventsFetchStatus.postValue(Utility.Companion.TransactionStatus.SUCCESS)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                myEventsFetchStatus.postValue(Utility.Companion.TransactionStatus.ERROR)
+            }
+        }
     }
 
     fun sellTicket(ticket: Ticket): LiveData<Utility.Companion.TransactionStatus> {

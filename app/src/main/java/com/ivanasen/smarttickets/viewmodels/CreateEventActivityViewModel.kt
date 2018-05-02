@@ -4,7 +4,7 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.google.android.gms.location.places.Place
-import com.ivanasen.smarttickets.models.TicketTypeIpfs
+import com.ivanasen.smarttickets.models.TicketType
 import com.ivanasen.smarttickets.repositories.SmartTicketsRepository
 import com.ivanasen.smarttickets.util.Utility
 import org.jetbrains.anko.coroutines.experimental.bg
@@ -22,7 +22,7 @@ class CreateEventActivityViewModel : ViewModel() {
     val mRepository = SmartTicketsRepository
 
     val pickedImages: MutableLiveData<MutableList<String>> = MutableLiveData()
-    val ticketTypes: MutableLiveData<MutableList<TicketTypeIpfs>> = MutableLiveData()
+    val ticketTypes: MutableLiveData<MutableList<TicketType>> = MutableLiveData()
 
     val isValidEvent: MutableLiveData<Boolean> = MutableLiveData()
 
@@ -37,7 +37,7 @@ class CreateEventActivityViewModel : ViewModel() {
 
         return mRepository.createEvent(eventName.value!!,
                 eventDescription.value ?: "",
-                eventTime.value!!.timeInMillis,
+                eventTime.value!!.timeInMillis / 1000, //Timestamps on the blockchain are in seconds not milliseconds
                 pickedPlace.value!!.latLng,
                 pickedPlace.value!!.name.toString(),
                 pickedPlace.value!!.address.toString(),
@@ -63,10 +63,12 @@ class CreateEventActivityViewModel : ViewModel() {
         bg {
             val priceInCents = (price.toString().toDouble() * 100).toLong()
 
-            val newTicketTypes = mutableListOf<TicketTypeIpfs>()
+            val newTicketTypes = mutableListOf<TicketType>()
             newTicketTypes.addAll(ticketTypes.value ?: emptyList())
             newTicketTypes.add(
-                    TicketTypeIpfs(
+                    TicketType(
+                            (-1).toBigInteger(),
+                            (-1).toBigInteger(),
                             BigInteger.valueOf(priceInCents),
                             BigInteger.valueOf(supply.toLong()),
                             BigInteger.valueOf(supply.toLong()),

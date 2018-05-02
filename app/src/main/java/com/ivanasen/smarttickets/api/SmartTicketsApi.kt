@@ -21,6 +21,14 @@ interface SmartTicketsApi {
 
     companion object {
         private val LOG_TAG = SmartTicketsApi::class.simpleName
+
+        val EVENT_ORDER_POPULARITY = "popular"
+        val EVENT_ORDER_RECENT = "recent"
+        val EVENT_ORDER_OLD = "old"
+        val EVENT_PAGE_DEFAULT = 0
+        val EVENT_LIMIT_DEFAULT = 10
+
+
         val instance: SmartTicketsApi = create()
 
         private fun create(): SmartTicketsApi {

@@ -17,6 +17,7 @@
                 android:id="@+id/eventsView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:paddingBottom="50dp"
                 android:scrollbars="vertical"
                 android:visibility="gone"
                 tools:listitem="@layout/list_item_event" />
@@ -26,8 +27,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:visibility="gone"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="50dp"
