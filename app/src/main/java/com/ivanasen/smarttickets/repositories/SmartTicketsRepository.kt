@@ -8,6 +8,7 @@ import android.util.Log
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
 import com.ivanasen.smarttickets.R
+import com.ivanasen.smarttickets.api.SmartTicketsApi
 import com.ivanasen.smarttickets.contractwrappers.SmartTicketsContractProvider
 
 import com.ivanasen.smarttickets.api.SmartTicketsIPFSApi
@@ -38,8 +39,9 @@ import java.io.InputStreamReader
 
 object SmartTicketsRepository {
     private val LOG_TAG = SmartTicketsRepository::class.simpleName
-    private val mWeb3: Web3j = Web3JProvider.instance
-    private val mIpfsApi: SmartTicketsIPFSApi = SmartTicketsIPFSApi.instance
+    private val mWeb3 by lazy { Web3JProvider.instance }
+    private val mIpfsApi by lazy { SmartTicketsIPFSApi.instance }
+    private val mApi by lazy { SmartTicketsApi.instance }
 
     private lateinit var mContract: SmartTickets
 
@@ -181,6 +183,15 @@ object SmartTicketsRepository {
         fetchEvents()
         fetchBalance()
         fetchMyEvents()
+        fetchEventsApi()
+    }
+
+    private fun fetchEventsApi() {
+        bg {
+            val eventResponse = mApi.getEvents("recent", 0, 25).execute()
+            val resBody = eventResponse.body()
+
+        }
     }
 
 //    fun getEvent(id: Int): IPFSEvent {
@@ -297,6 +308,7 @@ object SmartTicketsRepository {
         val timestamp = event.value1.toLong() * 1000 // Convert to milliseconds
         val ipfsHash = event.value2.toString(Charset.forName("UTF-8"))
         val cancelled = event.value3
+        val earnings = event.value5
 
         val eventData: IPFSEvent? = getEventFromIPFS(ipfsHash)
 
@@ -321,7 +333,7 @@ object SmartTicketsRepository {
                     eventData.locationAddress,
                     eventData.images!!,
                     ticketTypes,
-                    event.value5)
+                    earnings)
         }
 
         throw IllegalArgumentException("Event not found")
@@ -330,22 +342,24 @@ object SmartTicketsRepository {
     fun fetchEvents() {
         bg {
             eventsFetchStatus.postValue(Utility.Companion.TransactionStatus.PENDING)
-            val newEvents = mutableListOf<Event>()
+//            val newEvents = mutableListOf<Event>()
             try {
-                val eventCount = mContract.eventCount.send().toLong()
+                val eventResponse = mApi.getEvents("recent", 0, 25).execute()
 
-                // We start one index up because of genesis event in contract
-                for (i in eventCount downTo 1) {
-                    val event = getEvent(i)
-                    newEvents.add(event)
-                    events.postValue(newEvents)
-                    eventsFetchStatus.postValue(Utility.Companion.TransactionStatus.SUCCESS)
-                }
+                if (eventResponse.isSuccessful) {
+                    val resBody = eventResponse.body()
+                    if (resBody != null && resBody.isNotEmpty()) {
 
-                if (newEvents.isEmpty()) {
-                    eventsFetchStatus.postValue(Utility.Companion.TransactionStatus.FAILURE)
+                        // TODO: Fix timestamp in posting of events
+                        resBody.forEach { it.timestamp = it.timestamp * 1000 }
+
+                        events.postValue(resBody.toMutableList())
+                        eventsFetchStatus.postValue(Utility.Companion.TransactionStatus.SUCCESS)
+                    } else {
+                        eventsFetchStatus.postValue(Utility.Companion.TransactionStatus.FAILURE)
+                    }
                 } else {
-                    eventsFetchStatus.postValue(Utility.Companion.TransactionStatus.SUCCESS)
+                    eventsFetchStatus.postValue(Utility.Companion.TransactionStatus.ERROR)
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -387,6 +401,7 @@ object SmartTicketsRepository {
         return ticketTypesList
     }
 
+    // TODO: Fix buying of events after switching to api
     fun buyTicket(ticketType: TicketType): LiveData<Utility.Companion.TransactionStatus> {
         val txStatusLiveData: MutableLiveData<Utility.Companion.TransactionStatus> =
                 MutableLiveData()
@@ -471,29 +486,29 @@ object SmartTicketsRepository {
     }
 
     fun fetchMyEvents() {
-        bg {
-            myEventsFetchStatus.postValue(Utility.Companion.TransactionStatus.PENDING)
-            val events = mutableListOf<Event>()
-            val ownerAddress = credentials.value?.address
-            try {
-                val eventIds = mContract.getEventIdsForCreator(ownerAddress).send()
-
-                eventIds.forEach {
-                    val id = it as BigInteger
-                    val event = getEvent(id.toLong())
-                    events.add(event)
-                }
-                createdEvents.postValue(events)
-                if (events.isEmpty()) {
-                    myEventsFetchStatus.postValue(Utility.Companion.TransactionStatus.FAILURE)
-                } else {
-                    myEventsFetchStatus.postValue(Utility.Companion.TransactionStatus.SUCCESS)
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                myEventsFetchStatus.postValue(Utility.Companion.TransactionStatus.ERROR)
-            }
-        }
+//        bg {
+//            myEventsFetchStatus.postValue(Utility.Companion.TransactionStatus.PENDING)
+//            val events = mutableListOf<Event>()
+//            val ownerAddress = credentials.value?.address
+//            try {
+//                val eventIds = mContract.getEventIdsForCreator(ownerAddress).send()
+//
+//                eventIds.forEach {
+//                    val id = it as BigInteger
+//                    val event = getEvent(id.toLong())
+//                    events.add(event)
+//                }
+//                createdEvents.postValue(events)
+//                if (events.isEmpty()) {
+//                    myEventsFetchStatus.postValue(Utility.Companion.TransactionStatus.FAILURE)
+//                } else {
+//                    myEventsFetchStatus.postValue(Utility.Companion.TransactionStatus.SUCCESS)
+//                }
+//            } catch (e: Exception) {
+//                e.printStackTrace()
+//                myEventsFetchStatus.postValue(Utility.Companion.TransactionStatus.ERROR)
+//            }
+//        }
     }
 
     fun sellTicket(ticket: Ticket): LiveData<Utility.Companion.TransactionStatus> {

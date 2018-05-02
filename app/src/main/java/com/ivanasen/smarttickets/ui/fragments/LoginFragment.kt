@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
 import android.transition.Fade
 import android.transition.TransitionManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,7 +33,7 @@ import org.jetbrains.anko.sdk25.coroutines.textChangedListener
  */
 class LoginFragment : Fragment() {
 
-    private val LOG_TAG = LoginFragment::class.java
+    private val LOG_TAG = LoginFragment::class.java.simpleName
 
     private lateinit var mRootView: View
     private val mViewModel: WelcomeActivityViewModel by lazy {

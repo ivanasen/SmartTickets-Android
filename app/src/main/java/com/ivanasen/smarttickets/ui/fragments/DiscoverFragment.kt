@@ -103,7 +103,9 @@ class DiscoverFragment : Fragment() {
                 resources.getColor(R.color.pink))
 
         eventRefreshLayout.onRefresh {
-            mViewModel.refreshEvents()
+            if (mViewModel.eventsFetchStatus.value != Utility.Companion.TransactionStatus.PENDING) {
+                mViewModel.refreshEvents()
+            }
         }
     }
 }
