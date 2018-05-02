@@ -17,8 +17,8 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.ivanasen.smarttickets.R
-import com.ivanasen.smarttickets.db.models.Event
-import com.ivanasen.smarttickets.db.models.Ticket
+import com.ivanasen.smarttickets.models.Event
+import com.ivanasen.smarttickets.models.Ticket
 import com.ivanasen.smarttickets.ui.adapters.TicketsAdapter
 import com.ivanasen.smarttickets.util.Utility
 import com.ivanasen.smarttickets.viewmodels.AppViewModel

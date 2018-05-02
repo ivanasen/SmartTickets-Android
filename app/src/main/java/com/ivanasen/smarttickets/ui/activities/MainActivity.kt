@@ -1,12 +1,9 @@
 package com.ivanasen.smarttickets.ui.activities
 
 
-import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
-import android.view.Menu
 import com.ivanasen.smarttickets.*
 import com.ivanasen.smarttickets.ui.fragments.ManageEventsFragment
 import com.ivanasen.smarttickets.ui.fragments.DiscoverFragment
@@ -15,10 +12,6 @@ import com.ivanasen.smarttickets.ui.fragments.MyWalletFragment
 import com.ivanasen.smarttickets.viewmodels.AppViewModel
 import com.ivanasen.smarttickets.util.Utility.Companion.loadFragment
 import kotlinx.android.synthetic.main.activity_main.*
-import android.view.MenuInflater
-import android.view.View
-import com.afollestad.materialdialogs.MaterialDialog
-import kotlinx.android.synthetic.main.fragment_my_tickets.*
 
 
 class MainActivity : AppCompatActivity() {

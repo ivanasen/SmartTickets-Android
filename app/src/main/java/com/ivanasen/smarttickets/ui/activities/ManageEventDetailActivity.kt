@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.gms.maps.model.LatLng
 import com.ivanasen.smarttickets.R
-import com.ivanasen.smarttickets.db.models.TicketType
+import com.ivanasen.smarttickets.models.TicketType
 import com.ivanasen.smarttickets.ui.activities.DiscoverEventDetailActivity.Companion.EXTRA_EVENT_ID
 import com.ivanasen.smarttickets.ui.adapters.TicketTypeAdapter
 import com.ivanasen.smarttickets.util.Utility

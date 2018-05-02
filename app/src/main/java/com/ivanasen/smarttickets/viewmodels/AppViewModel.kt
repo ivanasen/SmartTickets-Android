@@ -5,9 +5,9 @@ import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import android.content.Context
 import com.google.android.gms.location.places.Place
-import com.ivanasen.smarttickets.db.models.Event
-import com.ivanasen.smarttickets.db.models.Ticket
-import com.ivanasen.smarttickets.db.models.TicketType
+import com.ivanasen.smarttickets.models.Event
+import com.ivanasen.smarttickets.models.Ticket
+import com.ivanasen.smarttickets.models.TicketType
 import com.ivanasen.smarttickets.repositories.SmartTicketsRepository
 import com.ivanasen.smarttickets.util.Utility
 import com.ivanasen.smarttickets.util.Utility.Companion.WALLET_FILE_NAME_KEY

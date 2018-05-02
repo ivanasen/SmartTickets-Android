@@ -4,15 +4,13 @@ import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.Observer
 import android.content.Context
-import android.support.annotation.Nullable
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.ivanasen.smarttickets.R
-import com.ivanasen.smarttickets.db.models.TicketType
-import com.ivanasen.smarttickets.db.models.TicketTypeIpfs
+import com.ivanasen.smarttickets.models.TicketTypeIpfs
 
 internal class TicketCreationTypeAdapter(val context: Context,
                                          val data: LiveData<MutableList<TicketTypeIpfs>>)

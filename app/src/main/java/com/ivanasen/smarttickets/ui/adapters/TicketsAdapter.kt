@@ -14,8 +14,8 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.ivanasen.smarttickets.R
-import com.ivanasen.smarttickets.db.models.Event
-import com.ivanasen.smarttickets.db.models.Ticket
+import com.ivanasen.smarttickets.models.Event
+import com.ivanasen.smarttickets.models.Ticket
 import com.ivanasen.smarttickets.util.Utility
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import java.text.SimpleDateFormat

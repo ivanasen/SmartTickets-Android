@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import com.ivanasen.smarttickets.R
-import com.ivanasen.smarttickets.db.models.TicketType
+import com.ivanasen.smarttickets.models.TicketType
 import com.ivanasen.smarttickets.repositories.SmartTicketsRepository
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import java.text.DecimalFormat

@@ -3,10 +3,8 @@ package com.ivanasen.smarttickets.viewmodels
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import android.graphics.Bitmap
 import com.google.android.gms.location.places.Place
-import com.ivanasen.smarttickets.db.models.TicketType
-import com.ivanasen.smarttickets.db.models.TicketTypeIpfs
+import com.ivanasen.smarttickets.models.TicketTypeIpfs
 import com.ivanasen.smarttickets.repositories.SmartTicketsRepository
 import com.ivanasen.smarttickets.util.Utility
 import org.jetbrains.anko.coroutines.experimental.bg
@@ -39,7 +37,7 @@ class CreateEventActivityViewModel : ViewModel() {
 
         return mRepository.createEvent(eventName.value!!,
                 eventDescription.value ?: "",
-                eventTime.value!!.timeInMillis / 1000,
+                eventTime.value!!.timeInMillis,
                 pickedPlace.value!!.latLng,
                 pickedPlace.value!!.name.toString(),
                 pickedPlace.value!!.address.toString(),

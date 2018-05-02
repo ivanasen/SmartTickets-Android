@@ -1,11 +1,9 @@
 package com.ivanasen.smarttickets.api
 
-import android.graphics.Bitmap
 import android.util.Log
 import com.google.gson.GsonBuilder
 import com.ivanasen.smarttickets.BuildConfig
-import com.ivanasen.smarttickets.db.models.IPFSEvent
-import okhttp3.MultipartBody
+import com.ivanasen.smarttickets.models.IPFSEvent
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
 import okhttp3.logging.HttpLoggingInterceptor

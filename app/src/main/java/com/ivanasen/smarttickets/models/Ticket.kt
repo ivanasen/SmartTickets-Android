@@ -1,4 +1,4 @@
-package com.ivanasen.smarttickets.db.models
+package com.ivanasen.smarttickets.models
 
 import java.math.BigInteger
 

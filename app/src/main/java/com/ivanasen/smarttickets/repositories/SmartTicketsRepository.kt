@@ -13,20 +13,20 @@ import com.ivanasen.smarttickets.contractwrappers.SmartTicketsContractProvider
 
 import com.ivanasen.smarttickets.api.SmartTicketsIPFSApi
 import com.ivanasen.smarttickets.contractwrappers.SmartTickets
-import com.ivanasen.smarttickets.db.models.*
+import com.ivanasen.smarttickets.models.*
 import com.ivanasen.smarttickets.util.Utility
 import com.ivanasen.smarttickets.util.Utility.Companion.IPFS_HASH_HEADER
 import com.ivanasen.smarttickets.util.Utility.Companion.ONE_ETHER_IN_WEI
-import com.ivanasen.smarttickets.util.WalletUtil
 import com.ivanasen.smarttickets.util.Web3JProvider
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.web3j.abi.datatypes.generated.Uint256
 import org.web3j.crypto.*
-import org.web3j.protocol.Web3j
 import org.web3j.protocol.core.DefaultBlockParameterName
 import org.web3j.tuples.generated.Tuple6
+import org.web3j.tx.Transfer
+import org.web3j.utils.Convert
 import java.io.File
 import java.lang.IllegalArgumentException
 import java.math.BigDecimal
@@ -283,7 +283,8 @@ object SmartTicketsRepository {
     fun sendEtherTo(address: String, etherAmount: Double) {
         bg {
             require(credentials.value != null)
-            val txReceipt = WalletUtil.sendEther(credentials.value!!, etherAmount, address)
+            val txReceipt = Transfer.sendFunds(mWeb3, credentials.value, address,
+                    BigDecimal.valueOf(etherAmount), Convert.Unit.ETHER).sendAsync().get()
             Log.d(LOG_TAG, "Tx: $txReceipt")
 
             fetchBalance()

@@ -14,7 +14,6 @@ import kotlinx.coroutines.experimental.launch
 import org.jetbrains.anko.coroutines.experimental.bg
 import org.jetbrains.anko.defaultSharedPreferences
 import org.web3j.crypto.Credentials
-import org.web3j.crypto.WalletUtils
 import java.io.File
 
 

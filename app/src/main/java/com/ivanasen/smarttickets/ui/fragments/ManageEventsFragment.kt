@@ -11,7 +11,6 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.*
 import com.afollestad.materialdialogs.MaterialDialog
 import com.ivanasen.smarttickets.R
-import com.ivanasen.smarttickets.db.models.Event
 import com.ivanasen.smarttickets.ui.activities.CreateEventActivity
 import com.ivanasen.smarttickets.ui.activities.DiscoverEventDetailActivity
 import com.ivanasen.smarttickets.ui.activities.ManageEventDetailActivity

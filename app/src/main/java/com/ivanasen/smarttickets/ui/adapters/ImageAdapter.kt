@@ -4,7 +4,6 @@ import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.Observer
 import android.content.Context
-import android.net.Uri
 import android.support.annotation.Nullable
 import com.bumptech.glide.Glide
 import android.view.View
@@ -12,7 +11,6 @@ import android.view.ViewGroup
 import android.widget.*
 import com.ivanasen.smarttickets.R
 import org.jetbrains.anko.layoutInflater
-import java.util.ArrayList
 
 
 internal class ImageAdapter(val context: Context, val data: LiveData<MutableList<String>>) : BaseAdapter() {

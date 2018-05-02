@@ -1,6 +1,5 @@
-package com.ivanasen.smarttickets.db.models
+package com.ivanasen.smarttickets.models
 
-import com.google.android.gms.location.places.Place
 import com.google.android.gms.maps.model.LatLng
 
 data class IPFSEvent(val name: String?,
