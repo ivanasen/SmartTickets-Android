@@ -39,6 +39,8 @@ import java.io.InputStreamReader
 
 object SmartTicketsRepository {
     private val LOG_TAG = SmartTicketsRepository::class.simpleName
+    private const val ETHEREUM_VALIDATION_PREFIX = "\\x19Ethereum Signed Message:\\n30"
+
     private val mWeb3 by lazy { Web3JProvider.instance }
     private val mIpfsApi by lazy { SmartTicketsIPFSApi.instance }
     private val mApi by lazy { SmartTicketsApi.instance }
@@ -426,7 +428,7 @@ object SmartTicketsRepository {
                 val ticketIds = mContract.getTicketsForOwner(ownerAddress).send()
 
                 ticketIds.forEach {
-                    val id = (it as Uint256).value
+                    val id = it as BigInteger
                     val ticketTypeTuple = mContract.getTicketTypeForTicket(id).send()
                     val ticketType = convertTupleToTicketType(ticketTypeTuple)
 
@@ -585,7 +587,8 @@ object SmartTicketsRepository {
                         TicketValidationCode::class.java)
 
                 val ticketId = ticketValidationCode.ticket.toBigInteger()
-                val ticketHash = Hash.sha3(ticketId.toByteArray())
+                val fixedMsg = "$ETHEREUM_VALIDATION_PREFIX$ticketId"
+                val ticketHash = Hash.sha3(fixedMsg.toByteArray())
 
                 val address = ticketValidationCode.address
                 val signature = ticketValidationCode.ticketSignature

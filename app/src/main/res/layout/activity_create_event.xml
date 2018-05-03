@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    android:id="@+id/rootView"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootView"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -114,7 +113,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/dateLabel"
                         android:spinnerMode="dialog"
-                        android:text="Thu, Apr 13, 2018"
+                        tools:text="Thu, Apr 13, 2018"
                         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                         android:textColor="@color/colorPrimary" />
 
@@ -133,7 +132,7 @@
                         android:layout_below="@id/timeLabel"
                         android:layout_marginStart="@dimen/big_margin"
                         android:layout_toEndOf="@id/eventDateView"
-                        android:text="20:00"
+                        tools:text="20:00"
                         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                         android:textColor="@color/colorPrimary" />
 
@@ -229,17 +228,23 @@
                     android:id="@+id/cancelCreateEventBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/small_margin"
+                    android:layout_marginBottom="@dimen/small_margin"
+                    android:layout_marginEnd="@dimen/default_margin"
+                    android:layout_marginStart="@dimen/default_margin"
+                    android:layout_marginTop="@dimen/small_margin"
                     android:layout_weight="1"
-                    android:background="@drawable/rounded_btn_gradient"
+                    android:background="@drawable/rounded_btn"
                     android:text="@string/cancel_text"
-                    android:textColor="@android:color/white" />
+                    android:textColor="@color/colorAccent" />
 
                 <Button
                     android:id="@+id/createEventBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/small_margin"
+                    android:layout_marginBottom="@dimen/small_margin"
+                    android:layout_marginEnd="@dimen/default_margin"
+                    android:layout_marginStart="@dimen/default_margin"
+                    android:layout_marginTop="@dimen/small_margin"
                     android:layout_weight="1"
                     android:background="@drawable/rounded_btn_gradient"
                     android:enabled="false"
