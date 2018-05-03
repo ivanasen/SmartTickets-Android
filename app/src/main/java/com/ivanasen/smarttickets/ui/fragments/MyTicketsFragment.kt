@@ -30,7 +30,6 @@ import org.jetbrains.anko.support.v4.onRefresh
 import java.text.DateFormat
 import android.nfc.NdefRecord
 import android.support.v4.content.ContextCompat
-import android.util.Log
 import android.view.*
 import com.ivanasen.smarttickets.ui.activities.TicketValidatorActivity
 import com.ivanasen.smarttickets.util.Utility.Companion.launchActivity

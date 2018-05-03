@@ -35,7 +35,7 @@ interface SmartTicketsApi {
         val EVENT_PAGE_DEFAULT = 0
         val EVENT_LIMIT_DEFAULT = 10
 
-        val TX_HISTORY_PAGE_DEFAULT = 0
+        val TX_HISTORY_PAGE_DEFAULT = 1
         val TX_HISTORY_LIMIT_DEFAULT = 10
         val TX_HISTORY_SORT_DSC = "desc"
         val TX_HISTORY_SORT_ASC = "asc"

@@ -10,7 +10,7 @@
 
     <item
         android:id="@+id/filter"
-        android:icon="@drawable/ic_tune_white_24dp"
+        android:icon="@drawable/ic_sort_black_24dp"
         android:title="@string/filter"
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="collapseActionView|ifRoom" />
