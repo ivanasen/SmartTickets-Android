@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/small_margin"
@@ -56,22 +57,30 @@
                     android:layout_marginBottom="@dimen/small_margin"
                     android:layout_weight="1"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                    android:textColor="@color/blackGray" />
+                    android:textColor="@color/blackGray"
+                    tools:text="CSKA vs Levski" />
 
                 <TextView
                     android:id="@+id/ticketEventDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/small_margin"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:drawablePadding="@dimen/small_padding"
+                    android:drawableStart="@drawable/ic_date_range_black_24dp"
+                    android:gravity="center"
+                    tools:text="10 Match, 2018, 20:00" />
 
                 <TextView
                     android:id="@+id/ticketEventLocation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:drawablePadding="@dimen/small_padding"
                     android:drawableStart="@drawable/ic_location_on_black_24dp"
-                    android:ellipsize="end" />
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    tools:text="Sofia, Bulgaria" />
 
             </LinearLayout>
 
