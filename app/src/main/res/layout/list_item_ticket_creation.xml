@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/small_margin"
-    app:cardBackgroundColor="@color/white"
-    app:cardCornerRadius="4dp"
-    app:cardElevation="2dp">
+    android:background="@drawable/rounded_btn"
+    android:layout_marginStart="@dimen/default_margin"
+    android:layout_marginEnd="@dimen/default_margin"
+    android:elevation="2dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -21,7 +22,8 @@
             android:layout_height="wrap_content"
             android:text="@string/price_label"
             android:textAppearance="@style/TextAppearance.AppCompat.Menu"
-            android:textColor="@android:color/secondary_text_light" />
+            android:textColor="@color/textGray"
+            android:layout_marginEnd="2dp"/>
 
         <TextView
             android:id="@+id/ticketPriceTextView"
@@ -39,9 +41,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/small_margin"
             android:layout_toEndOf="@id/ticketPriceTextView"
+            android:layout_marginEnd="2dp"
             android:text="@string/supply_label"
-            android:textAppearance="@style/TextAppearance.AppCompat.Menu"
-            android:textColor="@android:color/secondary_text_light" />
+            android:textColor="@color/textGray"
+            android:textAppearance="@style/TextAppearance.AppCompat.Menu" />
 
         <TextView
             android:id="@+id/ticketSupplyTextView"
@@ -63,4 +66,4 @@
 
     </RelativeLayout>
 
-</android.support.v7.widget.CardView>
+</FrameLayout>
