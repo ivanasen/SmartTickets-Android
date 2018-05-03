@@ -57,11 +57,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
-            app:borderWidth="0dp"
-            android:layout_marginBottom="72dp"
-            android:layout_marginEnd="16dp"
+            android:layout_margin="@dimen/default_margin"
             android:src="@drawable/ic_add_accent_24dp"
-            app:backgroundTint="@color/white" />
+            app:backgroundTint="@color/white"
+            app:borderWidth="0dp" />
 
     </RelativeLayout>
 

@@ -20,10 +20,7 @@
             android:layout_height="wrap_content"
             android:clipChildren="false"
             android:clipToPadding="false"
-            android:paddingBottom="@dimen/bottom_navigation_height_with_padding"
-            android:paddingEnd="@dimen/default_padding"
-            android:paddingStart="@dimen/default_padding"
-            android:paddingTop="@dimen/default_padding"
+            android:padding="@dimen/default_padding"
             android:visibility="gone"
             tools:listitem="@layout/list_item_ticket" />
 

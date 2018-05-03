@@ -7,6 +7,7 @@ import android.content.Context
 import com.ivanasen.smarttickets.models.Event
 import com.ivanasen.smarttickets.models.Ticket
 import com.ivanasen.smarttickets.models.TicketType
+import com.ivanasen.smarttickets.models.Transaction
 import com.ivanasen.smarttickets.repositories.SmartTicketsRepository
 import com.ivanasen.smarttickets.util.Utility
 import com.ivanasen.smarttickets.util.Utility.Companion.WALLET_FILE_NAME_KEY
@@ -28,6 +29,7 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
     val myEvents: LiveData<MutableList<Event>> = mRepository.createdEvents
     val events: LiveData<MutableList<Event>> = mRepository.events
     val tickets: LiveData<MutableList<Ticket>> = mRepository.tickets
+    val txHistory: LiveData<List<Transaction>> = mRepository.txHistory
 
     val eventsFetchStatus: LiveData<Utility.Companion.TransactionStatus> =
             mRepository.eventsFetchStatus
@@ -66,7 +68,7 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun fetchBalance() {
-        mRepository.fetchBalance()
+        mRepository.fetchWalletData()
     }
 
     fun fetchMyEvents() {
@@ -101,5 +103,9 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
 
     fun verifyTicket(qrCodeString: String): LiveData<Utility.Companion.TransactionStatus> {
         return mRepository.validateTicket(qrCodeString)
+    }
+
+    fun fetchTxHistory(): LiveData<Utility.Companion.TransactionStatus> {
+        return mRepository.fetchTxHistory()
     }
 }

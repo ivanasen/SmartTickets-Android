@@ -3,12 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:clipChildren="false"
+    android:clipToPadding="false"
     android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/small_margin"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:clipChildren="false"
         android:clipToPadding="false"
         android:paddingBottom="@dimen/small_padding"
         android:paddingEnd="@dimen/small_padding"
@@ -21,11 +25,11 @@
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="@dimen/default_margin"
-            android:background="@drawable/circle_btn_gradient"
+            android:background="@drawable/rounded_btn"
             android:elevation="@dimen/default_elevation"
             android:padding="@dimen/default_padding"
             android:src="@drawable/ethereum"
-            android:tint="@color/white" />
+            android:tint="@color/colorAccent" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -52,20 +56,39 @@
         </LinearLayout>
 
 
-        <TextView
-            android:id="@+id/txAmountTextView"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-            android:textColor="@color/colorAccent"
-            tools:text="$5.34" />
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txAmountUsdTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                android:textColor="@color/colorAccent"
+                tools:text="$5.34" />
+
+            <TextView
+                android:id="@+id/txAmountEtherTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
+                tools:text="Ξ 0.004" />
+
+        </LinearLayout>
+
     </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginBottom="@dimen/small_margin"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:alpha="0.5"
         android:background="@color/lightGrayTransparent" />
 </LinearLayout>

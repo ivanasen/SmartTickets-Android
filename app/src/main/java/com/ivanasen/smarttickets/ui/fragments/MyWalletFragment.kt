@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
+import android.support.v7.widget.LinearLayoutManager
 import android.text.InputType
 import android.util.Log
 import android.view.*
@@ -15,6 +16,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.afollestad.materialdialogs.MaterialDialog
 import com.ivanasen.smarttickets.R
+import com.ivanasen.smarttickets.ui.adapters.TransactionAdapter
 import com.ivanasen.smarttickets.util.Utility
 import com.ivanasen.smarttickets.util.Utility.Companion.WALLET_FILE_NAME_KEY
 import com.ivanasen.smarttickets.viewmodels.AppViewModel
@@ -127,6 +129,11 @@ class MyWalletFragment : Fragment() {
         walletRefreshLayout.onRefresh {
             mViewModel.fetchBalance()
         }
+
+        val adapter = activity?.let { TransactionAdapter(it, mViewModel.txHistory) }
+        txHistoryRecyclerView.layoutManager = LinearLayoutManager(context)
+        txHistoryRecyclerView.adapter = adapter
+        txHistoryRecyclerView.isNestedScrollingEnabled = false
     }
 
 
@@ -174,6 +181,36 @@ class MyWalletFragment : Fragment() {
         mViewModel.usdBalance.observe(this, Observer {
             val df = DecimalFormat(getString(R.string.usd_format))
             etherInUsdView.text = df.format(it)
+        })
+
+        mViewModel.fetchTxHistory().observe(this, Observer {
+            when(it) {
+                Utility.Companion.TransactionStatus.PENDING -> {
+                    txHistoryProgressBar.visibility = View.VISIBLE
+                    txHistoryEmptyView.visibility = View.GONE
+                    txHistoryRecyclerView.visibility = View.GONE
+                    txHistoryErrorView.visibility = View.GONE
+                }
+
+                Utility.Companion.TransactionStatus.SUCCESS -> {
+                    txHistoryProgressBar.visibility = View.GONE
+                    txHistoryEmptyView.visibility = View.GONE
+                    txHistoryRecyclerView.visibility = View.VISIBLE
+                    txHistoryErrorView.visibility = View.GONE
+                }
+                Utility.Companion.TransactionStatus.FAILURE -> {
+                    txHistoryProgressBar.visibility = View.GONE
+                    txHistoryEmptyView.visibility = View.VISIBLE
+                    txHistoryRecyclerView.visibility = View.GONE
+                    txHistoryErrorView.visibility = View.GONE
+                }
+                Utility.Companion.TransactionStatus.ERROR -> {
+                    txHistoryProgressBar.visibility = View.GONE
+                    txHistoryEmptyView.visibility = View.GONE
+                    txHistoryRecyclerView.visibility = View.GONE
+                    txHistoryErrorView.visibility = View.VISIBLE
+                }
+            }
         })
     }
 

@@ -16,6 +16,7 @@ import com.ivanasen.smarttickets.BuildConfig
 import android.support.v4.content.FileProvider
 import android.support.v4.app.ActivityCompat.startActivityForResult
 import android.util.TypedValue
+import java.math.BigInteger
 
 
 class Utility {
@@ -95,3 +96,6 @@ val Int.toPx: Int
 
 val Int.toDp: Int
     get() = (this / Resources.getSystem().displayMetrics.density).toInt()
+
+val BigInteger.toEther: Double
+    get() = (this.toDouble() / Math.pow(10.0, 18.0))

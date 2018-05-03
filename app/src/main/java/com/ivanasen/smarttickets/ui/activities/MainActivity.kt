@@ -12,6 +12,7 @@ import com.ivanasen.smarttickets.ui.fragments.MyWalletFragment
 import com.ivanasen.smarttickets.viewmodels.AppViewModel
 import com.ivanasen.smarttickets.util.Utility.Companion.loadFragment
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.content_main.*
 
 
 class MainActivity : AppCompatActivity() {

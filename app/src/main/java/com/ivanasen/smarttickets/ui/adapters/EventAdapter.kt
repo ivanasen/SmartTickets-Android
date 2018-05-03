@@ -19,6 +19,7 @@ import org.jetbrains.anko.sdk25.coroutines.onClick
 import com.ivanasen.smarttickets.util.Utility
 import java.text.DateFormat
 import android.view.animation.AlphaAnimation
+import org.jetbrains.anko.find
 
 
 internal class EventAdapter(val activity: Activity, private val eventsData: LiveData<MutableList<Event>>,
@@ -28,17 +29,14 @@ internal class EventAdapter(val activity: Activity, private val eventsData: Live
     private val LOG_TAG = EventAdapter::class.java.simpleName
     private val FADE_DURATION: Long = 200
 
-    private var currentSize: Int = itemCount
-
     init {
         eventsData.observe(activity as LifecycleOwner, Observer {
             it?.let {
-                if (it.size > currentSize) {
+                if (it.size > itemCount) {
                     notifyItemInserted(it.size - 1)
                 } else {
                     notifyDataSetChanged()
                 }
-                currentSize = it.size
             }
         })
     }
@@ -50,13 +48,11 @@ internal class EventAdapter(val activity: Activity, private val eventsData: Live
     }
 
 
-    override fun getItemCount(): Int = if (eventsData.value == null) 0 else eventsData.value!!.size
+    override fun getItemCount(): Int = eventsData.value?.size ?: 0
 
 
     @SuppressLint("SimpleDateFormat")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if (eventsData.value == null) return
-
         val event = eventsData.value!![position]
         val (eventId, _, name, _, timestamp, _, _, locationAddress, images, tickets, _) = event
         val formattedDate = DateFormat
@@ -92,10 +88,10 @@ internal class EventAdapter(val activity: Activity, private val eventsData: Live
     }
 
     class ViewHolder(var view: View) : RecyclerView.ViewHolder(view) {
-        val eventImageView: ImageView = view.findViewById(R.id.eventImageView)
-        val eventNameView: TextView = view.findViewById(R.id.eventNameView)
-        val eventDateView: TextView = view.findViewById(R.id.eventDateView)
-        val eventTicketView: TextView = view.findViewById(R.id.eventTicketPriceView)
-        val eventLocation: TextView = view.findViewById(R.id.eventLocationView)
+        val eventImageView = view.find<ImageView>(R.id.eventImageView)
+        val eventNameView = view.find<TextView>(R.id.eventNameView)
+        val eventDateView = view.find<TextView>(R.id.eventDateView)
+        val eventTicketView = view.find<TextView>(R.id.eventTicketPriceView)
+        val eventLocation = view.find<TextView>(R.id.eventLocationView)
     }
 }

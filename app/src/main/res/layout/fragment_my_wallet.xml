@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -172,12 +172,47 @@
                 android:layout_marginTop="@dimen/default_margin"
                 android:text="@string/transaction_history_label" />
 
+            <TextView
+                android:id="@+id/txHistoryEmptyView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/default_margin"
+                android:text="@string/empty_tx_history_text"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:textColor="@color/textGray"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/txHistoryErrorView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/default_margin"
+                android:text="@string/tx_history_error"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:textColor="@color/textGray"
+                android:visibility="gone" />
+
+
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/transactionHistoryRecyclerView"
+                android:id="@+id/txHistoryRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 tools:listitem="@layout/list_item_transaction" />
 
+            <ProgressBar
+                android:id="@+id/txHistoryProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/default_margin"
+                android:indeterminate="true" />
+
+
         </LinearLayout>
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 </android.support.v4.widget.SwipeRefreshLayout>

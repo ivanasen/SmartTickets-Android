@@ -21,7 +21,6 @@ import com.ivanasen.smarttickets.util.Web3JProvider
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.jetbrains.anko.coroutines.experimental.bg
-import org.web3j.abi.datatypes.generated.Uint256
 import org.web3j.crypto.*
 import org.web3j.protocol.core.DefaultBlockParameterName
 import org.web3j.tuples.generated.Tuple6
@@ -58,6 +57,7 @@ object SmartTicketsRepository {
     val createdEvents: MutableLiveData<MutableList<Event>> = MutableLiveData()
     val events: MutableLiveData<MutableList<Event>> = MutableLiveData()
     val tickets: MutableLiveData<MutableList<Ticket>> = MutableLiveData()
+    val txHistory: MutableLiveData<List<Transaction>> = MutableLiveData()
 
     val eventsFetchStatus by lazy { MutableLiveData<Utility.Companion.TransactionStatus>() }
     val ticketsFetchStatus by lazy { MutableLiveData<Utility.Companion.TransactionStatus>() }
@@ -178,7 +178,7 @@ object SmartTicketsRepository {
     private fun fetchContractData() {
         fetchEvents()
         fetchTickets()
-        fetchBalance()
+        fetchWalletData()
         fetchMyEvents()
     }
 
@@ -252,10 +252,16 @@ object SmartTicketsRepository {
     fun convertEtherToUsd(weiValue: BigInteger): LiveData<Double> {
         val convertLiveData: MutableLiveData<Double> = MutableLiveData()
         bg {
-            val oneUsdCentInWei = mContract.oneUSDCentInWei.send()
-            convertLiveData.postValue((weiValue / oneUsdCentInWei).toDouble() / 100)
+            val usd = convertEtherToUsdSynchronously(weiValue)
+            convertLiveData.postValue(usd)
         }
         return convertLiveData
+    }
+
+    private fun convertEtherToUsdSynchronously(weiValue: BigInteger): Double {
+        val oneUsdCentInWei = mContract.oneUSDCentInWei.send()
+        val usdCents = (weiValue / oneUsdCentInWei).toDouble()
+        return usdCents / 100
     }
 
     fun fetchEtherValueOfUsd(usdCents: BigDecimal): LiveData<BigDecimal> {
@@ -275,7 +281,7 @@ object SmartTicketsRepository {
                     BigDecimal.valueOf(etherAmount), Convert.Unit.ETHER).sendAsync().get()
             Log.d(LOG_TAG, "Tx: $txReceipt")
 
-            fetchBalance()
+            fetchWalletData()
         }
     }
 
@@ -325,6 +331,51 @@ object SmartTicketsRepository {
         }
 
         throw IllegalArgumentException("Event not found")
+    }
+
+    fun fetchTxHistory(): MutableLiveData<Utility.Companion.TransactionStatus> {
+        val txHistoryFetchStatus = MutableLiveData<Utility.Companion.TransactionStatus>()
+        bg {
+            txHistoryFetchStatus.postValue(Utility.Companion.TransactionStatus.PENDING)
+            try {
+                val address = credentials.value?.address
+                if (address != null) {
+                    val response = mApi.getTxHistory(address,
+                            SmartTicketsApi.EVENT_PAGE_DEFAULT,
+                            SmartTicketsApi.EVENT_LIMIT_DEFAULT,
+                            SmartTicketsApi.TX_HISTORY_SORT_DSC)
+                            .execute()
+
+                    if (response.isSuccessful) {
+                        val txResponse = (response.body() as TransactionResponse).result
+                        if (txResponse.isNotEmpty()) {
+                            txResponse.forEach {
+                                it.valueUsd = convertEtherToUsdSynchronously(it.value)
+
+                                if (it.from == credentials.value?.address && it.to == mContract.contractAddress) {
+                                    it.type = "Called Contract"
+                                } else if (it.from == credentials.value?.address) {
+                                    it.type = "Sent Ether"
+                                } else if (it.to == credentials.value?.address) {
+                                    it.type = "Received Ether"
+                                } else {
+                                    it.type = "Unknown Transaction"
+                                }
+                            }
+
+                            txHistory.postValue(txResponse.toMutableList())
+                            txHistoryFetchStatus.postValue(Utility.Companion.TransactionStatus.SUCCESS)
+                        } else {
+                            txHistoryFetchStatus.postValue(Utility.Companion.TransactionStatus.FAILURE)
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                txHistoryFetchStatus.postValue(Utility.Companion.TransactionStatus.ERROR)
+            }
+        }
+        return txHistoryFetchStatus
     }
 
     fun fetchEvents(order: String = SmartTicketsApi.EVENT_ORDER_RECENT,
@@ -414,10 +465,12 @@ object SmartTicketsRepository {
         return txStatusLiveData
     }
 
-    fun fetchBalance() {
+    fun fetchWalletData() {
         fetchEtherBalance()
         fetchUsdBalance()
+        fetchTxHistory()
     }
+
 
     fun fetchTickets() {
         bg {

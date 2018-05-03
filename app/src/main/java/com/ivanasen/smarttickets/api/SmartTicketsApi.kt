@@ -4,6 +4,8 @@ import android.util.Log
 import com.google.gson.GsonBuilder
 import com.ivanasen.smarttickets.BuildConfig
 import com.ivanasen.smarttickets.models.Event
+import com.ivanasen.smarttickets.models.Transaction
+import com.ivanasen.smarttickets.models.TransactionResponse
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -19,6 +21,12 @@ interface SmartTicketsApi {
                   @Query("page") page: Int,
                   @Query("limit") limit: Int): Call<List<Event>>
 
+    @GET("api/history")
+    fun getTxHistory(@Query("address") address: String,
+                     @Query("page") page: Int,
+                     @Query("offset") limit: Int,
+                     @Query("sort") sort: String): Call<TransactionResponse>
+
     companion object {
         private val LOG_TAG = SmartTicketsApi::class.simpleName
 
@@ -27,6 +35,11 @@ interface SmartTicketsApi {
         val EVENT_ORDER_OLD = "old"
         val EVENT_PAGE_DEFAULT = 0
         val EVENT_LIMIT_DEFAULT = 10
+
+        val TX_HISTORY_PAGE_DEFAULT = 0
+        val TX_HISTORY_LIMIT_DEFAULT = 10
+        val TX_HISTORY_SORT_DSC = "desc"
+        val TX_HISTORY_SORT_ASC = "asc"
 
 
         val instance: SmartTicketsApi = create()

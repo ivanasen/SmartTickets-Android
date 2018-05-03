@@ -68,6 +68,8 @@
     <string name="add_text">Add</string>
     <string name="usd_format">0.##</string>
     <string name="eth_format">0.#####</string>
+    <string name="usd_format_sign">$ %.2f</string>
+    <string name="eth_format_sign">Ξ %.5f</string>
     <string name="starting_from_text">From %.2f$</string>
     <string name="search_hint">Search Events</string>
     <string name="show_wallet_private_key_text">Show wallet private key</string>
@@ -135,4 +137,6 @@
     <string name="invalid_amount_msg">Invalid Amount!</string>
     <string name="add_ticket_text">Add Ticket</string>
     <string name="activity_create_event_title">Create a new event</string>
+    <string name="empty_tx_history_text">You don\'t seem to have made any transactions.</string>
+    <string name="tx_history_error">Sorry, there was an error fetching your transaction history.</string>
 </resources>

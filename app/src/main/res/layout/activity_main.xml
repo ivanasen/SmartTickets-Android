@@ -12,8 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:animateLayoutChanges="true"
-        android:elevation="1dp"
         android:background="@drawable/gradient_background"
+        android:elevation="1dp"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <View
@@ -51,17 +51,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_main" />
-
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/bottomNavigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="@android:color/white"
-        app:elevation="8dp"
-        app:itemIconTint="@drawable/nav_item_color_state"
-        app:itemTextColor="@drawable/nav_item_color_state"
-        app:menu="@menu/navigation" />
+    <include
+        layout="@layout/content_main" />
 
 </android.support.design.widget.CoordinatorLayout>
