@@ -154,6 +154,7 @@ class ManageEventDetailActivity : AppCompatActivity() {
                                         Toast.LENGTH_LONG)
                                         .show()
                             }
+                            Utility.Companion.TransactionStatus.FAILURE -> TODO()
                         }
                     })
         }

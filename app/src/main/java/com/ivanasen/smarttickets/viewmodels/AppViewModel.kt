@@ -4,7 +4,6 @@ import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import android.content.Context
-import com.google.android.gms.location.places.Place
 import com.ivanasen.smarttickets.models.Event
 import com.ivanasen.smarttickets.models.Ticket
 import com.ivanasen.smarttickets.models.TicketType
@@ -58,20 +57,8 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         mRepository.sendEtherTo(address, amount)
     }
 
-    fun onPlacePicked(place: Place?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
     fun refreshEvents() {
         mRepository.fetchEvents()
-    }
-
-    fun fetchEvent(eventId: Long): LiveData<Event> {
-        return mRepository.fetchEvent(eventId)
-    }
-
-    fun fetchTicketTypesForEvent(eventId: Long): LiveData<MutableList<TicketType>> {
-        return mRepository.fetchTicketTypesForEvent(eventId)
     }
 
     fun attemptToBuyTicket(ticketType: TicketType): LiveData<Utility.Companion.TransactionStatus> {
@@ -90,10 +77,6 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         return mRepository.fetchTickets()
     }
 
-    fun loadInitialAppData() {
-        mRepository.loadInitialAppData()
-    }
-
     fun attemptSellTicket(ticket: Ticket): LiveData<Utility.Companion.TransactionStatus> {
         return mRepository.sellTicket(ticket)
     }
@@ -107,6 +90,7 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun signTicketNfcMessage(ticket: Ticket): String {
+        // TODO: Not implemented
 //        return mRepository.signTicketMessage(ticket)
         return ""
     }

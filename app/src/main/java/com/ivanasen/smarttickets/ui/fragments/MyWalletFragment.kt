@@ -129,9 +129,6 @@ class MyWalletFragment : Fragment() {
         }
     }
 
-    private fun getGravatarUrl(walletAddress: String): String =
-            String.format(getString(R.string.gravatar_url), walletAddress)
-
 
     private fun showSendEtherDialog() {
         context?.let {
