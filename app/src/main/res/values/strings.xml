@@ -133,4 +133,6 @@
     <string name="unlock_text">Unlock</string>
     <string name="invalid_address_msg">Invalid Address. Make sure you\'ve spelled the address correctly!</string>
     <string name="invalid_amount_msg">Invalid Amount!</string>
+    <string name="add_ticket_text">Add Ticket</string>
+    <string name="activity_create_event_title">Create a new event</string>
 </resources>

@@ -17,7 +17,7 @@
         <item name="colorPrimary">#fafafa</item>
         <item name="colorPrimaryDark">#eeeeee</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textColorPrimary">@color/colorPrimary</item>
+        <item name="android:textColorPrimary">@color/colorAccent</item>
         <item name="android:alertDialogTheme">@style/AlertDialogCustom</item>
         <item name="android:windowLightStatusBar" tools:ignore="NewApi">true</item>
     </style>

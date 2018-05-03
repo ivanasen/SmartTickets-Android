@@ -87,10 +87,11 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
+                        app:borderWidth="0dp"
                         android:layout_margin="@dimen/small_margin"
-                        android:background="@drawable/gradient_background"
+                        android:backgroundTint="@color/white"
                         android:contentDescription="@string/picklocationbtn_content_description"
-                        android:src="@drawable/ic_edit_location_black_24dp"
+                        android:src="@drawable/ic_edit_location_accent_24dp"
                         tools:ignore="RelativeOverlap" />
 
 
@@ -113,9 +114,10 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/dateLabel"
                         android:spinnerMode="dialog"
-                        tools:text="Thu, Apr 13, 2018"
                         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                        android:textColor="@color/colorPrimary" />
+                        android:textColor="@color/colorAccent"
+                        android:textStyle="bold"
+                        tools:text="Thu, Apr 13, 2018" />
 
                     <TextView
                         android:id="@+id/timeLabel"
@@ -132,15 +134,16 @@
                         android:layout_below="@id/timeLabel"
                         android:layout_marginStart="@dimen/big_margin"
                         android:layout_toEndOf="@id/eventDateView"
-                        tools:text="20:00"
                         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                        android:textColor="@color/colorPrimary" />
+                        android:textColor="@color/colorAccent"
+                        android:textStyle="bold"
+                        tools:text="20:00" />
 
 
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/default_margin">
 
@@ -148,6 +151,7 @@
                         android:id="@+id/ticketsLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
                         android:layout_marginBottom="@dimen/small_margin"
                         android:text="@string/ticket_types_text" />
 
@@ -155,19 +159,21 @@
                         android:id="@+id/ticketsRecyclerView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/ticketsLabel"
-                        tools:listitem="@layout/list_item_ticket_creation" />
+                        android:layout_below="@id/ticketsLabel" />
 
-                    <ImageButton
+                    <Button
                         android:id="@+id/addTicketTypeBtn"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/ticketsRecyclerView"
-                        android:layout_margin="@dimen/small_margin"
-                        android:background="@drawable/rounded_btn_gradient"
-                        android:padding="@dimen/small_margin"
-                        android:src="@drawable/ic_add_black_24dp"
-                        android:tint="@color/white" />
+                        android:layout_centerHorizontal="true"
+                        android:layout_margin="@dimen/default_margin"
+                        android:background="@drawable/rounded_btn"
+                        android:drawableStart="@drawable/ic_add_accent_24dp"
+                        android:paddingEnd="@dimen/default_padding"
+                        android:paddingStart="@dimen/default_padding"
+                        android:text="@string/add_ticket_text"
+                        android:textColor="@color/colorAccent" />
 
                 </RelativeLayout>
 
@@ -182,14 +188,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/small_margin"
-                        android:text="@string/event_images_text" />
+                        android:text="@string/event_images_text"
+                        android:layout_centerHorizontal="true"/>
 
                     <Button
                         android:id="@+id/selectImagesButton"
                         style="@style/Base.Widget.AppCompat.Button.Borderless"
+                        android:layout_centerHorizontal="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/imagesLabel"
+                        android:textColor="@color/colorAccent"
                         android:paddingEnd="@dimen/default_padding"
                         android:paddingStart="@dimen/default_padding"
                         android:text="@string/select_images_text" />

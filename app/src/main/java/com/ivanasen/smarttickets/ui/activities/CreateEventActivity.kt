@@ -66,6 +66,8 @@ class CreateEventActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_event)
 
+        title = getString(R.string.activity_create_event_title)
+
         observeLiveData()
         setupViews()
     }

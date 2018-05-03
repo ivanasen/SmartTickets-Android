@@ -92,6 +92,7 @@
                     android:background="@drawable/rounded_btn_gradient"
                     android:enabled="false"
                     android:paddingEnd="30dp"
+                    android:minWidth="130dp"
                     android:paddingStart="30dp"
                     android:text="@string/unlock_text"
                     android:textAllCaps="false"
