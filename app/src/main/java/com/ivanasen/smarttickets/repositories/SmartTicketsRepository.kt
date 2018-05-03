@@ -341,8 +341,8 @@ object SmartTicketsRepository {
                 val address = credentials.value?.address
                 if (address != null) {
                     val response = mApi.getTxHistory(address,
-                            SmartTicketsApi.EVENT_PAGE_DEFAULT,
-                            SmartTicketsApi.EVENT_LIMIT_DEFAULT,
+                            SmartTicketsApi.TX_HISTORY_PAGE_DEFAULT,
+                            SmartTicketsApi.TX_HISTORY_LIMIT_DEFAULT,
                             SmartTicketsApi.TX_HISTORY_SORT_DSC)
                             .execute()
 
