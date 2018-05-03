@@ -36,7 +36,7 @@ internal class TicketCreationTypeAdapter(val context: Context,
         holder.ticketSupplyTextView.text =
                 String.format("%d", data.value!![position].initialSupply)
         holder.ticketRefundable.text =
-                if (data.value!![position].refundable)
+                if (data.value!![position].refundable == 1.toBigInteger())
                     context.getString(R.string.refundable_text)
                 else context.getString(R.string.not_refundable_text)
     }

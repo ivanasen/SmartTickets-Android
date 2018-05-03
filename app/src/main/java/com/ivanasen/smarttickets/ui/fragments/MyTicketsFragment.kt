@@ -164,7 +164,7 @@ class MyTicketsFragment : Fragment(),
         eventTimeViewDetail.text = DateFormat.getTimeInstance(DateFormat.MEDIUM)
                 .format(event.timestamp)
 
-        refundTicketBtnDetail.isEnabled = ticket.ticketType.refundable
+        refundTicketBtnDetail.isEnabled = (ticket.ticketType.refundable == 1.toBigInteger())
         refundTicketBtnDetail.onClick {
             mViewModel.attemptSellTicket(ticket)
                     .observe(this@MyTicketsFragment, Observer {
@@ -188,6 +188,7 @@ class MyTicketsFragment : Fragment(),
                                         Toast.LENGTH_LONG)
                                         .show()
                             }
+                            Utility.Companion.TransactionStatus.FAILURE -> TODO()
                         }
                     })
         }

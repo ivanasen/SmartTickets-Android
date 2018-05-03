@@ -59,7 +59,7 @@ class CreateEventActivityViewModel : ViewModel() {
         }
     }
 
-    fun addTicketType(price: Double, supply: Double, refundable: Boolean) {
+    fun addTicketType(price: Double, supply: Double, refundable: BigInteger) {
         bg {
             val priceInCents = (price.toString().toDouble() * 100).toLong()
 

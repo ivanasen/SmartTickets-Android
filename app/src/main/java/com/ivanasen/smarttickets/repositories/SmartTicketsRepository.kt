@@ -85,10 +85,7 @@ object SmartTicketsRepository {
 
                 val ticketPrices = tickets.map { it.priceInUSDCents }
                 val ticketSupplies = tickets.map { it.initialSupply }
-                val ticketRefundables = tickets.map {
-                    (if (it.refundable) 1 else 0)
-                            .toBigInteger()
-                }
+                val ticketRefundables = tickets.map { it.refundable }
 
                 val eventTxReceipt = mContract.createEvent(
                         timestamp.toBigInteger(),
@@ -315,12 +312,12 @@ object SmartTicketsRepository {
                     id,
                     ipfsHash,
                     eventData.name,
-                    eventData.description!!,
+                    eventData.description ?: "",
                     timestamp,
                     eventData.latLong,
                     eventData.locationName,
                     eventData.locationAddress,
-                    eventData.images!!,
+                    eventData.images ?: emptyList(),
                     ticketTypes,
                     earnings)
         }
@@ -328,7 +325,7 @@ object SmartTicketsRepository {
         throw IllegalArgumentException("Event not found")
     }
 
-    fun fetchEvents(order: String = SmartTicketsApi.EVENT_ORDER_POPULARITY,
+    fun fetchEvents(order: String = SmartTicketsApi.EVENT_ORDER_RECENT,
                     page: Int = SmartTicketsApi.EVENT_PAGE_DEFAULT,
                     limit: Int = SmartTicketsApi.EVENT_LIMIT_DEFAULT) {
         bg {
@@ -374,17 +371,14 @@ object SmartTicketsRepository {
     private fun getTicketTypesForEvent(eventId: Long): MutableList<TicketType> {
         val count = mContract.getTicketTypesCountForEvent(BigInteger.valueOf(eventId))
                 .send().toLong()
-        val ticketTypesList = mutableListOf<TicketType>()
-        for (ticketTypeIndex in 0 until count) {
 
-            val ticketTypeTuple = mContract.getTicketTypeForEvent(BigInteger.valueOf(eventId),
-                    BigInteger.valueOf(ticketTypeIndex)).send()
-
-            ticketTypeTuple?.let {
-                ticketTypesList.add(convertTupleToTicketType(it))
-            }
+        val ticketTypes = (0 until count).map {
+            val ticketTuple = mContract.getTicketTypeForEvent(BigInteger.valueOf(eventId),
+                    it.toBigInteger()).send()
+            convertTupleToTicketType(ticketTuple)
         }
-        return ticketTypesList
+
+        return ticketTypes.toMutableList()
     }
 
     // TODO: Fix buying of events after switching to api
@@ -455,20 +449,20 @@ object SmartTicketsRepository {
 
     private fun convertTupleToTicketType(ticketTypeTuple: Tuple6<BigInteger,
             BigInteger, BigInteger, BigInteger, BigInteger, BigInteger>?): TicketType {
-        val ticketTypeId = ticketTypeTuple?.value1
-        val eventId = ticketTypeTuple?.value2
-        val price = ticketTypeTuple?.value3
-        val initialSupply = ticketTypeTuple?.value4
-        val currentSupply = ticketTypeTuple?.value5
-        val refundable = ticketTypeTuple?.value6 ?: false
+        val ticketTypeId = ticketTypeTuple?.value1 ?: (-1).toBigInteger()
+        val eventId = ticketTypeTuple?.value2 ?: (-1).toBigInteger()
+        val price = ticketTypeTuple?.value3 ?: (-1).toBigInteger()
+        val initialSupply = ticketTypeTuple?.value4 ?: (-1).toBigInteger()
+        val currentSupply = ticketTypeTuple?.value5 ?: (-1).toBigInteger()
+        val refundable = ticketTypeTuple?.value6 ?: (-1).toBigInteger()
 
         return TicketType(
-                ticketTypeId!!,
-                eventId!!,
-                price!!,
-                initialSupply!!,
-                currentSupply!!,
-                refundable == 1)
+                ticketTypeId,
+                eventId,
+                price,
+                initialSupply,
+                currentSupply,
+                refundable)
     }
 
     fun fetchMyEvents() {

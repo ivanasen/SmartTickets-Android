@@ -14,8 +14,9 @@ object SmartTicketsContractProvider {
             return mContract
         }
 
+        val network =  web3.netVersion().send().netVersion
         mContract = SmartTickets.load(
-                BuildConfig.CONTRACT_ADDRESS,
+                SmartTickets._addresses[network],
                 web3,
                 credentials,
                 SmartTickets.GAS_PRICE,

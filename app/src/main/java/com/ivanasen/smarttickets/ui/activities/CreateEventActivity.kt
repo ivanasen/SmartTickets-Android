@@ -211,8 +211,9 @@ class CreateEventActivity : AppCompatActivity() {
                             .text
                     val supply = (view.findViewById(R.id.inputTicketTypeSupply) as TextView)
                             .text
-                    val refundable = (view.findViewById(R.id.ticketTypeRefundableCheckBox) as CheckBox)
+                    val isChecked = (view.findViewById(R.id.ticketTypeRefundableCheckBox) as CheckBox)
                             .isChecked
+                    val refundable = (if (isChecked) 1 else 0).toBigInteger()
 
                     if (price.toString().toInt() >= 0 && supply.toString().toInt() >= 0) {
                         viewModel.addTicketType(price.toString().toDouble(),

@@ -31,7 +31,7 @@
     <string name="enter_password_hint">Enter Password</string>
     <string name="unlock_wallet_text">Unlock Wallet</string>
     <string name="wrong_password_text">Wrong Password</string>
-    <string name="use_another_wallet_text">Use Another Wallet</string>
+    <string name="use_another_wallet_text">Use Another One</string>
     <string name="wallet_balance_text">Your Wallet Balance is:</string>
     <string name="receive_text">Receive</string>
     <string name="send_text">Send</string>

@@ -43,7 +43,7 @@ internal class TicketTypeAdapter(val context: Context, val data: List<TicketType
         holder.ticketSupplyTextView.text =
                 String.format(context.getString(R.string.tickets_remaining_text), currentSupply)
         holder.ticketRefundable.text =
-                if (refundable)
+                if (refundable == 1.toBigInteger())
                     context.getString(R.string.refundable_text)
                 else
                     context.getString(R.string.not_refundable_text)

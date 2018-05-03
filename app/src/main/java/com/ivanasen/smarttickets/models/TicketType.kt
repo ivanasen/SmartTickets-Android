@@ -9,4 +9,4 @@ data class TicketType(val ticketTypeId: BigInteger,
                       val priceInUSDCents: BigInteger,
                       val initialSupply: BigInteger,
                       val currentSupply: BigInteger,
-                      val refundable: Boolean)
+                      val refundable: BigInteger)

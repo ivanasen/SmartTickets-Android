@@ -19,14 +19,12 @@ android {
     buildTypes {
         def ETHEREUM_NODE_URL = "ETHEREUM_NODE_URL"
         def IPFS_GATEWAY_URL = "IPFS_GATEWAY_URL"
-        def CONTRACT_ADDRESS = "CONTRACT_ADDRESS"
         def DEVELOPERS_EMAIL = "DEVELOPERS_EMAIL"
         def API_URL = "API_URL"
 
         debug {
             buildConfigField "String", ETHEREUM_NODE_URL, "\"https://ropsten.infura.io/YAcKUvG0v0T60082XYEO\""
             buildConfigField "String", IPFS_GATEWAY_URL, "\"http://159.65.87.154:8080/\""
-            buildConfigField "String", CONTRACT_ADDRESS, "\"0x9f9cba1fc0230432e9bbaf3c9bfbe97bbcadb9ef\""
             buildConfigField "String", API_URL, "\"https://smart-tickets.herokuapp.com/\""
             buildConfigField "String", DEVELOPERS_EMAIL, "\"ivanasenchakarov@gmail.com\""
         }
@@ -37,7 +35,6 @@ android {
 
             buildConfigField "String", ETHEREUM_NODE_URL, "\"https://ropsten.infura.io/YAcKUvG0v0T60082XYEO\""
             buildConfigField "String", IPFS_GATEWAY_URL, "\"http://159.65.87.154:8080/\""
-            buildConfigField "String", CONTRACT_ADDRESS, "\"0x9f9cba1fc0230432e9bbaf3c9bfbe97bbcadb9ef\""
             buildConfigField "String", API_URL, "\"https://smart-tickets.herokuapp.com/\""
             buildConfigField "String", DEVELOPERS_EMAIL, "\"ivanasenchakarov@gmail.com\""
         }
@@ -64,7 +61,7 @@ dependencies {
     implementation 'com.android.support:support-vector-drawable:27.1.1'
     implementation 'com.android.support:cardview-v7:27.1.1'
     implementation 'com.android.support:support-v4:27.1.1'
-    implementation 'com.google.android.gms:play-services-maps:15.0.0'
+    implementation 'com.google.android.gms:play-services-maps:15.0.1'
     implementation 'com.google.android.gms:play-services-places:15.0.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

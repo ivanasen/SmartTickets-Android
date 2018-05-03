@@ -62,6 +62,7 @@ internal class EventAdapter(val activity: Activity, private val eventsData: Live
         val formattedDate = DateFormat
                 .getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT)
                 .format(timestamp)
+
         val cheapestTicket = tickets.minBy { it.priceInUSDCents }
         val priceInDollars = cheapestTicket?.priceInUSDCents!!.toDouble() / 100
 
