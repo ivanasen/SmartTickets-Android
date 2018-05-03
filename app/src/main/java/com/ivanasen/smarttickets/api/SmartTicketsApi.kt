@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder
 import com.ivanasen.smarttickets.BuildConfig
 import com.ivanasen.smarttickets.models.Event
 import com.ivanasen.smarttickets.models.Transaction
-import com.ivanasen.smarttickets.models.TransactionResponse
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -25,7 +24,7 @@ interface SmartTicketsApi {
     fun getTxHistory(@Query("address") address: String,
                      @Query("page") page: Int,
                      @Query("offset") limit: Int,
-                     @Query("sort") sort: String): Call<TransactionResponse>
+                     @Query("sort") sort: String): Call<List<Transaction>>
 
     companion object {
         private val LOG_TAG = SmartTicketsApi::class.simpleName

@@ -252,13 +252,13 @@ object SmartTicketsRepository {
     fun convertEtherToUsd(weiValue: BigInteger): LiveData<Double> {
         val convertLiveData: MutableLiveData<Double> = MutableLiveData()
         bg {
-            val usd = convertEtherToUsdSynchronously(weiValue)
+            val usd = convertWeiToUsdSynchronously(weiValue)
             convertLiveData.postValue(usd)
         }
         return convertLiveData
     }
 
-    private fun convertEtherToUsdSynchronously(weiValue: BigInteger): Double {
+    private fun convertWeiToUsdSynchronously(weiValue: BigInteger): Double {
         val oneUsdCentInWei = mContract.oneUSDCentInWei.send()
         val usdCents = (weiValue / oneUsdCentInWei).toDouble()
         return usdCents / 100
@@ -347,11 +347,9 @@ object SmartTicketsRepository {
                             .execute()
 
                     if (response.isSuccessful) {
-                        val txResponse = (response.body() as TransactionResponse).result
+                        val txResponse = response.body() as MutableList<Transaction>
                         if (txResponse.isNotEmpty()) {
                             txResponse.forEach {
-                                it.valueUsd = convertEtherToUsdSynchronously(it.value)
-
                                 if (it.from == credentials.value?.address && it.to == mContract.contractAddress) {
                                     it.type = "Called Contract"
                                 } else if (it.from == credentials.value?.address) {
@@ -363,7 +361,7 @@ object SmartTicketsRepository {
                                 }
                             }
 
-                            txHistory.postValue(txResponse.toMutableList())
+                            txHistory.postValue(txResponse)
                             txHistoryFetchStatus.postValue(Utility.Companion.TransactionStatus.SUCCESS)
                         } else {
                             txHistoryFetchStatus.postValue(Utility.Companion.TransactionStatus.FAILURE)

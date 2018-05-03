@@ -39,6 +39,7 @@ internal class TicketTypeAdapter(val context: Context, val data: List<TicketType
                 .observe(context as LifecycleOwner, Observer {
                     holder.ticketPriceInEtherView.text = ethFormat.format(it)
                 })
+
         holder.ticketPriceInUsdView.text = usdFormat.format(priceInUSDCents.toDouble() / 100)
         holder.ticketSupplyTextView.text =
                 String.format(context.getString(R.string.tickets_remaining_text), currentSupply)
