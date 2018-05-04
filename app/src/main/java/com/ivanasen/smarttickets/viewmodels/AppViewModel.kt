@@ -35,8 +35,7 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
             mRepository.eventsFetchStatus
     val ticketsFetchStatus: LiveData<Utility.Companion.TransactionStatus> =
             mRepository.ticketsFetchStatus
-    val myEventsFetchStatus: LiveData<Utility.Companion.TransactionStatus> =
-            mRepository.myEventsFetchStatus
+
 
 //    public fun refreshEvents(): LiveData<List<IPFSEvent>> {
 //
@@ -71,8 +70,8 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         mRepository.fetchWalletData()
     }
 
-    fun fetchMyEvents() {
-        mRepository.fetchMyEvents()
+    fun fetchMyEvents(): LiveData<Utility.Companion.TransactionStatus> {
+        return mRepository.fetchMyEvents()
     }
 
     fun refreshTickets() {

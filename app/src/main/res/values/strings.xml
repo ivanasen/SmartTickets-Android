@@ -35,7 +35,6 @@
     <string name="wallet_balance_text">Your Wallet Balance is:</string>
     <string name="receive_text">Receive</string>
     <string name="send_text">Send</string>
-    <string name="gravatar_url"><![CDATA[http://www.gravatar.com/avatar/%s?s=150&d=identicon&r=PG]]></string>
     <string name="usd_symbol">USD</string>
     <string name="eth_symbol">ETH</string>
     <string name="copy_text">Copy</string>

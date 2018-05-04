@@ -51,7 +51,7 @@ class ManageEventsFragment : Fragment() {
     }
 
     private fun observeLiveData() {
-        mViewModel.myEventsFetchStatus.observe(this, Observer {
+        mViewModel.fetchMyEvents().observe(this, Observer {
             when (it) {
                 Utility.Companion.TransactionStatus.PENDING -> {
                     manageEventsRefreshLayout.isRefreshing = true

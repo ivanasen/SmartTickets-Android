@@ -61,7 +61,7 @@ object ApplicationRepository {
 
     val eventsFetchStatus by lazy { MutableLiveData<Utility.Companion.TransactionStatus>() }
     val ticketsFetchStatus by lazy { MutableLiveData<Utility.Companion.TransactionStatus>() }
-    val myEventsFetchStatus by lazy { MutableLiveData<Utility.Companion.TransactionStatus>() }
+//    val myEventsFetchStatus by lazy { MutableLiveData<Utility.Companion.TransactionStatus>() }
 
     fun createEvent(name: String,
                     description: String,
@@ -179,7 +179,6 @@ object ApplicationRepository {
         fetchEvents()
         fetchTickets()
         fetchWalletData()
-        fetchMyEvents()
     }
 
     fun unlockWallet(password: String, wallet: File): Boolean {
@@ -396,7 +395,6 @@ object ApplicationRepository {
         return ticketTypes.toMutableList()
     }
 
-    // TODO: Fix buying of events after switching to api
     fun buyTicket(ticketType: TicketType): LiveData<Utility.Companion.TransactionStatus> {
         val txStatusLiveData: MutableLiveData<Utility.Companion.TransactionStatus> =
                 MutableLiveData()
@@ -430,7 +428,34 @@ object ApplicationRepository {
     fun fetchWalletData() {
         fetchEtherBalance()
         fetchUsdBalance()
-        fetchTxHistory()
+    }
+
+    fun fetchMyEvents(): LiveData<Utility.Companion.TransactionStatus> {
+        val myEventsFetchStatus = MutableLiveData<Utility.Companion.TransactionStatus>()
+        bg {
+            myEventsFetchStatus.postValue(Utility.Companion.TransactionStatus.PENDING)
+            try {
+                val creatorAddress = credentials.value?.address
+                creatorAddress?.let {
+                    val response = mApi.getEventsForCreator(creatorAddress).execute()
+                    if (response.isSuccessful) {
+                        val eventsRes = response.body()
+                        if (eventsRes != null && eventsRes.isNotEmpty()) {
+                            createdEvents.postValue(eventsRes.toMutableList())
+                            myEventsFetchStatus.postValue(Utility.Companion.TransactionStatus.SUCCESS)
+                        } else {
+                            myEventsFetchStatus.postValue(Utility.Companion.TransactionStatus.FAILURE)
+                        }
+                    } else {
+                        myEventsFetchStatus.postValue(Utility.Companion.TransactionStatus.ERROR)
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                myEventsFetchStatus.postValue(Utility.Companion.TransactionStatus.ERROR)
+            }
+        }
+        return myEventsFetchStatus
     }
 
     fun fetchTickets() {
@@ -478,31 +503,6 @@ object ApplicationRepository {
                 refundable)
     }
 
-    fun fetchMyEvents() {
-        bg {
-            myEventsFetchStatus.postValue(Utility.Companion.TransactionStatus.PENDING)
-            val events = mutableListOf<Event>()
-            val ownerAddress = credentials.value?.address
-            try {
-                val eventIds = mContract.getEventIdsForCreator(ownerAddress).send()
-
-                eventIds.forEach {
-                    val id = it as BigInteger
-                    val event = getEvent(id.toLong())
-                    events.add(event)
-                }
-                createdEvents.postValue(events)
-                if (events.isEmpty()) {
-                    myEventsFetchStatus.postValue(Utility.Companion.TransactionStatus.FAILURE)
-                } else {
-                    myEventsFetchStatus.postValue(Utility.Companion.TransactionStatus.SUCCESS)
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                myEventsFetchStatus.postValue(Utility.Companion.TransactionStatus.ERROR)
-            }
-        }
-    }
 
     fun sellTicket(ticket: Ticket): LiveData<Utility.Companion.TransactionStatus> {
         val ticketLiveData: MutableLiveData<Utility.Companion.TransactionStatus> =

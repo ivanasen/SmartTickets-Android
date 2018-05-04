@@ -21,6 +21,9 @@ interface ApplicationApi {
                   @Query("page") page: Int,
                   @Query("limit") limit: Int): Call<List<Event>>
 
+    @GET("api/events")
+    fun getEventsForCreator(@Query("address") address: String): Call<List<Event>>
+
     @GET("api/history")
     fun getTxHistory(@Query("address") address: String,
                      @Query("page") page: Int,

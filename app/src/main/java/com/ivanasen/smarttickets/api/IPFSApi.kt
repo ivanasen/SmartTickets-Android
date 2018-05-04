@@ -41,9 +41,6 @@ interface IPFSApi {
                     .setLenient()
                     .create()
 
-
-
-
             return Retrofit.Builder()
                     .baseUrl(BuildConfig.IPFS_GATEWAY_URL)
                     .client(client)
