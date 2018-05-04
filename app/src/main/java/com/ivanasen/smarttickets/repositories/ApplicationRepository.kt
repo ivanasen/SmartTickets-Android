@@ -273,23 +273,11 @@ object ApplicationRepository {
         }
     }
 
-    fun fetchEvent(id: Long): LiveData<Event> {
-        val eventLiveData: MutableLiveData<Event> = MutableLiveData()
-
-        bg {
-            val event = getEvent(id)
-            eventLiveData.postValue(event)
-        }
-
-        return eventLiveData
-    }
-
-
     private fun getEvent(id: Long): Event {
         val event = mContract.getEvent(BigInteger.valueOf(id)).send()
 
         val timestamp = event.value1.toLong() * 1000 // Convert to milliseconds
-        val ipfsHash = event.value2.toString(Charset.forName("UTF-8"))
+        val ipfsHash = event.value2.toString(Charset.defaultCharset())
         val cancelled = event.value3
         val earnings = event.value5
 

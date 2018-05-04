@@ -17,6 +17,7 @@ import com.ivanasen.smarttickets.R
 import com.ivanasen.smarttickets.models.Event
 import com.ivanasen.smarttickets.models.Ticket
 import com.ivanasen.smarttickets.util.Utility
+import io.ipfs.kotlin.IPFS
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import java.text.SimpleDateFormat
 
@@ -44,7 +45,6 @@ internal class TicketsAdapter(val context: Context?, private val tickets: LiveDa
 
         val ticket = tickets.value!![position]
         val event = tickets.value!![position].event
-
 
         val imageUrl = Utility.getIpfsImageUrl(event.images[0])
         val eventName = event.name

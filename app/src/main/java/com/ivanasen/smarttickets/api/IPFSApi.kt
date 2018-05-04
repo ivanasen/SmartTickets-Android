@@ -4,6 +4,7 @@ import android.util.Log
 import com.google.gson.GsonBuilder
 import com.ivanasen.smarttickets.BuildConfig
 import com.ivanasen.smarttickets.models.IPFSEvent
+import io.ipfs.kotlin.IPFS
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
 import okhttp3.logging.HttpLoggingInterceptor
@@ -39,6 +40,9 @@ interface IPFSApi {
             val gson = GsonBuilder()
                     .setLenient()
                     .create()
+
+
+
 
             return Retrofit.Builder()
                     .baseUrl(BuildConfig.IPFS_GATEWAY_URL)
