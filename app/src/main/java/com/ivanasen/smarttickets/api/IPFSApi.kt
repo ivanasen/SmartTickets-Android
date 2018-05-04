@@ -13,7 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 
 
-interface SmartTicketsIPFSApi {
+interface IPFSApi {
     @GET("ipfs/{hash}")
     fun getEvent(@Path("hash") hash: String): Call<IPFSEvent>
 
@@ -24,10 +24,10 @@ interface SmartTicketsIPFSApi {
     fun postImage(@Body image: RequestBody): Call<Void>
 
     companion object {
-        private val LOG_TAG = SmartTicketsIPFSApi::class.simpleName
-        val instance: SmartTicketsIPFSApi = create()
+        private val LOG_TAG = IPFSApi::class.simpleName
+        val instance: IPFSApi = create()
 
-        private fun create(): SmartTicketsIPFSApi {
+        private fun create(): IPFSApi {
             val logger = HttpLoggingInterceptor(HttpLoggingInterceptor.Logger {
                 Log.d(LOG_TAG, it)
             })
@@ -45,7 +45,7 @@ interface SmartTicketsIPFSApi {
                     .client(client)
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .build()
-                    .create(SmartTicketsIPFSApi::class.java)
+                    .create(IPFSApi::class.java)
         }
     }
 }

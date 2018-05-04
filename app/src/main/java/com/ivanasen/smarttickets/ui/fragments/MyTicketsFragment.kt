@@ -101,8 +101,8 @@ class MyTicketsFragment : Fragment(),
             mViewModel.refreshTickets()
         }
 
-        val adapter = TicketsAdapter(context, mViewModel.tickets, mViewModel.events,
-                { event, ticket -> showTicketDetailView(event, ticket) })
+        val adapter = TicketsAdapter(context, mViewModel.tickets,
+                { ticket -> showTicketDetailView(ticket) })
         ticketsRecyclerView.layoutManager = LinearLayoutManager(context)
         ticketsRecyclerView.adapter = adapter
 
@@ -133,8 +133,9 @@ class MyTicketsFragment : Fragment(),
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    private fun showTicketDetailView(event: Event, ticket: Ticket) {
+    private fun showTicketDetailView(ticket: Ticket) {
         mCurrentTicket = ticket
+        val event = ticket.event
 
         TransitionManager.beginDelayedTransition(view as ViewGroup, Fade())
         ticketDetailView.visibility = View.VISIBLE

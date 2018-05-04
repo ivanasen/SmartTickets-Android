@@ -11,7 +11,7 @@ import android.widget.Button
 import android.widget.TextView
 import com.ivanasen.smarttickets.R
 import com.ivanasen.smarttickets.models.TicketType
-import com.ivanasen.smarttickets.repositories.SmartTicketsRepository
+import com.ivanasen.smarttickets.repositories.ApplicationRepository
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import java.text.DecimalFormat
 
@@ -35,7 +35,7 @@ internal class TicketTypeAdapter(val context: Context, val data: List<TicketType
 
         val (_, _, priceInUSDCents, _, currentSupply, refundable) = ticketType
 
-        SmartTicketsRepository.fetchEtherValueOfUsd(priceInUSDCents.toBigDecimal())
+        ApplicationRepository.fetchEtherValueOfUsd(priceInUSDCents.toBigDecimal())
                 .observe(context as LifecycleOwner, Observer {
                     holder.ticketPriceInEtherView.text = ethFormat.format(it)
                 })

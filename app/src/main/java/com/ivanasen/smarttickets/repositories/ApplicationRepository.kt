@@ -8,10 +8,10 @@ import android.util.Log
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
 import com.ivanasen.smarttickets.R
-import com.ivanasen.smarttickets.api.SmartTicketsApi
+import com.ivanasen.smarttickets.api.ApplicationApi
 import com.ivanasen.smarttickets.contractwrappers.SmartTicketsContractProvider
 
-import com.ivanasen.smarttickets.api.SmartTicketsIPFSApi
+import com.ivanasen.smarttickets.api.IPFSApi
 import com.ivanasen.smarttickets.contractwrappers.SmartTickets
 import com.ivanasen.smarttickets.models.*
 import com.ivanasen.smarttickets.util.Utility
@@ -36,13 +36,13 @@ import java.io.IOException
 import java.io.InputStreamReader
 
 
-object SmartTicketsRepository {
-    private val LOG_TAG = SmartTicketsRepository::class.simpleName
+object ApplicationRepository {
+    private val LOG_TAG = ApplicationRepository::class.simpleName
     private const val ETHEREUM_VALIDATION_PREFIX = "\\x19Ethereum Signed Message:\\n30"
 
     private val mWeb3 by lazy { Web3JProvider.instance }
-    private val mIpfsApi by lazy { SmartTicketsIPFSApi.instance }
-    private val mApi by lazy { SmartTicketsApi.instance }
+    private val mIpfsApi by lazy { IPFSApi.instance }
+    private val mApi by lazy { ApplicationApi.instance }
 
     private lateinit var mContract: SmartTickets
 
@@ -181,18 +181,6 @@ object SmartTicketsRepository {
         fetchWalletData()
         fetchMyEvents()
     }
-
-//    fun getEvent(id: Int): IPFSEvent {
-//        val event = mContract.getEvent(id.toBigInteger()).sendAsync().get()
-//        Log.d(LOG_TAG, "IPFSEvent: ${event.value1} ${event.value1}")
-//        return IPFSEvent(id.toBigInteger(),
-//                Hex.toHexString(event.value2),
-//                Time(event.value1.toLong()),
-//                emptyList(),
-//                emptyList(),
-//                true)
-//    }
-
 
     fun unlockWallet(password: String, wallet: File): Boolean {
         return try {
@@ -341,9 +329,9 @@ object SmartTicketsRepository {
                 val address = credentials.value?.address
                 if (address != null) {
                     val response = mApi.getTxHistory(address,
-                            SmartTicketsApi.TX_HISTORY_PAGE_DEFAULT,
-                            SmartTicketsApi.TX_HISTORY_LIMIT_DEFAULT,
-                            SmartTicketsApi.TX_HISTORY_SORT_DSC)
+                            ApplicationApi.TX_HISTORY_PAGE_DEFAULT,
+                            ApplicationApi.TX_HISTORY_LIMIT_DEFAULT,
+                            ApplicationApi.TX_HISTORY_SORT_DSC)
                             .execute()
 
                     if (response.isSuccessful) {
@@ -376,9 +364,9 @@ object SmartTicketsRepository {
         return txHistoryFetchStatus
     }
 
-    fun fetchEvents(order: String = SmartTicketsApi.EVENT_ORDER_RECENT,
-                    page: Int = SmartTicketsApi.EVENT_PAGE_DEFAULT,
-                    limit: Int = SmartTicketsApi.EVENT_LIMIT_DEFAULT) {
+    fun fetchEvents(order: String = ApplicationApi.EVENT_ORDER_RECENT,
+                    page: Int = ApplicationApi.EVENT_PAGE_DEFAULT,
+                    limit: Int = ApplicationApi.EVENT_LIMIT_DEFAULT) {
         bg {
             eventsFetchStatus.postValue(Utility.Companion.TransactionStatus.PENDING)
             try {
@@ -405,18 +393,6 @@ object SmartTicketsRepository {
     private fun getEventFromIPFS(ipfsHash: String): IPFSEvent? {
         val eventResponse = mIpfsApi.getEvent(ipfsHash).execute()
         return eventResponse.body()
-    }
-
-
-    fun fetchTicketTypesForEvent(eventId: Long): LiveData<MutableList<TicketType>> {
-        val ticketTypes: MutableLiveData<MutableList<TicketType>> = MutableLiveData()
-        bg {
-            val ticketTypesForEvent = getTicketTypesForEvent(eventId)
-            if (ticketTypesForEvent.isNotEmpty()) {
-                ticketTypes.postValue(ticketTypesForEvent)
-            }
-        }
-        return ticketTypes
     }
 
     private fun getTicketTypesForEvent(eventId: Long): MutableList<TicketType> {
@@ -469,29 +445,25 @@ object SmartTicketsRepository {
         fetchTxHistory()
     }
 
-
     fun fetchTickets() {
         bg {
             ticketsFetchStatus.postValue(Utility.Companion.TransactionStatus.PENDING)
-            val newTickets = mutableListOf<Ticket>()
             try {
                 val ownerAddress = credentials.value?.address
-                val ticketIds = mContract.getTicketsForOwner(ownerAddress).send()
 
-                ticketIds.forEach {
-                    val id = it as BigInteger
-                    val ticketTypeTuple = mContract.getTicketTypeForTicket(id).send()
-                    val ticketType = convertTupleToTicketType(ticketTypeTuple)
-
-                    if (ticketType.eventId.toLong() > 0) {
-                        newTickets.add(Ticket(id, ticketType))
-                        tickets.postValue(newTickets)
+                ownerAddress?.let {
+                    val response = mApi.getTickets(ownerAddress).execute()
+                    if (response.isSuccessful) {
+                        val ticketsRes = response.body()
+                        if (ticketsRes != null && ticketsRes.isNotEmpty()) {
+                            tickets.postValue(ticketsRes.toMutableList())
+                            ticketsFetchStatus.postValue(Utility.Companion.TransactionStatus.SUCCESS)
+                        } else {
+                            ticketsFetchStatus.postValue(Utility.Companion.TransactionStatus.FAILURE)
+                        }
+                    } else {
+                        ticketsFetchStatus.postValue(Utility.Companion.TransactionStatus.ERROR)
                     }
-                }
-                if (newTickets.isEmpty()) {
-                    ticketsFetchStatus.postValue(Utility.Companion.TransactionStatus.FAILURE)
-                } else {
-                    ticketsFetchStatus.postValue(Utility.Companion.TransactionStatus.SUCCESS)
                 }
             } catch (e: Exception) {
                 e.printStackTrace()

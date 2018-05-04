@@ -5,7 +5,7 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.google.android.gms.location.places.Place
 import com.ivanasen.smarttickets.models.TicketType
-import com.ivanasen.smarttickets.repositories.SmartTicketsRepository
+import com.ivanasen.smarttickets.repositories.ApplicationRepository
 import com.ivanasen.smarttickets.util.Utility
 import org.jetbrains.anko.coroutines.experimental.bg
 import java.math.BigInteger
@@ -19,7 +19,7 @@ class CreateEventActivityViewModel : ViewModel() {
     val eventDescription: MutableLiveData<String> = MutableLiveData()
     val pickedPlace: MutableLiveData<Place> = MutableLiveData()
     val eventTime: MutableLiveData<GregorianCalendar> = MutableLiveData()
-    val mRepository = SmartTicketsRepository
+    val mRepository = ApplicationRepository
 
     val pickedImages: MutableLiveData<MutableList<String>> = MutableLiveData()
     val ticketTypes: MutableLiveData<MutableList<TicketType>> = MutableLiveData()

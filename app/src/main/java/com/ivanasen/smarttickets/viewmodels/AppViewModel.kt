@@ -8,7 +8,7 @@ import com.ivanasen.smarttickets.models.Event
 import com.ivanasen.smarttickets.models.Ticket
 import com.ivanasen.smarttickets.models.TicketType
 import com.ivanasen.smarttickets.models.Transaction
-import com.ivanasen.smarttickets.repositories.SmartTicketsRepository
+import com.ivanasen.smarttickets.repositories.ApplicationRepository
 import com.ivanasen.smarttickets.util.Utility
 import com.ivanasen.smarttickets.util.Utility.Companion.WALLET_FILE_NAME_KEY
 import org.jetbrains.anko.defaultSharedPreferences
@@ -18,7 +18,7 @@ import java.math.BigInteger
 
 
 class AppViewModel(application: Application) : AndroidViewModel(application) {
-    private val mRepository = SmartTicketsRepository
+    private val mRepository = ApplicationRepository
 
     val credentials = mRepository.credentials
 

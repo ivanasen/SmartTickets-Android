@@ -5,7 +5,7 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.content.Context
 import android.net.Uri
-import com.ivanasen.smarttickets.repositories.SmartTicketsRepository
+import com.ivanasen.smarttickets.repositories.ApplicationRepository
 import com.ivanasen.smarttickets.util.Utility
 import com.ivanasen.smarttickets.util.Utility.Companion.WALLET_FILE_NAME_KEY
 import com.ivanasen.smarttickets.util.Utility.Companion.isValidPassword
@@ -18,7 +18,7 @@ import java.io.File
 
 
 class WelcomeActivityViewModel : ViewModel() {
-    private val mRepository = SmartTicketsRepository
+    private val mRepository = ApplicationRepository
 
     var walletExists: MutableLiveData<Boolean> = MutableLiveData()
     var password: MutableLiveData<String> = MutableLiveData()

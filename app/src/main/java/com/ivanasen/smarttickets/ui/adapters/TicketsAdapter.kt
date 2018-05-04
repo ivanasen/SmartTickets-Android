@@ -21,15 +21,11 @@ import org.jetbrains.anko.sdk25.coroutines.onClick
 import java.text.SimpleDateFormat
 
 internal class TicketsAdapter(val context: Context?, private val tickets: LiveData<MutableList<Ticket>>,
-                              private val events: LiveData<MutableList<Event>>,
-                              private val onItemClick: (event: Event, ticket: Ticket) -> Unit)
+                              private val onItemClick: (ticket: Ticket) -> Unit)
     : RecyclerView.Adapter<TicketsAdapter.ViewHolder>() {
 
     init {
         tickets.observe(context as LifecycleOwner, Observer {
-            notifyDataSetChanged()
-        })
-        events.observe(context as LifecycleOwner, Observer {
             notifyDataSetChanged()
         })
     }
@@ -44,33 +40,30 @@ internal class TicketsAdapter(val context: Context?, private val tickets: LiveDa
 
     @SuppressLint("SimpleDateFormat")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if (tickets.value == null || events.value == null ||
-                tickets.value!!.isEmpty() || events.value!!.isEmpty()) return
+        if (tickets.value == null || tickets.value!!.isEmpty()) return
 
         val ticket = tickets.value!![position]
-        val eventId = ticket.ticketType.eventId.toLong()
-        val event = events.value?.find { it.eventId == eventId }
+        val event = tickets.value!![position].event
 
-        if (event != null) {
-            val imageUrl = Utility.getIpfsImageUrl(event.images[0])
-            val eventName = event.name
-            val formatDate = SimpleDateFormat(context?.getString(R.string.date_format))
-            val eventTimestamp = event.timestamp
-            val eventDate = formatDate.format(eventTimestamp)
-            val location = event.locationName
 
-            Glide.with(context!!)
-                    .load(imageUrl)
-                    .apply(RequestOptions()
-                            .centerCrop())
-                    .into(holder.eventImageView)
-            holder.eventNameView.text = eventName
-            holder.eventLocationView.text = location
-            holder.eventDateView.text = eventDate
+        val imageUrl = Utility.getIpfsImageUrl(event.images[0])
+        val eventName = event.name
+        val formatDate = SimpleDateFormat(context?.getString(R.string.date_format))
+        val eventTimestamp = event.timestamp
+        val eventDate = formatDate.format(eventTimestamp)
+        val location = event.locationName
 
-            holder.view.onClick {
-                onItemClick(event, ticket)
-            }
+        Glide.with(context!!)
+                .load(imageUrl)
+                .apply(RequestOptions()
+                        .centerCrop())
+                .into(holder.eventImageView)
+        holder.eventNameView.text = eventName
+        holder.eventLocationView.text = location
+        holder.eventDateView.text = eventDate
+
+        holder.view.onClick {
+            onItemClick(ticket)
         }
     }
 
