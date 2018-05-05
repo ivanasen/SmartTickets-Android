@@ -179,8 +179,11 @@ class MyWalletFragment : Fragment() {
         })
 
         mViewModel.usdBalance.observe(this, Observer {
-            val df = DecimalFormat(getString(R.string.usd_format))
-            etherInUsdView.text = df.format(it)
+            it?.let {
+                val usdDollars = it / 100
+                val df = DecimalFormat(getString(R.string.usd_format))
+                etherInUsdView.text = df.format(usdDollars)
+            }
         })
 
         mViewModel.fetchTxHistory().observe(this, Observer {

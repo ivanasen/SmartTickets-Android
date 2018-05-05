@@ -103,17 +103,23 @@ class ManageEventDetailActivity : AppCompatActivity() {
         eventDescriptionView.text = event.description
 
         val ticketTypes = event.tickets
-        val adapter = TicketTypeAdapter(this, ticketTypes, attemptBuyTicket)
+        val adapter = TicketTypeAdapter(this,
+                ticketTypes,
+                mViewModel.usdBalance.value ?: 0.toDouble(),
+                attemptBuyTicket)
         ticketTypesRecyclerView.adapter = adapter
         ticketTypesRecyclerView.layoutManager = LinearLayoutManager(this)
 
         val earningsInWei = event.earnings
         val earningsInEther = earningsInWei.toDouble() / Utility.ONE_ETHER_IN_WEI
         mViewModel.convertEtherToUsd(earningsInWei).observe(this, Observer {
-            val dfUsd = DecimalFormat(getString(R.string.usd_format))
-            val formattedUsd = String.format(getString(R.string.earnings_usd_format,
-                    dfUsd.format(it)))
-            eventEarningsUsd.text = formattedUsd
+            it?.let {
+                val usdDollars = it / 100
+                val dfUsd = DecimalFormat(getString(R.string.usd_format))
+                val formattedUsd = String.format(getString(R.string.earnings_usd_format,
+                        dfUsd.format(usdDollars)))
+                eventEarningsUsd.text = formattedUsd
+            }
         })
 
         val dfEth = DecimalFormat(getString(R.string.eth_format))

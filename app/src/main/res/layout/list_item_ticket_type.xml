@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginBottom="@dimen/small_margin"
     android:layout_marginTop="@dimen/small_margin"
     android:clipChildren="false"
@@ -24,100 +24,97 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            android:orientation="horizontal"
-            android:paddingEnd="@dimen/default_padding"
-            android:paddingStart="@dimen/default_padding">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/default_padding">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:layout_marginStart="@dimen/default_margin"
+                android:text="@string/price_label" />
+
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/small_margin"
                 android:layout_marginEnd="@dimen/default_margin"
-                android:layout_marginStart="@dimen/default_margin"
-                android:orientation="vertical"
-                android:paddingBottom="@dimen/default_padding"
-                android:paddingTop="@dimen/default_padding">
-
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/small_margin">
-
-                    <TextView
-                        android:id="@+id/ticketPriceInUsdView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        tools:text="120"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                        android:textColor="@color/colorPrimary"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/small_margin"
-                        android:text="@string/usd_symbol"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                        android:textColor="@android:color/secondary_text_light_nodisable" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/ticketPriceInEtherView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        tools:text="0.1"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/small_margin"
-                        android:text="@string/eth_symbol"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                        android:textColor="@android:color/secondary_text_light_nodisable" />
-
-                </LinearLayout>
+                android:layout_marginStart="@dimen/default_margin">
 
                 <TextView
-                    android:id="@+id/ticketSupplyTextView"
+                    android:id="@+id/ticketPriceInUsdView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/small_margin"
-                    android:text="@string/tickets_remaining_text" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold"
+                    tools:text="120" />
 
                 <TextView
-                    android:id="@+id/ticketRefundableTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/small_margin"
-                    android:text="@string/this_ticket_is_not_refundable_text" />
+                    android:layout_marginStart="@dimen/small_margin"
+                    android:text="@string/usd_symbol"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                    android:textColor="@android:color/secondary_text_light_nodisable" />
+
             </LinearLayout>
 
-            <View
-                android:layout_width="3dp"
-                android:layout_height="180dp"
-                android:layout_marginStart="@dimen/small_margin"
-                android:background="@drawable/gradient_background" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:layout_marginStart="@dimen/default_margin"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/ticketPriceInEtherView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                    android:textStyle="bold"
+                    tools:text="0.1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/small_margin"
+                    android:text="@string/eth_symbol"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                    android:textColor="@android:color/secondary_text_light_nodisable" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/ticketSupplyTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/small_margin"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:layout_marginStart="@dimen/default_margin"
+                android:text="@string/tickets_remaining_text"
+                tools:text="4532 are remaining" />
+
+            <TextView
+                android:id="@+id/ticketRefundableTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/small_margin"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:layout_marginStart="@dimen/default_margin"
+                android:text="@string/this_ticket_is_not_refundable_text" />
 
             <Button
                 android:id="@+id/buyTicketButton"
                 style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:textColor="@color/colorPrimary"
-                android:text="@string/buy_ticket_text" />
-
+                android:background="@drawable/gradient_background_ripple"
+                android:text="@string/buy_ticket_text"
+                android:textColor="@color/white" />
         </LinearLayout>
 
 

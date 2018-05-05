@@ -109,7 +109,10 @@ class DiscoverEventDetailActivity : AppCompatActivity() {
 
         if (eventTimestamp > Calendar.getInstance().timeInMillis) {
             val ticketTypes = event.tickets
-            val adapter = TicketTypeAdapter(this, ticketTypes, attemptBuyTicket)
+            val adapter = TicketTypeAdapter(this,
+                    ticketTypes,
+                    mViewModel.usdBalance.value ?: 0.toDouble(),
+                    attemptBuyTicket)
             ticketTypesRecyclerView.adapter = adapter
             ticketTypesRecyclerView.layoutManager = LinearLayoutManager(this)
         } else {

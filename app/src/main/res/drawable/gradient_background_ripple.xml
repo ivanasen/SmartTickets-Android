@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="?android:attr/colorButtonNormal">
+
+
+    <item>
+        <shape>
+            <gradient
+                android:angle="45"
+                android:endColor="@color/yellow"
+                android:startColor="@color/pink"
+                android:type="linear" />
+        </shape>
+    </item>
+</ripple>

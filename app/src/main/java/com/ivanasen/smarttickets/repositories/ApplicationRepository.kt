@@ -232,7 +232,7 @@ object ApplicationRepository {
     private fun fetchUsdBalance() {
         bg {
             val oneUsdCentInWei = mContract.oneUSDCentInWei.send()
-            usdBalance.postValue((getWeiBalance() / oneUsdCentInWei).toDouble() / 100)
+            usdBalance.postValue((getWeiBalance() / oneUsdCentInWei).toDouble())
         }
     }
 
@@ -247,8 +247,7 @@ object ApplicationRepository {
 
     private fun convertWeiToUsdSynchronously(weiValue: BigInteger): Double {
         val oneUsdCentInWei = mContract.oneUSDCentInWei.send()
-        val usdCents = (weiValue / oneUsdCentInWei).toDouble()
-        return usdCents / 100
+        return (weiValue / oneUsdCentInWei).toDouble()
     }
 
     fun fetchEtherValueOfUsd(usdCents: BigDecimal): LiveData<BigDecimal> {
@@ -267,8 +266,6 @@ object ApplicationRepository {
             val txReceipt = Transfer.sendFunds(mWeb3, credentials.value, address,
                     BigDecimal.valueOf(etherAmount), Convert.Unit.ETHER).sendAsync().get()
             Log.d(LOG_TAG, "Tx: $txReceipt")
-
-            fetchWalletData()
         }
     }
 

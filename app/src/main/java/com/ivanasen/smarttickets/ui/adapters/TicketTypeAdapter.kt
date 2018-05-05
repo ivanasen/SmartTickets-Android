@@ -15,7 +15,9 @@ import com.ivanasen.smarttickets.repositories.ApplicationRepository
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import java.text.DecimalFormat
 
-internal class TicketTypeAdapter(val context: Context, val data: List<TicketType>,
+internal class TicketTypeAdapter(private val context: Context,
+                                 private val data: List<TicketType>,
+                                 private val usdBalance: Double,
                                  private val onTicketBuyListener: (ticketType: TicketType) -> Unit)
     : RecyclerView.Adapter<TicketTypeAdapter.ViewHolder>() {
 
@@ -48,6 +50,8 @@ internal class TicketTypeAdapter(val context: Context, val data: List<TicketType
                     context.getString(R.string.refundable_text)
                 else
                     context.getString(R.string.not_refundable_text)
+
+        holder.buyTicketBtn.isEnabled = usdBalance > ticketType.priceInUSDCents.toInt()
 
         holder.buyTicketBtn.onClick {
             onTicketBuyListener(ticketType)
