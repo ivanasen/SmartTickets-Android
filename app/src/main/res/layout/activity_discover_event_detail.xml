@@ -73,26 +73,41 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/default_padding"
                 android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                android:textColor="@color/blackGray" />
+                android:textColor="@color/blackGray"
+                tools:text="May 31, 2018 9:00" />
 
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:text="@string/location_text" />
 
             <TextView
                 android:id="@+id/eventLocationView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/primary_ripple_background"
+                android:drawablePadding="@dimen/default_padding"
                 android:drawableStart="@drawable/ic_location_on_black_24dp"
                 android:drawableTint="@color/colorPrimary"
                 android:padding="@dimen/default_padding"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-            <include layout="@layout/seperator_view_layout" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:text="@string/description_label" />
 
             <TextView
                 android:id="@+id/eventDescriptionView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/default_padding" />
+                android:padding="@dimen/default_padding"
+                android:text="@string/no_description_text" />
 
 
             <LinearLayout
@@ -104,12 +119,14 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_marginBottom="@dimen/small_margin"
                     android:paddingEnd="@dimen/default_padding"
                     android:paddingStart="@dimen/default_padding"
                     android:paddingTop="@dimen/default_padding"
                     android:text="@string/available_tickets_text"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    android:textColor="@color/textGray" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/ticketTypesRecyclerView"

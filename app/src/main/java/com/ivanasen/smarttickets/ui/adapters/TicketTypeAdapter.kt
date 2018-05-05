@@ -51,10 +51,16 @@ internal class TicketTypeAdapter(private val context: Context,
                 else
                     context.getString(R.string.not_refundable_text)
 
-        holder.buyTicketBtn.isEnabled = usdBalance > ticketType.priceInUSDCents.toInt()
 
-        holder.buyTicketBtn.onClick {
-            onTicketBuyListener(ticketType)
+        if (usdBalance > ticketType.priceInUSDCents.toInt()) {
+            holder.insufficientFundsView.visibility = View.GONE
+            holder.buyTicketBtn.visibility = View.VISIBLE
+            holder.buyTicketBtn.onClick {
+                onTicketBuyListener(ticketType)
+            }
+        } else {
+            holder.insufficientFundsView.visibility = View.VISIBLE
+            holder.buyTicketBtn.visibility = View.GONE
         }
     }
 
@@ -65,5 +71,6 @@ internal class TicketTypeAdapter(private val context: Context,
         val ticketSupplyTextView: TextView = view.findViewById(R.id.ticketSupplyTextView)
         val ticketRefundable: TextView = view.findViewById(R.id.ticketRefundableTextView)
         val buyTicketBtn: Button = view.findViewById(R.id.buyTicketButton)
+        val insufficientFundsView: TextView = view.findViewById(R.id.insufficientFundsView)
     }
 }

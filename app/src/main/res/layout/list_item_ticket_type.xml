@@ -114,6 +114,18 @@
                 android:layout_gravity="bottom"
                 android:background="@drawable/gradient_background_ripple"
                 android:text="@string/buy_ticket_text"
+                android:textColor="@color/white"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/insufficientFundsView"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="@color/lightGray"
+                android:text="@string/not_enough_funds_text"
+                android:textAllCaps="false"
                 android:textColor="@color/white" />
         </LinearLayout>
 

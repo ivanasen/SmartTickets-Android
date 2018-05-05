@@ -138,4 +138,7 @@
     <string name="activity_create_event_title">Create a new event</string>
     <string name="empty_tx_history_text">You don\'t seem to have made any transactions.</string>
     <string name="tx_history_error">Sorry, there was an error fetching your transaction history.</string>
+    <string name="not_enough_funds_text">You don\'t have enough funds for this ticket</string>
+    <string name="description_label">Description</string>
+    <string name="no_description_text">This event doesn\'t have a description.</string>
 </resources>

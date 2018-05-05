@@ -105,7 +105,9 @@ class DiscoverEventDetailActivity : AppCompatActivity() {
         eventLocationView.text = event.locationAddress
         eventLocationView.onClick { startMapsActivity(event.latLong) }
 
-        eventDescriptionView.text = event.description
+        if (event.description.isNotEmpty()) {
+            eventDescriptionView.text = event.description
+        }
 
         if (eventTimestamp > Calendar.getInstance().timeInMillis) {
             val ticketTypes = event.tickets
