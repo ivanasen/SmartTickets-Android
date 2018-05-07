@@ -595,8 +595,7 @@ object ApplicationRepository {
                         TicketValidationCode::class.java)
 
                 val ticketId = ticketValidationCode.ticket.toBigInteger()
-                val fixedMsg = "$ETHEREUM_VALIDATION_PREFIX$ticketId"
-                val ticketHash = Hash.sha3(fixedMsg.toByteArray())
+                val ticketHash = Hash.sha3(ticketId.toString().toByteArray())
 
                 val address = ticketValidationCode.address
                 val signature = ticketValidationCode.ticketSignature

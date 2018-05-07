@@ -17,6 +17,7 @@ import android.view.View
 import com.blikoon.qrcodescanner.QrCodeActivity
 import com.ivanasen.smarttickets.util.Utility
 import com.ivanasen.smarttickets.viewmodels.AppViewModel
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_ticket_validator.*
 import org.jetbrains.anko.sdk25.coroutines.onClick
 
@@ -46,6 +47,7 @@ class TicketValidatorActivity : AppCompatActivity() {
 
     private fun setupViews() {
         title = getString(R.string.ticket_validator_title)
+        supportActionBar?.elevation = 0f
         tapToScanView.start()
 
         scanTicketBtn.onClick { openQrScanner() }
@@ -90,8 +92,7 @@ class TicketValidatorActivity : AppCompatActivity() {
             when (it) {
                 Utility.Companion.TransactionStatus.PENDING -> showValidationInProcessView()
                 Utility.Companion.TransactionStatus.SUCCESS -> showValidationSuccessView()
-                Utility.Companion.TransactionStatus.FAILURE -> {
-                }
+                Utility.Companion.TransactionStatus.FAILURE,
                 Utility.Companion.TransactionStatus.ERROR -> showValidationErrorView()
             }
         })
