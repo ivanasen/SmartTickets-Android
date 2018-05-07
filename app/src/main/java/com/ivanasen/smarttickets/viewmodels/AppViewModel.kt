@@ -107,4 +107,8 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
     fun fetchTxHistory(): LiveData<Utility.Companion.TransactionStatus> {
         return mRepository.fetchTxHistory()
     }
+
+    fun convertUsdCentsToEther(usdCents: BigInteger): LiveData<BigDecimal> {
+        return mRepository.convertUsdCentsToEther(usdCents)
+    }
 }

@@ -422,6 +422,16 @@ object ApplicationRepository {
         return txStatusLiveData
     }
 
+    fun convertUsdCentsToEther(usdCents: BigInteger): LiveData<BigDecimal> {
+        val etherLiveData = MutableLiveData<BigDecimal>()
+        bg {
+            val oneUsdCentInWei = mContract.oneUSDCentInWei.send()
+            val totalWei = usdCents * oneUsdCentInWei
+            etherLiveData.postValue(totalWei.toBigDecimal().divide(Math.pow(10.0, 18.0).toBigDecimal()))
+        }
+        return etherLiveData
+    }
+
     fun fetchWalletData() {
         fetchEtherBalance()
         fetchUsdBalance()

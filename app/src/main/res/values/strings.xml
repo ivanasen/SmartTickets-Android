@@ -148,4 +148,6 @@
     <string name="time_label">Time</string>
     <string name="name_text">Name</string>
     <string name="eventimage_content_description">eventImage</string>
+    <string name="price_in_ether_text">Price in Ether</string>
+    <string name="price_in_usd_label">Price in USD</string>
 </resources>

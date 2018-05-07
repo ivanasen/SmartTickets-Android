@@ -30,7 +30,6 @@ import java.text.DateFormat
 import android.nfc.NdefRecord
 import android.support.v4.app.FragmentActivity
 import android.support.v4.content.ContextCompat
-import android.transition.Slide
 import android.view.*
 import android.widget.Button
 import android.widget.ImageView
@@ -173,7 +172,7 @@ class MyTicketsFragment : Fragment(),
         mCurrentTicket = ticket
         val event = ticket.event
 
-        TransitionManager.beginDelayedTransition(ticketDetailView.parent as ViewGroup, Slide())
+        TransitionManager.beginDelayedTransition(ticketDetailView.parent as ViewGroup, Fade())
         ticketDetailView.visibility = View.VISIBLE
 
         val imageUrl = Utility.getIpfsImageUrl(event.images[0])
@@ -200,15 +199,23 @@ class MyTicketsFragment : Fragment(),
         eventTimeViewDetail.text = DateFormat.getTimeInstance(DateFormat.MEDIUM)
                 .format(event.timestamp)
 
-        ticketPriceInEtherViewDetail.text =
-                (ticket.ticketType.priceInUSDCents.toDouble() / 100).toString()
+        val ethFormat = getString(R.string.eth_format_sign)
+
+        mViewModel.convertUsdCentsToEther(ticket.ticketType.priceInUSDCents)
+                .observe(this, Observer {
+            it?.let {
+                ticketPriceInEtherViewDetail.text = String.format(ethFormat, it.toDouble())
+            }
+        })
 
         if (ticket.ticketType.refundable == 1.toBigInteger()) {
             ticketRefundDetailContainer.visibility = View.VISIBLE
             ticketNotRefundableDetailTextView.visibility = View.GONE
 
-            ticketPriceInUsdViewDetail.text =
-                    (ticket.ticketType.priceInUSDCents.toDouble() / 100).toString()
+            val usdFormat = getString(R.string.usd_format_sign)
+
+            val priceUsd = ticket.ticketType.priceInUSDCents.toDouble() / 100
+            ticketPriceInUsdViewDetail.text = String.format(usdFormat, priceUsd)
 
             refundTicketBtnDetail.onClick {
                 mViewModel.attemptSellTicket(ticket)

@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="@dimen/big_margin"
+        android:layout_gravity="center"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="12dp"
         app:cardElevation="@dimen/elevation_big">
@@ -145,7 +146,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="2dp"
                         android:layout_marginStart="2dp"
-                        android:text="Price in Ether" />
+                        android:text="@string/price_in_ether_text" />
 
                     <TextView
                         android:id="@+id/ticketPriceInEtherViewDetail"
@@ -170,7 +171,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="2dp"
                             android:layout_marginStart="2dp"
-                            android:text="@string/estimated_refund_label" />
+                            android:text="@string/price_in_usd_label" />
 
                         <TextView
                             android:id="@+id/ticketPriceInUsdViewDetail"
