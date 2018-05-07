@@ -30,11 +30,15 @@ import java.text.DateFormat
 import android.nfc.NdefRecord
 import android.support.v4.app.FragmentActivity
 import android.support.v4.content.ContextCompat
+import android.transition.Slide
 import android.view.*
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import com.ivanasen.smarttickets.ui.activities.TicketValidatorActivity
 import com.ivanasen.smarttickets.util.Utility.Companion.launchActivity
 import com.ivanasen.smarttickets.util.toPx
-import kotlinx.android.synthetic.main.ticket_detail_layout.*
+import org.jetbrains.anko.find
 
 
 class MyTicketsFragment : Fragment(),
@@ -51,10 +55,13 @@ class MyTicketsFragment : Fragment(),
             ViewModelProviders.of(this).get(AppViewModel::class.java)
     }
 
+    private val ticketDetailView: View by lazy { activity!!.find<View>(R.id.ticketDetailView) }
+
     private val mNfcAdapter: NfcAdapter? by lazy {
         NfcAdapter.getDefaultAdapter(context)
     }
     private lateinit var mCurrentTicket: Ticket
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         activity?.title = getString(R.string.title_my_tickets)
@@ -96,6 +103,9 @@ class MyTicketsFragment : Fragment(),
 //        }
     }
 
+
+
+
     private fun setupViews() {
         ticketsRefreshLayout.setColorSchemeColors(resources.getColor(R.color.pink),
                 resources.getColor(R.color.yellow),
@@ -109,15 +119,17 @@ class MyTicketsFragment : Fragment(),
         ticketsRecyclerView.layoutManager = LinearLayoutManager(context)
         ticketsRecyclerView.adapter = adapter
 
+
         ticketDetailView.onClick {
             TransitionManager.beginDelayedTransition(view as ViewGroup, Fade())
             ticketDetailView.visibility = View.GONE
         }
-
+        val ticketCardView = ticketDetailView.find<View>(R.id.ticketCardView)
         ticketCardView.onClick {
-            // Don't hide the view
+            // Don't hide the ticket view view
         }
     }
+
 
     override fun createNdefMessage(event: NfcEvent?): NdefMessage {
         val signedMessage = mViewModel.signTicketNfcMessage(mCurrentTicket)
@@ -137,10 +149,31 @@ class MyTicketsFragment : Fragment(),
     }
 
     private fun showTicketDetailView(ticket: Ticket) {
+        val ticketEventImageViewDetail =
+                ticketDetailView.find<ImageView>(R.id.ticketEventImageViewDetail)
+        val ticketQrCodeDetail = ticketDetailView.find<ImageView>(R.id.ticketQrCodeDetail)
+        val ticketEventNameDetail =
+                ticketDetailView.find<TextView>(R.id.ticketEventNameDetail)
+        val ticketEventLocationDetail =
+                ticketDetailView.find<TextView>(R.id.ticketEventLocationDetail)
+        val eventDateViewDetail = ticketDetailView.find<TextView>(R.id.eventDateViewDetail)
+        val eventTimeViewDetail = ticketDetailView.find<TextView>(R.id.eventTimeViewDetail)
+        val ticketPriceInEtherViewDetail =
+                ticketDetailView.find<TextView>(R.id.ticketPriceInEtherViewDetail)
+        val ticketRefundDetailContainer =
+                ticketDetailView.find<View>(R.id.ticketRefundDetailContainer)
+        val ticketNotRefundableDetailTextView =
+                ticketDetailView.find<TextView>(R.id.ticketNotRefundableDetailTextView)
+        val ticketPriceInUsdViewDetail =
+                ticketDetailView.find<TextView>(R.id.ticketPriceInUsdViewDetail)
+        val refundTicketBtnDetail =
+                ticketDetailView.find<Button>(R.id.refundTicketBtnDetail)
+
+
         mCurrentTicket = ticket
         val event = ticket.event
 
-        TransitionManager.beginDelayedTransition(view as ViewGroup, Fade())
+        TransitionManager.beginDelayedTransition(ticketDetailView.parent as ViewGroup, Slide())
         ticketDetailView.visibility = View.VISIBLE
 
         val imageUrl = Utility.getIpfsImageUrl(event.images[0])

@@ -49,10 +49,10 @@
                 android:textColor="@android:color/secondary_text_light_nodisable" />
         </LinearLayout>
 
-        <include
-            android:id="@+id/ticketDetailView"
-            layout="@layout/ticket_detail_layout"
-            android:visibility="gone" />
+        <!--<include-->
+            <!--android:id="@+id/ticketDetailView"-->
+            <!--layout="@layout/ticket_detail_layout"-->
+            <!--android:visibility="gone" />-->
 
     </FrameLayout>
 
