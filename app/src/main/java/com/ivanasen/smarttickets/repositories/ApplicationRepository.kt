@@ -583,7 +583,6 @@ object ApplicationRepository {
     private fun signMessage(message: String): Sign.SignatureData? =
             Sign.signMessage(message.toByteArray(), credentials.value?.ecKeyPair)
 
-    // TODO: Ticket validation stopped working for some reason
     fun validateTicket(qrCodeString: String): LiveData<Utility.Companion.TransactionStatus> {
         val validationLiveData: MutableLiveData<Utility.Companion.TransactionStatus> =
                 MutableLiveData()
