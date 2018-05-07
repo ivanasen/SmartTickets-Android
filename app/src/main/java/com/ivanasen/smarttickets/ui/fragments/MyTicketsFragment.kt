@@ -164,34 +164,48 @@ class MyTicketsFragment : Fragment(),
         eventTimeViewDetail.text = DateFormat.getTimeInstance(DateFormat.MEDIUM)
                 .format(event.timestamp)
 
-        refundTicketBtnDetail.isEnabled = (ticket.ticketType.refundable == 1.toBigInteger())
-        refundTicketBtnDetail.onClick {
-            mViewModel.attemptSellTicket(ticket)
-                    .observe(this@MyTicketsFragment, Observer {
-                        when (it) {
-                            Utility.Companion.TransactionStatus.PENDING -> {
-                                Toast.makeText(this@MyTicketsFragment.context,
-                                        getString(R.string.selling_ticket_text),
-                                        Toast.LENGTH_LONG)
-                                        .show()
+        ticketPriceInEtherViewDetail.text =
+                (ticket.ticketType.priceInUSDCents.toDouble() / 100).toString()
+
+        if (ticket.ticketType.refundable == 1.toBigInteger()) {
+            ticketRefundDetailContainer.visibility = View.VISIBLE
+            ticketNotRefundableDetailTextView.visibility = View.GONE
+
+            ticketPriceInUsdViewDetail.text =
+                    (ticket.ticketType.priceInUSDCents.toDouble() / 100).toString()
+
+            refundTicketBtnDetail.onClick {
+                mViewModel.attemptSellTicket(ticket)
+                        .observe(this@MyTicketsFragment, Observer {
+                            when (it) {
+                                Utility.Companion.TransactionStatus.PENDING -> {
+                                    Toast.makeText(this@MyTicketsFragment.context,
+                                            getString(R.string.selling_ticket_text),
+                                            Toast.LENGTH_LONG)
+                                            .show()
+                                }
+                                Utility.Companion.TransactionStatus.SUCCESS -> {
+                                    MaterialDialog.Builder(this@MyTicketsFragment.context!!)
+                                            .title(R.string.ticket_sell_success_title)
+                                            .content(R.string.ticket_sell_success_message)
+                                            .positiveText(R.string.OK)
+                                            .show()
+                                }
+                                Utility.Companion.TransactionStatus.ERROR -> {
+                                    Toast.makeText(this@MyTicketsFragment.context,
+                                            getString(R.string.selling_ticket_error),
+                                            Toast.LENGTH_LONG)
+                                            .show()
+                                }
+                                Utility.Companion.TransactionStatus.FAILURE -> TODO()
                             }
-                            Utility.Companion.TransactionStatus.SUCCESS -> {
-                                MaterialDialog.Builder(this@MyTicketsFragment.context!!)
-                                        .title(R.string.ticket_sell_success_title)
-                                        .content(R.string.ticket_sell_success_message)
-                                        .positiveText(R.string.OK)
-                                        .show()
-                            }
-                            Utility.Companion.TransactionStatus.ERROR -> {
-                                Toast.makeText(this@MyTicketsFragment.context,
-                                        getString(R.string.selling_ticket_error),
-                                        Toast.LENGTH_LONG)
-                                        .show()
-                            }
-                            Utility.Companion.TransactionStatus.FAILURE -> TODO()
-                        }
-                    })
+                        })
+            }
+        } else {
+            ticketRefundDetailContainer.visibility = View.GONE
+            ticketNotRefundableDetailTextView.visibility = View.VISIBLE
         }
+
     }
 
     private fun observeLiveData() {

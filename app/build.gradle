@@ -25,7 +25,7 @@ android {
 
         debug {
             buildConfigField "String", ETHEREUM_NODE_URL, "\"https://ropsten.infura.io/YAcKUvG0v0T60082XYEO\""
-            buildConfigField "String", IPFS_GATEWAY_URL, "\"http://159.65.87.154:8080/\""
+            buildConfigField "String", IPFS_GATEWAY_URL, "\"http://159.65.87.154/\""
             buildConfigField "String", IPFS_API_URL, "\"http://159.65.87.154:8080/api/v0/\""
             buildConfigField "String", API_URL, "\"https://smart-tickets.herokuapp.com/\""
             buildConfigField "String", DEVELOPERS_EMAIL, "\"ivanasenchakarov@gmail.com\""

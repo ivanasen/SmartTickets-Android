@@ -141,4 +141,7 @@
     <string name="not_enough_funds_text">You don\'t have enough funds for this ticket</string>
     <string name="description_label">Description</string>
     <string name="no_description_text">This event doesn\'t have a description.</string>
+    <string name="price_text">Price</string>
+    <string name="estimated_refund_label">Estimated refund</string>
+    <string name="ticket_not_refundable_text">This ticket is not refundable.</string>
 </resources>
