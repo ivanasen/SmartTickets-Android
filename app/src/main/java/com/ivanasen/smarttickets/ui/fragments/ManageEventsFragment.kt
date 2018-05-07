@@ -25,8 +25,11 @@ import org.jetbrains.anko.support.v4.onRefresh
 
 class ManageEventsFragment : Fragment() {
 
-    val mViewModel: AppViewModel by lazy {
-        ViewModelProviders.of(activity as FragmentActivity).get(AppViewModel::class.java)
+    private val mViewModel: AppViewModel by lazy {
+        if (activity != null)
+            ViewModelProviders.of(activity as FragmentActivity).get(AppViewModel::class.java)
+        else
+            ViewModelProviders.of(this).get(AppViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

@@ -17,7 +17,6 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.ivanasen.smarttickets.R
-import com.ivanasen.smarttickets.models.Event
 import com.ivanasen.smarttickets.models.Ticket
 import com.ivanasen.smarttickets.ui.adapters.TicketsAdapter
 import com.ivanasen.smarttickets.util.Utility
@@ -29,6 +28,7 @@ import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.support.v4.onRefresh
 import java.text.DateFormat
 import android.nfc.NdefRecord
+import android.support.v4.app.FragmentActivity
 import android.support.v4.content.ContextCompat
 import android.view.*
 import com.ivanasen.smarttickets.ui.activities.TicketValidatorActivity
@@ -45,7 +45,10 @@ class MyTicketsFragment : Fragment(),
     private val QR_CODE_SIZE: Int = 160.toPx
 
     private val mViewModel: AppViewModel by lazy {
-        ViewModelProviders.of(this).get(AppViewModel::class.java)
+        if (activity != null)
+            ViewModelProviders.of(activity as FragmentActivity).get(AppViewModel::class.java)
+        else
+            ViewModelProviders.of(this).get(AppViewModel::class.java)
     }
 
     private val mNfcAdapter: NfcAdapter? by lazy {

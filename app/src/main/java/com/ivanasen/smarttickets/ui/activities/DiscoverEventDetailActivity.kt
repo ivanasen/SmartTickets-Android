@@ -103,7 +103,7 @@ class DiscoverEventDetailActivity : AppCompatActivity() {
         eventTimeView.text = formatDate
 
         eventLocationView.text = event.locationAddress
-        eventLocationView.onClick { startMapsActivity(event.latLong) }
+        eventLocationViewButton.onClick { startMapsActivity(event.latLong) }
 
         if (event.description.isNotEmpty()) {
             eventDescriptionView.text = event.description

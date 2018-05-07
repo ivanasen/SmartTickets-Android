@@ -51,7 +51,11 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <include layout="@layout/content_main" />
+
     <include
-        layout="@layout/content_main" />
+        android:id="@+id/ticketDetailView"
+        layout="@layout/ticket_detail_layout"
+        android:visibility="gone" />
 
 </android.support.design.widget.CoordinatorLayout>

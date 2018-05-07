@@ -39,7 +39,10 @@ class MyWalletFragment : Fragment() {
     private val QR_CODE_SIZE = 260.toPx
 
     private val mViewModel: AppViewModel by lazy {
-        ViewModelProviders.of(activity as FragmentActivity).get(AppViewModel::class.java)
+        if (activity != null)
+            ViewModelProviders.of(activity as FragmentActivity).get(AppViewModel::class.java)
+        else
+            ViewModelProviders.of(this).get(AppViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -187,7 +190,7 @@ class MyWalletFragment : Fragment() {
         })
 
         mViewModel.fetchTxHistory().observe(this, Observer {
-            when(it) {
+            when (it) {
                 Utility.Companion.TransactionStatus.PENDING -> {
                     txHistoryProgressBar.visibility = View.VISIBLE
                     txHistoryEmptyView.visibility = View.GONE

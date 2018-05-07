@@ -6,6 +6,7 @@ import android.content.Intent
 import android.support.v4.app.Fragment
 import android.os.Bundle
 import android.support.v4.app.ActivityOptionsCompat
+import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.*
@@ -26,7 +27,10 @@ class DiscoverFragment : Fragment() {
     private val LOG_TAG = DiscoverFragment::class.java.simpleName
 
     private val mViewModel: AppViewModel by lazy {
-        ViewModelProviders.of(this).get(AppViewModel::class.java)
+        if (activity != null)
+            ViewModelProviders.of(activity as FragmentActivity).get(AppViewModel::class.java)
+        else
+            ViewModelProviders.of(this).get(AppViewModel::class.java)
     }
 
     private lateinit var mAdapter: EventAdapter

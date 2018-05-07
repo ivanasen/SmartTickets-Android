@@ -13,7 +13,7 @@
     <color name="lightGray">#bdbdbd</color>
     <color name="lightGrayTransparent">#83bdbdbd</color>
     <color name="blackGray">#424242</color>
-    <color name="transparentDark">#32000000</color>
+    <color name="transparentDark">#46000000</color>
     <color name="white">#FFFFFF</color>
     <color name="white_transparent">#c8ffffff</color>
 </resources>
