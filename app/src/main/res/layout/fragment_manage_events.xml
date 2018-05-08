@@ -18,7 +18,6 @@
                 android:id="@+id/eventsView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingBottom="50dp"
                 android:scrollbars="vertical"
                 android:visibility="gone"
                 tools:listitem="@layout/list_item_event" />

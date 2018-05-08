@@ -54,6 +54,10 @@ class ManageEventsFragment : Fragment() {
     }
 
     private fun observeLiveData() {
+        fetchEventsAndObserve()
+    }
+
+    private fun fetchEventsAndObserve() {
         mViewModel.fetchMyEvents().observe(this, Observer {
             when (it) {
                 Utility.Companion.TransactionStatus.PENDING -> {
@@ -83,7 +87,7 @@ class ManageEventsFragment : Fragment() {
                 resources.getColor(R.color.yellow),
                 resources.getColor(R.color.pink))
         manageEventsRefreshLayout.onRefresh {
-            mViewModel.fetchMyEvents()
+            fetchEventsAndObserve()
         }
 
         eventsView.layoutManager = LinearLayoutManager(context)
