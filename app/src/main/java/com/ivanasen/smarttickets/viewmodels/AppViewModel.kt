@@ -111,4 +111,8 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
     fun convertUsdCentsToEther(usdCents: BigInteger): LiveData<BigDecimal> {
         return mRepository.convertUsdCentsToEther(usdCents)
     }
+
+    fun cancelEvent(eventId: Long): LiveData<Utility.Companion.TransactionStatus> {
+        return mRepository.cancelEvent(eventId.toBigInteger())
+    }
 }

@@ -5,9 +5,6 @@ import android.arch.lifecycle.Observer
 
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
-import android.nfc.NdefMessage
-import android.nfc.NfcAdapter
-import android.nfc.NfcEvent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -28,7 +25,6 @@ import org.jetbrains.anko.imageBitmap
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.support.v4.onRefresh
 import java.text.DateFormat
-import android.nfc.NdefRecord
 import android.support.v4.app.FragmentActivity
 import android.support.v4.content.ContextCompat
 import android.view.*
@@ -37,17 +33,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.ivanasen.smarttickets.ui.activities.TicketValidatorActivity
 import com.ivanasen.smarttickets.util.Utility.Companion.launchActivity
-import com.ivanasen.smarttickets.util.toPx
 import org.jetbrains.anko.find
 
 
 class MyTicketsFragment : Fragment() {
 
     private val LOG_TAG: String = MyTicketsFragment::class.java.simpleName
-
-
-
-
     private val mContext: Context by lazy { requireContext() }
     private val mViewModel: AppViewModel by lazy {
         if (activity != null)
@@ -95,7 +86,7 @@ class MyTicketsFragment : Fragment() {
         }
 
         val adapter = TicketsAdapter(mContext, mViewModel.tickets,
-                { ticket -> showTicketDetailView(ticket) })
+                { ticket -> showDetailViewOrSell(ticket) })
         ticketsRecyclerView.layoutManager = LinearLayoutManager(mContext)
         ticketsRecyclerView.adapter = adapter
 
@@ -110,7 +101,15 @@ class MyTicketsFragment : Fragment() {
         }
     }
 
-    private fun showTicketDetailView(ticket: Ticket) {
+    private fun showDetailViewOrSell(ticket: Ticket) {
+        if (ticket.event.cancelled.toInt() == 0) {
+            showDetailView(ticket)
+        } else {
+            attempSellTicket(ticket)
+        }
+    }
+
+    private fun showDetailView(ticket: Ticket) {
         val ticketEventImageViewDetail =
                 ticketDetailView.find<ImageView>(R.id.ticketEventImageViewDetail)
         val ticketQrCodeDetail = ticketDetailView.find<ImageView>(R.id.ticketQrCodeDetail)
@@ -147,7 +146,7 @@ class MyTicketsFragment : Fragment() {
                     .into(ticketEventImageViewDetail)
         }
 
-        val qrSize = mContext.resources.getDimension(R.dimen.qr_code_size).toInt().toPx
+        val qrSize = mContext.resources.getDimension(R.dimen.qr_code_size).toInt()
         mViewModel.createTicketValidationCode(ticket).observe(this, Observer {
             it?.let {
                 val ticketBitmap = QRCode.from(it)
@@ -184,37 +183,41 @@ class MyTicketsFragment : Fragment() {
             ticketPriceInUsdViewDetail.text = String.format(usdFormat, priceUsd)
 
             refundTicketBtnDetail.onClick {
-                mViewModel.attemptSellTicket(ticket)
-                        .observe(this@MyTicketsFragment, Observer {
-                            when (it) {
-                                Utility.Companion.TransactionStatus.PENDING -> {
-                                    Toast.makeText(this@MyTicketsFragment.mContext,
-                                            getString(R.string.selling_ticket_text),
-                                            Toast.LENGTH_LONG)
-                                            .show()
-                                }
-                                Utility.Companion.TransactionStatus.SUCCESS -> {
-                                    MaterialDialog.Builder(this@MyTicketsFragment.mContext)
-                                            .title(R.string.ticket_sell_success_title)
-                                            .content(R.string.ticket_sell_success_message)
-                                            .positiveText(R.string.OK)
-                                            .show()
-                                }
-                                Utility.Companion.TransactionStatus.ERROR -> {
-                                    Toast.makeText(this@MyTicketsFragment.mContext,
-                                            getString(R.string.selling_ticket_error),
-                                            Toast.LENGTH_LONG)
-                                            .show()
-                                }
-                                Utility.Companion.TransactionStatus.FAILURE -> TODO()
-                            }
-                        })
+                attempSellTicket(ticket)
             }
         } else {
             ticketRefundDetailContainer.visibility = View.GONE
             ticketNotRefundableDetailTextView.visibility = View.VISIBLE
         }
 
+    }
+
+    private fun attempSellTicket(ticket: Ticket) {
+        mViewModel.attemptSellTicket(ticket)
+                .observe(this@MyTicketsFragment, Observer {
+                    when (it) {
+                        Utility.Companion.TransactionStatus.PENDING -> {
+                            Toast.makeText(this@MyTicketsFragment.mContext,
+                                    getString(R.string.selling_ticket_text),
+                                    Toast.LENGTH_LONG)
+                                    .show()
+                        }
+                        Utility.Companion.TransactionStatus.SUCCESS -> {
+                            MaterialDialog.Builder(this@MyTicketsFragment.mContext)
+                                    .title(R.string.ticket_sell_success_title)
+                                    .content(R.string.ticket_sell_success_message)
+                                    .positiveText(R.string.OK)
+                                    .show()
+                        }
+                        Utility.Companion.TransactionStatus.FAILURE,
+                        Utility.Companion.TransactionStatus.ERROR -> {
+                            Toast.makeText(this@MyTicketsFragment.mContext,
+                                    getString(R.string.selling_ticket_error),
+                                    Toast.LENGTH_LONG)
+                                    .show()
+                        }
+                    }
+                })
     }
 
     private fun observeLiveData() {

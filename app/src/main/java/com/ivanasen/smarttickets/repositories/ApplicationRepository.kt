@@ -109,16 +109,23 @@ object ApplicationRepository {
         return txStatusLiveData
     }
 
-//    private fun addTicketTypeForEvent(eventId: BigInteger, ticketType: TicketType) {
-//        bg {
-//            val txReceipt = mContract.addTicketForEvent(
-//                    eventId,
-//                    ticketType.priceInUSDCents,
-//                    ticketType.initialSupply,
-//                    BigInteger.valueOf(if (ticketType.refundable) 1 else 0)
-//            ).send()
-//        }
-//    }
+    fun cancelEvent(eventId: BigInteger): LiveData<Utility.Companion.TransactionStatus> {
+        val cancelEventStatus = MutableLiveData<Utility.Companion.TransactionStatus>()
+
+        bg {
+            try {
+                cancelEventStatus.postValue(Utility.Companion.TransactionStatus.PENDING)
+
+                val txReceipt = mContract.cancelEvent(eventId).send()
+                txReceipt.status
+            } catch (e: Exception) {
+                e.printStackTrace()
+                cancelEventStatus.postValue(Utility.Companion.TransactionStatus.ERROR)
+            }
+        }
+
+        return cancelEventStatus
+    }
 
     private fun postEventToIpfs(event: IPFSEvent): ByteArray {
         val response = mIpfsApi.postEvent(event)

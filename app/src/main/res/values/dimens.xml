@@ -15,5 +15,6 @@
     <dimen name="back_btn_size">42dp</dimen>
     <dimen name="bottom_navigation_height_with_padding">70dp</dimen>
     <dimen name="elevation_big">12dp</dimen>
-    <dimen name="qr_code_size">160</dimen>
+    <dimen name="qr_code_size">160dp</dimen>
+    <dimen name="list_item_ticket_size">130dp</dimen>
 </resources>

@@ -21,7 +21,7 @@ import io.ipfs.kotlin.IPFS
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import java.text.SimpleDateFormat
 
-internal class TicketsAdapter(val context: Context?, private val tickets: LiveData<MutableList<Ticket>>,
+internal class TicketsAdapter(val context: Context, private val tickets: LiveData<MutableList<Ticket>>,
                               private val onItemClick: (ticket: Ticket) -> Unit)
     : RecyclerView.Adapter<TicketsAdapter.ViewHolder>() {
 
@@ -54,7 +54,7 @@ internal class TicketsAdapter(val context: Context?, private val tickets: LiveDa
 
         if (event.thumbnailHash.isNotEmpty()) {
             val imageUrl = Utility.getIpfsImageUrl(event.thumbnailHash)
-            Glide.with(context!!)
+            Glide.with(context)
                     .load(imageUrl)
                     .apply(RequestOptions()
                             .centerCrop())
@@ -67,6 +67,12 @@ internal class TicketsAdapter(val context: Context?, private val tickets: LiveDa
         holder.view.onClick {
             onItemClick(ticket)
         }
+
+        if (event.cancelled.toInt() == 0) {
+            holder.eventCancelledView.visibility = View.GONE
+        } else {
+            holder.eventCancelledView.visibility = View.VISIBLE
+        }
     }
 
     class ViewHolder(var view: View) : RecyclerView.ViewHolder(view) {
@@ -74,5 +80,6 @@ internal class TicketsAdapter(val context: Context?, private val tickets: LiveDa
         val eventNameView: TextView = view.findViewById(R.id.eventNameView)
         val eventDateView: TextView = view.findViewById(R.id.ticketEventDate)
         val eventLocationView: TextView = view.findViewById(R.id.ticketEventLocation)
+        val eventCancelledView: TextView = view.findViewById(R.id.eventCancelledView)
     }
 }

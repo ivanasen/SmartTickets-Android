@@ -14,4 +14,5 @@ data class Event(val eventId: Long,
                  val locationAddress: String,
                  val thumbnailHash: String,
                  val tickets: List<TicketType>,
-                 val earnings: BigInteger)
+                 val earnings: BigInteger,
+                 val cancelled: BigInteger)

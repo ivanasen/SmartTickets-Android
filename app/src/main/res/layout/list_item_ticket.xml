@@ -29,8 +29,8 @@
 
             <ImageView
                 android:id="@+id/eventImageView"
-                android:layout_width="130dp"
-                android:layout_height="130dp"
+                android:layout_width="@dimen/list_item_ticket_size"
+                android:layout_height="@dimen/list_item_ticket_size"
                 android:src="@drawable/gradient_background" />
 
             <View
@@ -85,6 +85,17 @@
             </LinearLayout>
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/eventCancelledView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/list_item_ticket_size"
+            android:background="@color/transparent_black"
+            android:gravity="center"
+            android:padding="@dimen/default_padding"
+            android:text="@string/refund_ticket_msg"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/white" />
 
 
     </android.support.v7.widget.CardView>
