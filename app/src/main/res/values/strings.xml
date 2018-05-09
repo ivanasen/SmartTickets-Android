@@ -160,4 +160,8 @@
     <string name="cancelling_event_error_msg">Error cancelling event!</string>
     <string name="cancel_event_title">Cancel Event</string>
     <string name="refund_ticket_msg">This event has been cancelled. Tap to get your money back.</string>
+    <string name="sort_events_title">Sort Events By:</string>
+    <string name="popularity_text">Popularity</string>
+    <string name="most_recent_text">Most recent</string>
+    <string name="oldest_text">Oldest</string>
 </resources>

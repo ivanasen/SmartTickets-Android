@@ -2,6 +2,7 @@ package com.ivanasen.smarttickets.ui.fragments
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.content.Intent
 import android.support.v4.app.Fragment
 import android.os.Bundle
@@ -10,7 +11,9 @@ import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.*
+import com.afollestad.materialdialogs.MaterialDialog
 import com.ivanasen.smarttickets.R
+import com.ivanasen.smarttickets.api.ApplicationApi
 import com.ivanasen.smarttickets.ui.activities.DiscoverEventDetailActivity
 import com.ivanasen.smarttickets.ui.adapters.EventAdapter
 import com.ivanasen.smarttickets.util.Utility
@@ -19,13 +22,15 @@ import kotlinx.android.synthetic.main.fragment_discover.*
 import org.jetbrains.anko.support.v4.onRefresh
 
 
-/**
- * A placeholder fragment containing a simple view.
- */
 class DiscoverFragment : Fragment() {
 
     private val LOG_TAG = DiscoverFragment::class.java.simpleName
 
+    private val SORT_POPULAR_INDEX = 0
+    private val SORT_RECENT_INDEX = 1
+    private val SORT_OLD_INDEX = 2
+
+    private val mContext: Context by lazy { requireContext() }
     private val mViewModel: AppViewModel by lazy {
         if (activity != null)
             ViewModelProviders.of(activity as FragmentActivity).get(AppViewModel::class.java)
@@ -45,6 +50,40 @@ class DiscoverFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         inflater?.inflate(R.menu.discover, menu)
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.sort_events -> {
+                showSortEventsDialog()
+                return true
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun showSortEventsDialog() {
+        MaterialDialog.Builder(mContext)
+                .title(getString(R.string.sort_events_title))
+                .items(R.array.event_sort_types)
+                .itemsCallbackSingleChoice(0, { _, _, _, _ -> true })
+                .positiveText(android.R.string.ok)
+                .negativeText(android.R.string.cancel)
+                .onPositive({ dialog, which ->
+                    when (dialog.selectedIndex) {
+                        SORT_POPULAR_INDEX -> {
+                            mViewModel.fetchEvents(ApplicationApi.EVENT_ORDER_POPULARITY)
+                        }
+                        SORT_RECENT_INDEX -> {
+                            mViewModel.fetchEvents(ApplicationApi.EVENT_ORDER_RECENT)
+                        }
+                        SORT_OLD_INDEX -> {
+                            mViewModel.fetchEvents(ApplicationApi.EVENT_ORDER_OLD)
+                        }
+                    }
+                })
+                .show()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

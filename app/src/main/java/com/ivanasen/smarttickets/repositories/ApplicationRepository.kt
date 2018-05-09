@@ -311,7 +311,7 @@ object ApplicationRepository {
         return txHistoryFetchStatus
     }
 
-    fun fetchEvents(order: String = ApplicationApi.EVENT_ORDER_RECENT,
+    fun fetchEvents(order: String = ApplicationApi.EVENT_ORDER_POPULARITY,
                     page: Int = ApplicationApi.EVENT_PAGE_DEFAULT,
                     limit: Int = ApplicationApi.EVENT_LIMIT_DEFAULT) {
         bg {

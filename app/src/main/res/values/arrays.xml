@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array
+        name="event_sort_types">
+        <item>Popularity</item>
+        <item>Most Recent</item>
+        <item>Oldest</item>
+    </string-array>
+</resources>

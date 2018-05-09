@@ -4,6 +4,7 @@ import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import android.content.Context
+import com.ivanasen.smarttickets.api.ApplicationApi
 import com.ivanasen.smarttickets.models.Event
 import com.ivanasen.smarttickets.models.Ticket
 import com.ivanasen.smarttickets.models.TicketType
@@ -56,6 +57,12 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
 
     fun sendEther(address: String, amount: Double) {
         mRepository.sendEtherTo(address, amount)
+    }
+
+    fun fetchEvents(order: String = ApplicationApi.EVENT_ORDER_POPULARITY,
+                    page: Int = ApplicationApi.EVENT_PAGE_DEFAULT,
+                    limit: Int = ApplicationApi.EVENT_LIMIT_DEFAULT) {
+        mRepository.fetchEvents(order, page, limit)
     }
 
     fun refreshEvents() {
