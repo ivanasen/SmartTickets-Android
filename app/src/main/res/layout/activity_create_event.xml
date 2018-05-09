@@ -10,17 +10,61 @@
         android:id="@+id/contentView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clipChildren="false"
+        android:clipToPadding="false"
         tools:context="com.ivanasen.smarttickets.ui.activities.CreateEventActivity">
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:clipChildren="false"
+            android:clipToPadding="false">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clipChildren="false"
+                android:clipToPadding="false"
                 android:orientation="vertical"
                 android:padding="@dimen/default_padding">
+
+                <Button
+                    android:id="@+id/selectThumbnailBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/thumbnail_image_height"
+                    android:layout_marginBottom="@dimen/default_margin"
+                    android:layout_marginEnd="-16dp"
+                    android:layout_marginStart="-16dp"
+                    android:layout_marginTop="-16dp"
+                    android:alpha="0.9"
+                    android:background="@drawable/gradient_background_ripple"
+                    android:drawableTop="@drawable/ic_image_black_24dp"
+                    android:elevation="0dp"
+                    android:padding="@dimen/default_padding"
+                    android:text="@string/add_a_thumbnail_image_text"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white" />
+
+                <ImageView
+                    android:id="@+id/thumbnailImageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/thumbnail_image_height"
+                    android:layout_marginEnd="-16dp"
+                    android:layout_marginStart="-16dp"
+                    android:layout_marginTop="-16dp"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/changeThumbnailBtn"
+                    style="@style/Base.Widget.AppCompat.Button.Borderless"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:visibility="gone"
+                    android:text="@string/change_the_thumbnail_text"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorAccent" />
+
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -87,11 +131,11 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        app:borderWidth="0dp"
                         android:layout_margin="@dimen/small_margin"
                         android:backgroundTint="@color/white"
                         android:contentDescription="@string/picklocationbtn_content_description"
                         android:src="@drawable/ic_edit_location_accent_24dp"
+                        app:borderWidth="0dp"
                         tools:ignore="RelativeOverlap" />
 
 
@@ -145,9 +189,9 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/default_margin"
-                    android:clipToPadding="false"
-                    android:clipChildren="false">
+                    android:layout_marginBottom="60dp"
+                    android:clipChildren="false"
+                    android:clipToPadding="false">
 
                     <TextView
                         android:id="@+id/ticketsLabel"
@@ -162,7 +206,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/ticketsLabel"
-                        android:clipChildren="false"/>
+                        android:clipChildren="false"
+                        tools:listiem="@layout/list_item_ticket_creation" />
 
                     <Button
                         android:id="@+id/addTicketTypeBtn"
@@ -170,7 +215,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/ticketsRecyclerView"
                         android:layout_centerHorizontal="true"
-                        android:layout_margin="@dimen/default_margin"
+                        android:layout_marginTop="@dimen/default_margin"
                         android:background="@drawable/rounded_btn"
                         android:drawableStart="@drawable/ic_add_accent_24dp"
                         android:paddingEnd="@dimen/default_padding"
@@ -179,47 +224,7 @@
                         android:textColor="@color/colorAccent" />
 
                 </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:clipChildren="false"
-                    android:clipToPadding="false">
-
-                    <TextView
-                        android:id="@+id/imagesLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/small_margin"
-                        android:text="@string/event_images_text"
-                        android:layout_centerHorizontal="true"/>
-
-                    <Button
-                        android:id="@+id/selectImagesButton"
-                        style="@style/Base.Widget.AppCompat.Button.Borderless"
-                        android:layout_centerHorizontal="true"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/imagesLabel"
-                        android:textColor="@color/colorAccent"
-                        android:paddingEnd="@dimen/default_padding"
-                        android:paddingStart="@dimen/default_padding"
-                        android:text="@string/select_images_text" />
-
-                    <com.ivanasen.smarttickets.ui.views.ExpandableHeightGridView
-                        android:id="@+id/eventImagesGridView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/selectImagesButton"
-                        android:layout_marginTop="@dimen/small_margin"
-                        android:columnWidth="100dp"
-                        android:numColumns="auto_fit"
-                        android:paddingBottom="64dp"
-                        tools:listitem="@layout/list_item_image" />
-
-                </RelativeLayout>
             </LinearLayout>
-
 
         </ScrollView>
 

@@ -54,7 +54,8 @@ internal class EventAdapter(val activity: Activity, private val eventsData: Live
     @SuppressLint("SimpleDateFormat")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val event = eventsData.value!![position]
-        val (eventId, _, name, _, timestamp, _, _, locationAddress, images, tickets, _) = event
+        val (eventId, _, name, _, timestamp, _, _,
+                locationAddress, thumbnailHash, tickets, _) = event
         val formattedDate = DateFormat
                 .getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT)
                 .format(timestamp)
@@ -66,9 +67,8 @@ internal class EventAdapter(val activity: Activity, private val eventsData: Live
         holder.eventNameView.text = name
         holder.eventLocation.text = locationAddress
         holder.eventDateView.text = formattedDate
-        if (images.isNotEmpty()) {
-            val imageHash = images[0]
-            val imageUrl = Utility.getIpfsImageUrl(imageHash)
+        if (thumbnailHash.isNotEmpty()) {
+            val imageUrl = Utility.getIpfsImageUrl(thumbnailHash)
             Glide.with(activity)
                     .load(imageUrl)
                     .apply(RequestOptions()

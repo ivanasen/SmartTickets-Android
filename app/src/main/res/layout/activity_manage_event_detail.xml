@@ -9,7 +9,7 @@
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/event_list_item_image_height"
+        android:layout_height="@dimen/thumbnail_image_height"
         android:fitsSystemWindows="true"
         android:theme="@style/AppTheme.AppBarOverlay">
 
@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-            app:contentScrim="?attr/colorPrimary"
+            app:contentScrim="@color/colorPrimary"
             app:expandedTitleMarginEnd="64dp"
             app:expandedTitleMarginStart="48dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
@@ -26,7 +26,7 @@
             <ImageView
                 android:id="@+id/eventImage"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/event_list_item_image_height"
+                android:layout_height="@dimen/thumbnail_image_height"
                 android:adjustViewBounds="true"
                 android:background="@drawable/gradient_background"
                 android:contentDescription="@string/event_image_content_description"
@@ -37,7 +37,7 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/event_list_item_image_height"
+                android:layout_height="@dimen/thumbnail_image_height"
                 android:adjustViewBounds="true"
                 android:fitsSystemWindows="true"
                 android:src="@drawable/dark_gradient_background"

@@ -7,4 +7,4 @@ data class IPFSEvent(val name: String?,
                      val latLong: LatLng?,
                      val locationName: String?,
                      val locationAddress: String?,
-                     val images: List<String>?)
+                     val thumbnailHash: String)

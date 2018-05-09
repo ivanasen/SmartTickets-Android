@@ -28,13 +28,19 @@ import android.widget.*
 import com.afollestad.materialdialogs.DialogAction
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.Theme
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.ivanasen.smarttickets.ui.adapters.ImageAdapter
 import com.ivanasen.smarttickets.ui.adapters.TicketCreationTypeAdapter
 import com.ivanasen.smarttickets.util.Utility
+import com.ivanasen.smarttickets.util.toDp
+import com.ivanasen.smarttickets.util.toPx
 import droidninja.filepicker.FilePickerBuilder
 import droidninja.filepicker.FilePickerConst
+import org.jetbrains.anko.coroutines.experimental.bg
 import java.util.*
 import java.text.SimpleDateFormat
+import java.util.concurrent.TimeUnit
 
 
 class CreateEventActivity : AppCompatActivity() {
@@ -44,23 +50,12 @@ class CreateEventActivity : AppCompatActivity() {
 
         private const val PLACE_PICKER_REQUEST = 1
         private const val PERMISSIONS_REQUEST_WRITE_STORAGE = 2
-        private const val MAX_EVENT_IMAGES = 5
+        private const val MAX_EVENT_IMAGES = 1
     }
 
-    private lateinit var mAdapter: ImageAdapter
     val viewModel: CreateEventActivityViewModel by lazy {
         ViewModelProviders.of(this).get(CreateEventActivityViewModel::class.java)
     }
-
-//    private val mGeoDataClient: GeoDataClient by lazy {
-//        Places.getGeoDataClient(this, null)
-//    }
-
-
-//    private val mPlaceDetectionClient: PlaceDetectionClient by lazy {
-//        Places.getPlaceDetectionClient(this, null)
-//    }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,11 +90,31 @@ class CreateEventActivity : AppCompatActivity() {
         viewModel.ticketTypes.observe(this, Observer {
             viewModel.checkIfIsValidEvent()
         })
+
+        viewModel.pickedThumbnail.observe(this, Observer {
+            if (it != null && it.isNotEmpty()) {
+
+                Glide.with(baseContext)
+                        .load(it)
+                        .apply(RequestOptions().centerCrop())
+                        .into(thumbnailImageView)
+
+                changeThumbnailBtn.visibility = View.VISIBLE
+                thumbnailImageView.visibility = View.VISIBLE
+                selectThumbnailBtn.visibility = View.GONE
+            } else {
+                changeThumbnailBtn.visibility = View.GONE
+                thumbnailImageView.visibility = View.GONE
+                selectThumbnailBtn.visibility = View.VISIBLE
+            }
+        })
     }
 
 
     @SuppressLint("SimpleDateFormat")
     private fun setupViews() {
+        supportActionBar?.elevation = 0f
+
         inputEventName.textChangedListener {
             onTextChanged { text, _, _, _ ->
                 viewModel.eventName.postValue(text.toString())
@@ -140,12 +155,11 @@ class CreateEventActivity : AppCompatActivity() {
             showTicketTypeDialog()
         }
 
+        selectThumbnailBtn.onClick {
+            openImagePicker()
+        }
 
-        mAdapter = ImageAdapter(this, viewModel.pickedImages)
-        eventImagesGridView.adapter = mAdapter
-        eventImagesGridView.isExpanded = true
-
-        selectImagesButton.onClick {
+        changeThumbnailBtn.onClick {
             openImagePicker()
         }
 
@@ -189,12 +203,6 @@ class CreateEventActivity : AppCompatActivity() {
 
     }
 
-//    private fun showLoadingScreen() {
-//        TransitionManager.beginDelayedTransition(rootView as ViewGroup, Fade())
-//        contentView.visibility = View.GONE
-//        eventProgressBar.visibility = View.VISIBLE
-//    }
-
     private fun hideLoadingScreen() {
         TransitionManager.beginDelayedTransition(rootView as ViewGroup, Fade())
         contentView.visibility = View.GONE
@@ -236,8 +244,8 @@ class CreateEventActivity : AppCompatActivity() {
                 }
             FilePickerConst.REQUEST_CODE_PHOTO ->
                 if (resultCode == RESULT_OK && data != null) {
-                    viewModel.pickedImages.postValue(
-                            data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA))
+                    viewModel.pickedThumbnail.postValue(
+                            data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA)[0])
                 }
             else ->
                 Log.d(LOG_TAG, "Unknown requestCode")
@@ -276,7 +284,7 @@ class CreateEventActivity : AppCompatActivity() {
         } else {
             FilePickerBuilder.getInstance()
                     .setMaxCount(MAX_EVENT_IMAGES)
-                    .setSelectedFiles(viewModel.pickedImages.value as ArrayList<String>?)
+                    .setSelectedFiles(arrayListOf(viewModel.pickedThumbnail.value ?: ""))
                     .setActivityTheme(R.style.AppTheme)
                     .pickPhoto(this@CreateEventActivity)
         }

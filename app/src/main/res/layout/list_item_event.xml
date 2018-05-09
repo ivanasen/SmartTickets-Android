@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:clipToPadding="false"
     android:orientation="vertical"
     android:paddingBottom="@dimen/default_margin"
@@ -12,7 +13,7 @@
     <android.support.v7.widget.CardView
         android:id="@+id/eventImageViewContainer"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/event_list_item_image_height"
+        android:layout_height="@dimen/thumbnail_image_height"
         android:layout_marginTop="@dimen/default_margin"
         android:background="@drawable/dark_gradient_background"
         app:cardCornerRadius="8dp"
@@ -21,14 +22,15 @@
         <ImageView
             android:id="@+id/eventImageView"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/event_list_item_image_height"
+            android:layout_height="@dimen/thumbnail_image_height"
             android:background="@drawable/gradient_background"
             android:src="@drawable/empty_view"
-            android:transitionName="@string/event_transition" />
+            android:transitionName="@string/event_transition"
+            android:contentDescription="@string/event_image_content_description" />
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="@dimen/event_list_item_image_height"
+            android:layout_height="@dimen/thumbnail_image_height"
             android:src="@drawable/dark_gradient_background" />
 
 
@@ -66,7 +68,7 @@
             android:drawableStart="@drawable/ic_date_range_black_24dp"
             android:drawableTint="@color/blackGray"
             android:gravity="center"
-            android:text="30 JUL"
+            tools:text="30 JUL"
             android:textColor="@color/blackGray" />
 
         <TextView
@@ -78,7 +80,7 @@
             android:drawableStart="@drawable/ic_attach_money_black_24dp"
             android:drawableTint="@color/blackGray"
             android:gravity="center"
-            android:text="@string/starting_from_text"
+            tools:text="@string/starting_from_text"
             android:textColor="@color/blackGray" />
 
         <TextView
@@ -90,7 +92,7 @@
             android:drawablePadding="4dp"
             android:drawableStart="@drawable/ic_location_on_black_24dp"
             android:drawableTint="@color/blackGray"
-            android:text="St Leaonar C Of E Church London"
+            tools:text="St Leaonar C Of E Church London"
             android:textColor="@color/blackGray" />
 
     </RelativeLayout>

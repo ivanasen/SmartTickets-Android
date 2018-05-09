@@ -21,7 +21,7 @@ class CreateEventActivityViewModel : ViewModel() {
     val eventTime: MutableLiveData<GregorianCalendar> = MutableLiveData()
     val mRepository = ApplicationRepository
 
-    val pickedImages: MutableLiveData<MutableList<String>> = MutableLiveData()
+    val pickedThumbnail: MutableLiveData<String> = MutableLiveData()
     val ticketTypes: MutableLiveData<MutableList<TicketType>> = MutableLiveData()
 
     val isValidEvent: MutableLiveData<Boolean> = MutableLiveData()
@@ -41,7 +41,7 @@ class CreateEventActivityViewModel : ViewModel() {
                 pickedPlace.value!!.latLng,
                 pickedPlace.value!!.name.toString(),
                 pickedPlace.value!!.address.toString(),
-                pickedImages.value ?: emptyList(),
+                pickedThumbnail.value ?: "",
                 ticketTypes.value ?: emptyList())
     }
 

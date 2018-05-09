@@ -46,18 +46,20 @@ internal class TicketsAdapter(val context: Context?, private val tickets: LiveDa
         val ticket = tickets.value!![position]
         val event = tickets.value!![position].event
 
-        val imageUrl = Utility.getIpfsImageUrl(event.images[0])
         val eventName = event.name
         val formatDate = SimpleDateFormat(context?.getString(R.string.date_format))
         val eventTimestamp = event.timestamp
         val eventDate = formatDate.format(eventTimestamp)
         val location = event.locationName
 
-        Glide.with(context!!)
-                .load(imageUrl)
-                .apply(RequestOptions()
-                        .centerCrop())
-                .into(holder.eventImageView)
+        if (event.thumbnailHash.isNotEmpty()) {
+            val imageUrl = Utility.getIpfsImageUrl(event.thumbnailHash)
+            Glide.with(context!!)
+                    .load(imageUrl)
+                    .apply(RequestOptions()
+                            .centerCrop())
+                    .into(holder.eventImageView)
+        }
         holder.eventNameView.text = eventName
         holder.eventLocationView.text = location
         holder.eventDateView.text = eventDate

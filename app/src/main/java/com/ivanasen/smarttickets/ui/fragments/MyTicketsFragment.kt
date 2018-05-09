@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer
 
 
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.nfc.NdefMessage
 import android.nfc.NfcAdapter
 import android.nfc.NfcEvent
@@ -40,24 +41,22 @@ import com.ivanasen.smarttickets.util.toPx
 import org.jetbrains.anko.find
 
 
-class MyTicketsFragment : Fragment(),
-        NfcAdapter.CreateNdefMessageCallback,
-        NfcAdapter.OnNdefPushCompleteCallback {
+class MyTicketsFragment : Fragment() {
 
     private val LOG_TAG: String = MyTicketsFragment::class.java.simpleName
-    private val QR_CODE_SIZE: Int = 160.toPx
 
+
+
+
+    private val mContext: Context by lazy { requireContext() }
     private val mViewModel: AppViewModel by lazy {
         if (activity != null)
             ViewModelProviders.of(activity as FragmentActivity).get(AppViewModel::class.java)
         else
             ViewModelProviders.of(this).get(AppViewModel::class.java)
     }
-
-    private val ticketDetailView: View by lazy { activity!!.find<View>(R.id.ticketDetailView) }
-
-    private val mNfcAdapter: NfcAdapter? by lazy {
-        NfcAdapter.getDefaultAdapter(context)
+    private val ticketDetailView: View by lazy {
+        requireActivity().find<View>(R.id.ticketDetailView)
     }
     private lateinit var mCurrentTicket: Ticket
 
@@ -85,37 +84,19 @@ class MyTicketsFragment : Fragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         observeLiveData()
         setupViews()
-        setupNfcAdapter()
     }
-
-    private fun setupNfcAdapter() {
-//        if (mNfcAdapter == null) {
-//            Toast.makeText(context,
-//                    "nfcAdapter==null, no NFC adapter exists",
-//                    Toast.LENGTH_LONG).show();
-//        } else {
-//            Toast.makeText(context,
-//                    "Set Callback(s)",
-//                    Toast.LENGTH_LONG).show();
-//            mNfcAdapter!!.setNdefPushMessageCallback(this, activity)
-//            mNfcAdapter!!.setOnNdefPushCompleteCallback(this, activity)
-//        }
-    }
-
-
-
 
     private fun setupViews() {
-        ticketsRefreshLayout.setColorSchemeColors(resources.getColor(R.color.pink),
-                resources.getColor(R.color.yellow),
-                resources.getColor(R.color.pink))
+        ticketsRefreshLayout.setColorSchemeColors(ContextCompat.getColor(mContext, R.color.pink),
+                ContextCompat.getColor(mContext, R.color.yellow),
+                ContextCompat.getColor(mContext, R.color.pink))
         ticketsRefreshLayout.onRefresh {
             mViewModel.refreshTickets()
         }
 
-        val adapter = TicketsAdapter(context, mViewModel.tickets,
+        val adapter = TicketsAdapter(mContext, mViewModel.tickets,
                 { ticket -> showTicketDetailView(ticket) })
-        ticketsRecyclerView.layoutManager = LinearLayoutManager(context)
+        ticketsRecyclerView.layoutManager = LinearLayoutManager(mContext)
         ticketsRecyclerView.adapter = adapter
 
 
@@ -127,24 +108,6 @@ class MyTicketsFragment : Fragment(),
         ticketCardView.onClick {
             // Don't hide the ticket view view
         }
-    }
-
-
-    override fun createNdefMessage(event: NfcEvent?): NdefMessage {
-        val signedMessage = mViewModel.signTicketNfcMessage(mCurrentTicket)
-        val bytesOut = signedMessage.toByteArray()
-
-        val ndefRecordOut = NdefRecord(
-                NdefRecord.TNF_MIME_MEDIA,
-                "text/plain".toByteArray(),
-                byteArrayOf(),
-                bytesOut)
-
-        return NdefMessage(ndefRecordOut)
-    }
-
-    override fun onNdefPushComplete(p0: NfcEvent?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     private fun showTicketDetailView(ticket: Ticket) {
@@ -175,18 +138,21 @@ class MyTicketsFragment : Fragment(),
         TransitionManager.beginDelayedTransition(ticketDetailView.parent as ViewGroup, Fade())
         ticketDetailView.visibility = View.VISIBLE
 
-        val imageUrl = Utility.getIpfsImageUrl(event.images[0])
-        Glide.with(this)
-                .load(imageUrl)
-                .apply(RequestOptions()
-                        .centerCrop())
-                .into(ticketEventImageViewDetail)
+        if (event.thumbnailHash.isNotEmpty()) {
+            val imageUrl = Utility.getIpfsImageUrl(event.thumbnailHash)
+            Glide.with(this)
+                    .load(imageUrl)
+                    .apply(RequestOptions()
+                            .centerCrop())
+                    .into(ticketEventImageViewDetail)
+        }
 
+        val qrSize = mContext.resources.getDimension(R.dimen.qr_code_size).toInt().toPx
         mViewModel.createTicketValidationCode(ticket).observe(this, Observer {
             it?.let {
                 val ticketBitmap = QRCode.from(it)
-                        .withSize(QR_CODE_SIZE, QR_CODE_SIZE)
-                        .withColor(ContextCompat.getColor(context!!, R.color.pinkDark), 1)
+                        .withSize(qrSize, qrSize)
+                        .withColor(ContextCompat.getColor(mContext, R.color.pinkDark), 1)
                         .bitmap()
                 ticketQrCodeDetail.imageBitmap = ticketBitmap
             }
@@ -203,10 +169,10 @@ class MyTicketsFragment : Fragment(),
 
         mViewModel.convertUsdCentsToEther(ticket.ticketType.priceInUSDCents)
                 .observe(this, Observer {
-            it?.let {
-                ticketPriceInEtherViewDetail.text = String.format(ethFormat, it.toDouble())
-            }
-        })
+                    it?.let {
+                        ticketPriceInEtherViewDetail.text = String.format(ethFormat, it.toDouble())
+                    }
+                })
 
         if (ticket.ticketType.refundable == 1.toBigInteger()) {
             ticketRefundDetailContainer.visibility = View.VISIBLE
@@ -222,20 +188,20 @@ class MyTicketsFragment : Fragment(),
                         .observe(this@MyTicketsFragment, Observer {
                             when (it) {
                                 Utility.Companion.TransactionStatus.PENDING -> {
-                                    Toast.makeText(this@MyTicketsFragment.context,
+                                    Toast.makeText(this@MyTicketsFragment.mContext,
                                             getString(R.string.selling_ticket_text),
                                             Toast.LENGTH_LONG)
                                             .show()
                                 }
                                 Utility.Companion.TransactionStatus.SUCCESS -> {
-                                    MaterialDialog.Builder(this@MyTicketsFragment.context!!)
+                                    MaterialDialog.Builder(this@MyTicketsFragment.mContext)
                                             .title(R.string.ticket_sell_success_title)
                                             .content(R.string.ticket_sell_success_message)
                                             .positiveText(R.string.OK)
                                             .show()
                                 }
                                 Utility.Companion.TransactionStatus.ERROR -> {
-                                    Toast.makeText(this@MyTicketsFragment.context,
+                                    Toast.makeText(this@MyTicketsFragment.mContext,
                                             getString(R.string.selling_ticket_error),
                                             Toast.LENGTH_LONG)
                                             .show()

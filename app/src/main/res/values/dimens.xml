@@ -4,7 +4,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="statusbar_view_height">0dp</dimen>
-    <dimen name="event_list_item_image_height">160dp</dimen>
+    <dimen name="thumbnail_image_height">160dp</dimen>
     <dimen name="default_padding">16dp</dimen>
     <dimen name="default_margin">16dp</dimen>
     <dimen name="default_elevation">4dp</dimen>
@@ -15,4 +15,5 @@
     <dimen name="back_btn_size">42dp</dimen>
     <dimen name="bottom_navigation_height_with_padding">70dp</dimen>
     <dimen name="elevation_big">12dp</dimen>
+    <dimen name="qr_code_size">160</dimen>
 </resources>

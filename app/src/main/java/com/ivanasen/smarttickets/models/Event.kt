@@ -12,6 +12,6 @@ data class Event(val eventId: Long,
                  val latLong: LatLng,
                  val locationName: String,
                  val locationAddress: String,
-                 val images: List<String>,
+                 val thumbnailHash: String,
                  val tickets: List<TicketType>,
                  val earnings: BigInteger)

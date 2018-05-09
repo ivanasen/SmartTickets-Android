@@ -90,8 +90,8 @@
     <string name="test_dialog_title">Important Notice</string>
     <string name="it_s_empty_here_text">It\'s empty here…</string>
     <string name="back_up_wallet">Back up wallet</string>
-    <string name="event_creation_test_message">The Event Management and Creation functionality is restricted only to addresses registered as Event Organisers but for testing purposes everyone is able to create events right now.</string>
-    <string name="ticket_success">Your successfully bought a ticket. It will appear in your \'My Tickets\' section in a couple of minutes.</string>
+    <string name="event_creation_test_message">The Event Management functionality is restricted only to addresses registered as Event Organisers but for testing purposes everyone is able to create events right now.</string>
+    <string name="ticket_success">You\'ve successfully bought a Smart Ticket. It will appear in your \'My Tickets\' section in a couple of minutes.</string>
     <string name="buying_ticket_text">Buying Ticket…</string>
     <string name="tx_error_text">Error processing transaction</string>
     <string name="event_creation_message">Event creation successfully submitted. Your event will be live in a couple of minutes.</string>
@@ -150,4 +150,6 @@
     <string name="eventimage_content_description">eventImage</string>
     <string name="price_in_ether_text">Price in Ether</string>
     <string name="price_in_usd_label">Price in USD</string>
+    <string name="add_a_thumbnail_image_text">Add a Thumbnail Image</string>
+    <string name="change_the_thumbnail_text">Tap to change the Thumbnail</string>
 </resources>

@@ -69,7 +69,7 @@ object ApplicationRepository {
                     latLong: LatLng,
                     locationName: String,
                     locationAddress: String,
-                    imagePaths: List<String>,
+                    thumbnailPath: String,
                     tickets: List<TicketType>): LiveData<Utility.Companion.TransactionStatus> {
         val txStatusLiveData: MutableLiveData<Utility.Companion.TransactionStatus> =
                 MutableLiveData()
@@ -77,10 +77,10 @@ object ApplicationRepository {
             try {
                 txStatusLiveData.postValue(Utility.Companion.TransactionStatus.PENDING)
 
-                val imageHashes = uploadImages(imagePaths)
+                val imageHash = uploadImage(thumbnailPath) ?: ""
 
                 val event = IPFSEvent(name, description, latLong, locationName,
-                        locationAddress, imageHashes)
+                        locationAddress, imageHash)
                 val eventMetadataHash = postEventToIpfs(event)
 
                 Log.d(LOG_TAG, eventMetadataHash.toString(Charset.defaultCharset()))
@@ -137,14 +137,6 @@ object ApplicationRepository {
         return imageResponse.headers().get(IPFS_HASH_HEADER)
     }
 
-    private fun uploadImages(imagePaths: List<String>): List<String> {
-        val imageHashes = mutableListOf<String>()
-        imagePaths.forEach {
-            val hash = uploadImage(it)
-            hash?.let { imageHashes.add(it) }
-        }
-        return imageHashes
-    }
 
 //
 //    fun addTicketForEvent(): LiveData<IPFSEvent> {
@@ -297,7 +289,7 @@ object ApplicationRepository {
                     eventData.latLong,
                     eventData.locationName,
                     eventData.locationAddress,
-                    eventData.images ?: emptyList(),
+                    eventData.thumbnailHash,
                     ticketTypes,
                     earnings)
         }
