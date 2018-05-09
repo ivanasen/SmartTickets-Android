@@ -164,4 +164,6 @@
     <string name="popularity_text">Popularity</string>
     <string name="most_recent_text">Most recent</string>
     <string name="oldest_text">Oldest</string>
+    <string name="wrong_password_msg">Wrong Password</string>
+    <string name="password_field_empty_msg">Password field is empty.</string>
 </resources>

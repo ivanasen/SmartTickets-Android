@@ -61,7 +61,9 @@ class LoginFragment : Fragment() {
         })
 
         mViewModel.wrongPasswordAttempts.observe(this, Observer {
-            Toast.makeText(this@LoginFragment.context, "Wrong Password", Toast.LENGTH_SHORT)
+            Toast.makeText(this@LoginFragment.context,
+                    getString(R.string.wrong_password_msg),
+                    Toast.LENGTH_SHORT)
                     .show()
         })
 
@@ -74,21 +76,21 @@ class LoginFragment : Fragment() {
     }
 
     private fun setupViews() {
-        inputPassword.textChangedListener {
-            onTextChanged { text, _, _, _ ->
-                if (text != null && text.isNotEmpty()) {
-                    unlockWalletBtn.isEnabled = true
-                }
-            }
-        }
-
         useOtherWalletBtn.onClick {
             (activity as WelcomeActivity).loadWalletCreationFragment()
         }
 
         unlockWalletBtn.onClick {
-            val password = inputPassword.text.toString()
-            mViewModel.unlockWallet(password, this@LoginFragment.context!!)
+            if (inputPassword.text == null || inputPassword.text.toString().isEmpty()) {
+                Toast.makeText(this@LoginFragment.context,
+                        getString(R.string.password_field_empty_msg),
+                        Toast.LENGTH_LONG)
+                        .show()
+            } else {
+                val password = inputPassword.text.toString()
+                mViewModel.unlockWallet(password, this@LoginFragment.context!!)
+            }
+
         }
     }
 

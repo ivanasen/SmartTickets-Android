@@ -17,4 +17,5 @@
     <dimen name="elevation_big">12dp</dimen>
     <dimen name="qr_code_size">160dp</dimen>
     <dimen name="list_item_ticket_size">130dp</dimen>
+    <dimen name="unlock_btn_width">120dp</dimen>
 </resources>
