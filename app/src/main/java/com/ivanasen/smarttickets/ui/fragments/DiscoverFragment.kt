@@ -44,20 +44,6 @@ class DiscoverFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         inflater?.inflate(R.menu.discover, menu)
-
-//        val searchManager = context?.getSystemService(Context.SEARCH_SERVICE) as SearchManager
-//        val searchView = menu?.findItem(R.id.search)?.actionView as SearchView
-//        searchView.setSearchableInfo(searchManager.getSearchableInfo(activity?.componentName))
-//        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-//            override fun onQueryTextSubmit(query: String?): Boolean {
-//                return true
-//            }
-//
-//            override fun onQueryTextChange(newText: String?): Boolean {
-//
-//                return true
-//            }
-//        })
         super.onCreateOptionsMenu(menu, inflater)
     }
 

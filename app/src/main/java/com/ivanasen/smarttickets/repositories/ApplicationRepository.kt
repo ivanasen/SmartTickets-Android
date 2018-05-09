@@ -261,42 +261,6 @@ object ApplicationRepository {
         }
     }
 
-    private fun getEvent(id: Long): Event {
-        val event = mContract.getEvent(BigInteger.valueOf(id)).send()
-
-        val timestamp = event.value1.toLong() * 1000 // Convert to milliseconds
-        val ipfsHash = event.value2.toString(Charset.defaultCharset())
-        val cancelled = event.value3
-        val earnings = event.value5
-
-        val eventData: IPFSEvent? = getEventFromIPFS(ipfsHash)
-
-        val ticketTypes = getTicketTypesForEvent(id)
-
-        if (cancelled.toInt() == 0
-                && eventData != null &&
-                eventData.name != null &&
-                eventData.latLong != null &&
-                eventData.locationAddress != null &&
-                eventData.locationName != null) {
-
-            return Event(
-                    id,
-                    ipfsHash,
-                    eventData.name,
-                    eventData.description ?: "",
-                    timestamp,
-                    eventData.latLong,
-                    eventData.locationName,
-                    eventData.locationAddress,
-                    eventData.thumbnailHash,
-                    ticketTypes,
-                    earnings)
-        }
-
-        throw IllegalArgumentException("Event not found")
-    }
-
     fun fetchTxHistory(): MutableLiveData<Utility.Companion.TransactionStatus> {
         val txHistoryFetchStatus = MutableLiveData<Utility.Companion.TransactionStatus>()
         bg {

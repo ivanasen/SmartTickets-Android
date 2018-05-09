@@ -152,4 +152,6 @@
     <string name="price_in_usd_label">Price in USD</string>
     <string name="add_a_thumbnail_image_text">Add a Thumbnail Image</string>
     <string name="change_the_thumbnail_text">Tap to change the Thumbnail</string>
+    <string name="cancel_this_event_title">Cancel This Event</string>
+    <string name="withdrawal_event_not_passed_text">Once the event has passed successfully you\'ll be able to withdrawal your earnings.</string>
 </resources>

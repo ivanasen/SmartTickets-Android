@@ -38,8 +38,8 @@ class Utility {
 
         fun loadFragment(@IdRes containerViewId: Int, fragmentManager: FragmentManager, fragment: Fragment) {
             val transaction = fragmentManager.beginTransaction()
-            transaction.replace(containerViewId, fragment)
-            transaction.addToBackStack(null)
+                    .replace(containerViewId, fragment)
+                    .addToBackStack(null)
             transaction.commit()
         }
 
