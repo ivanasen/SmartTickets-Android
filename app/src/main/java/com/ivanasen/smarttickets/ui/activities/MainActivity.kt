@@ -16,7 +16,12 @@ import kotlinx.android.synthetic.main.content_main.*
 import android.app.NotificationManager
 import android.app.NotificationChannel
 import android.os.Build
+import android.transition.Fade
+import android.transition.TransitionManager
+import android.view.View
+import android.view.ViewGroup
 import com.ivanasen.smarttickets.util.Utility.Companion.NOTIFICATION_CHANNEL_ID
+import kotlinx.android.synthetic.main.activity_create_event.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -40,7 +45,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
+        if (ticketDetailView.visibility == View.VISIBLE) {
+            hideTicketDetailView()
+            return
+        }
+
         moveTaskToBack(true)
+    }
+
+    private fun hideTicketDetailView() {
+        ticketDetailView.visibility = View.GONE
     }
 
     private fun setupViews(savedInstanceState: Bundle?) {
