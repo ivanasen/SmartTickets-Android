@@ -124,11 +124,6 @@ class ManageEventDetailActivity : AppCompatActivity() {
 
                 Utility.Companion.TransactionStatus.FAILURE,
                 Utility.Companion.TransactionStatus.ERROR -> {
-                    Toast.makeText(this,
-                            getString(R.string.cancelling_event_error_msg),
-                            Toast.LENGTH_LONG)
-                            .show()
-
                     Utility.showNotification(applicationContext,
                             getString(R.string.event_cancellation_error_notification_title),
                             getString(R.string.event_cancellation_error_notification_content))
@@ -223,18 +218,15 @@ class ManageEventDetailActivity : AppCompatActivity() {
                                     R.string.withdrawal_funds_pending)
                         }
                         Utility.Companion.TransactionStatus.SUCCESS -> {
-                            MaterialDialog.Builder(this@ManageEventDetailActivity)
-                                    .content(getString(R.string.withdrawal_funds_success))
-                                    .positiveText(getString(R.string.OK))
-                                    .show()
+                            Utility.showNotification(applicationContext,
+                                    getString(R.string.withdrawal_success_notification_title),
+                                    getString(R.string.withdrawal_funds_success))
                         }
                         Utility.Companion.TransactionStatus.FAILURE,
                         Utility.Companion.TransactionStatus.ERROR -> {
-                            Toast.makeText(
-                                    this@ManageEventDetailActivity,
-                                    getString(R.string.withdrawal_funds_error),
-                                    Toast.LENGTH_LONG)
-                                    .show()
+                            Utility.showNotification(applicationContext,
+                                    getString(R.string.withdrawal_error_notification_title),
+                                    getString(R.string.withdrawal_error_notification_content))
                         }
                     }
                 })

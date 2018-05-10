@@ -185,4 +185,7 @@
     <string name="ticket_sell_success_notification_content">You\'ve sold your ticket successfully.</string>
     <string name="ticket_sell_error_notification_title">There was an error selling your ticket.</string>
     <string name="ticket_sell_error_notification_content">We\'re sorry for the inconvenience. You can try again later.</string>
+    <string name="withdrawal_success_notification_title">Withdrawal Successful!</string>
+    <string name="withdrawal_error_notification_title">There was an error withdrawing your earnings!</string>
+    <string name="withdrawal_error_notification_content">We\'re sorry for the inconvenience.</string>
 </resources>
