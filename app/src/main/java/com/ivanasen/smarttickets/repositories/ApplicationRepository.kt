@@ -114,9 +114,9 @@ object ApplicationRepository {
         bg {
             try {
                 cancelEventStatus.postValue(Utility.Companion.TransactionStatus.PENDING)
-
                 val txReceipt = mContract.cancelEvent(eventId).send()
-                txReceipt.status
+                Log.d(LOG_TAG, txReceipt.transactionHash)
+                cancelEventStatus.postValue(Utility.Companion.TransactionStatus.SUCCESS)
             } catch (e: Exception) {
                 e.printStackTrace()
                 cancelEventStatus.postValue(Utility.Companion.TransactionStatus.ERROR)
