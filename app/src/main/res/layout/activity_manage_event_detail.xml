@@ -163,12 +163,12 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/eventPassedView"
+                android:id="@+id/eventCancelledView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/big_margin"
-                android:text="@string/event_passed_text"
+                android:text="@string/cancelled_event_msg"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 android:textColor="@android:color/secondary_text_light_nodisable"
                 android:visibility="gone" />
@@ -184,6 +184,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
             <LinearLayout
+                android:id="@+id/eventEarningsContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">

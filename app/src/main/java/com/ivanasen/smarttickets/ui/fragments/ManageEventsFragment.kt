@@ -2,11 +2,13 @@ package com.ivanasen.smarttickets.ui.fragments
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.view.*
 import com.afollestad.materialdialogs.MaterialDialog
@@ -25,6 +27,7 @@ import org.jetbrains.anko.support.v4.onRefresh
 
 class ManageEventsFragment : Fragment() {
 
+    private val mContext: Context by lazy { requireContext() }
     private val mViewModel: AppViewModel by lazy {
         if (activity != null)
             ViewModelProviders.of(activity as FragmentActivity).get(AppViewModel::class.java)
@@ -83,9 +86,11 @@ class ManageEventsFragment : Fragment() {
             launchActivity(this@ManageEventsFragment.context!!, CreateEventActivity::class.java)
         }
 
-        manageEventsRefreshLayout.setColorSchemeColors(resources.getColor(R.color.pink),
-                resources.getColor(R.color.yellow),
-                resources.getColor(R.color.pink))
+        manageEventsRefreshLayout.setColorSchemeColors(
+                ContextCompat.getColor(mContext, R.color.pink),
+                ContextCompat.getColor(mContext, R.color.yellow),
+                ContextCompat.getColor(mContext, R.color.pink))
+
         manageEventsRefreshLayout.onRefresh {
             fetchEventsAndObserve()
         }

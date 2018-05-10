@@ -38,7 +38,6 @@ import java.io.InputStreamReader
 
 object ApplicationRepository {
     private val LOG_TAG = ApplicationRepository::class.simpleName
-    private const val ETHEREUM_VALIDATION_PREFIX = "\\x19Ethereum Signed Message:\\n30"
 
     private val mWeb3 by lazy { Web3JProvider.instance }
     private val mIpfsApi by lazy { IPFSApi.instance }

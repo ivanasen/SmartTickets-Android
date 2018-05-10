@@ -155,7 +155,7 @@
     <string name="cancel_this_event_title">Cancel This Event</string>
     <string name="withdrawal_event_not_passed_text">Once the event has passed successfully you\'ll be able to withdrawal your earnings.</string>
     <string name="cancel_event_warning">Are you sure you want to cancel this event? Cancelling the event will lead to you losing all of your earnings from it.</string>
-    <string name="cancelling_event_pending_msg">Cancelling event, might take a few minutes...</string>
+    <string name="cancelling_event_pending_msg">Cancelling event, might take a few minutes…</string>
     <string name="cancelling_event_success_msg">Event cancelled successfully.</string>
     <string name="cancelling_event_error_msg">Error cancelling event!</string>
     <string name="cancel_event_title">Cancel Event</string>
@@ -166,4 +166,5 @@
     <string name="oldest_text">Oldest</string>
     <string name="wrong_password_msg">Wrong Password</string>
     <string name="password_field_empty_msg">Password field is empty.</string>
+    <string name="cancelled_event_msg">You have cancelled this Event.</string>
 </resources>

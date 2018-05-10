@@ -20,6 +20,7 @@ import com.ivanasen.smarttickets.models.Event
 import com.ivanasen.smarttickets.ui.activities.DiscoverEventDetailActivity.Companion.EXTRA_EVENT_ID
 import com.ivanasen.smarttickets.ui.adapters.TicketTypeManageAdapter
 import com.ivanasen.smarttickets.util.Utility
+import com.ivanasen.smarttickets.util.Utility.Companion.CONTRACT_TRUE
 import com.ivanasen.smarttickets.viewmodels.AppViewModel
 import kotlinx.android.synthetic.main.activity_manage_event_detail.*
 
@@ -38,7 +39,7 @@ class ManageEventDetailActivity : AppCompatActivity() {
 
     private val mEvent: Event by lazy {
         val eventId = intent.extras.getLong(EXTRA_EVENT_ID)
-        mViewModel.events.value?.filter { it.eventId == eventId }!![0]
+        mViewModel.myEvents.value?.filter { it.eventId == eventId }!![0]
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -146,6 +147,17 @@ class ManageEventDetailActivity : AppCompatActivity() {
         val adapter = TicketTypeManageAdapter(this, ticketTypes)
         ticketTypesRecyclerView.adapter = adapter
         ticketTypesRecyclerView.layoutManager = LinearLayoutManager(this)
+
+        if (mEvent.cancelled.toInt() == CONTRACT_TRUE) {
+            eventCancelledView.visibility = View.VISIBLE
+            eventEarningsContainer.visibility = View.GONE
+            withdrawalBtn.visibility = View.GONE
+            return
+        } else {
+            eventCancelledView.visibility = View.GONE
+            eventEarningsContainer.visibility = View.VISIBLE
+            withdrawalBtn.visibility = View.VISIBLE
+        }
 
         val earningsInWei = mEvent.earnings
         val earningsInEther = earningsInWei.toDouble() / Utility.ONE_ETHER_IN_WEI

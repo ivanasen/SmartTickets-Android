@@ -30,17 +30,14 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.Theme
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.ivanasen.smarttickets.ui.adapters.ImageAdapter
 import com.ivanasen.smarttickets.ui.adapters.TicketCreationTypeAdapter
 import com.ivanasen.smarttickets.util.Utility
-import com.ivanasen.smarttickets.util.toDp
-import com.ivanasen.smarttickets.util.toPx
+import com.ivanasen.smarttickets.util.Utility.Companion.CONTRACT_FALSE
+import com.ivanasen.smarttickets.util.Utility.Companion.CONTRACT_TRUE
 import droidninja.filepicker.FilePickerBuilder
 import droidninja.filepicker.FilePickerConst
-import org.jetbrains.anko.coroutines.experimental.bg
 import java.util.*
 import java.text.SimpleDateFormat
-import java.util.concurrent.TimeUnit
 
 
 class CreateEventActivity : AppCompatActivity() {
@@ -223,7 +220,7 @@ class CreateEventActivity : AppCompatActivity() {
                             .text
                     val isChecked = (view.findViewById(R.id.ticketTypeRefundableCheckBox) as CheckBox)
                             .isChecked
-                    val refundable = (if (isChecked) 1 else 0).toBigInteger()
+                    val refundable = (if (isChecked) CONTRACT_TRUE else CONTRACT_FALSE).toBigInteger()
 
                     if (price.toString().toInt() >= 0 && supply.toString().toInt() >= 0) {
                         viewModel.addTicketType(price.toString().toDouble(),

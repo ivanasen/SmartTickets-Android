@@ -17,6 +17,7 @@ import com.ivanasen.smarttickets.R
 import com.ivanasen.smarttickets.models.Event
 import com.ivanasen.smarttickets.models.Ticket
 import com.ivanasen.smarttickets.util.Utility
+import com.ivanasen.smarttickets.util.Utility.Companion.CONTRACT_FALSE
 import io.ipfs.kotlin.IPFS
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import java.text.SimpleDateFormat
@@ -47,7 +48,7 @@ internal class TicketsAdapter(val context: Context, private val tickets: LiveDat
         val event = tickets.value!![position].event
 
         val eventName = event.name
-        val formatDate = SimpleDateFormat(context?.getString(R.string.date_format))
+        val formatDate = SimpleDateFormat(context.getString(R.string.date_format))
         val eventTimestamp = event.timestamp
         val eventDate = formatDate.format(eventTimestamp)
         val location = event.locationName
@@ -68,7 +69,7 @@ internal class TicketsAdapter(val context: Context, private val tickets: LiveDat
             onItemClick(ticket)
         }
 
-        if (event.cancelled.toInt() == 0) {
+        if (event.cancelled.toInt() == CONTRACT_FALSE) {
             holder.eventCancelledView.visibility = View.GONE
         } else {
             holder.eventCancelledView.visibility = View.VISIBLE

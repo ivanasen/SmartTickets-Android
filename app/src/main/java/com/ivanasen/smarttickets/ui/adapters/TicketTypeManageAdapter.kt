@@ -11,6 +11,7 @@ import android.widget.TextView
 import com.ivanasen.smarttickets.R
 import com.ivanasen.smarttickets.models.TicketType
 import com.ivanasen.smarttickets.repositories.ApplicationRepository
+import com.ivanasen.smarttickets.util.Utility.Companion.CONTRACT_TRUE
 import java.text.DecimalFormat
 
 
@@ -44,7 +45,7 @@ internal class TicketTypeManageAdapter(private val context: Context,
         holder.ticketSupplyTextView.text =
                 String.format(context.getString(R.string.tickets_remaining_text), currentSupply)
         holder.ticketRefundable.text =
-                if (refundable == 1.toBigInteger())
+                if (refundable == CONTRACT_TRUE.toBigInteger())
                     context.getString(R.string.refundable_text)
                 else
                     context.getString(R.string.not_refundable_text)

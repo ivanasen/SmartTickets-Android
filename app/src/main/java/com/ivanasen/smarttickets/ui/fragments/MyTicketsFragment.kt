@@ -32,6 +32,8 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import com.ivanasen.smarttickets.ui.activities.TicketValidatorActivity
+import com.ivanasen.smarttickets.util.Utility.Companion.CONTRACT_FALSE
+import com.ivanasen.smarttickets.util.Utility.Companion.CONTRACT_TRUE
 import com.ivanasen.smarttickets.util.Utility.Companion.launchActivity
 import org.jetbrains.anko.find
 
@@ -102,7 +104,7 @@ class MyTicketsFragment : Fragment() {
     }
 
     private fun showDetailViewOrSell(ticket: Ticket) {
-        if (ticket.event.cancelled.toInt() == 0) {
+        if (ticket.event.cancelled.toInt() == CONTRACT_FALSE) {
             showDetailView(ticket)
         } else {
             attempSellTicket(ticket)
@@ -173,7 +175,7 @@ class MyTicketsFragment : Fragment() {
                     }
                 })
 
-        if (ticket.ticketType.refundable == 1.toBigInteger()) {
+        if (ticket.ticketType.refundable == CONTRACT_TRUE.toBigInteger()) {
             ticketRefundDetailContainer.visibility = View.VISIBLE
             ticketNotRefundableDetailTextView.visibility = View.GONE
 

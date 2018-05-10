@@ -30,6 +30,10 @@ class Utility {
         val IMPORT_WALLET_REQUEST_CODE = 42
 
 
+        val CONTRACT_TRUE = 1
+        val CONTRACT_FALSE = 0
+
+
         private val PROVIDER_AUTHORITY = "${BuildConfig.APPLICATION_ID}.provider"
 
         enum class TransactionStatus {
