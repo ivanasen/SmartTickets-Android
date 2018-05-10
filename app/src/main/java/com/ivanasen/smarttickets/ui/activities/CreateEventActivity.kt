@@ -3,6 +3,7 @@ package com.ivanasen.smarttickets.ui.activities
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.*
+import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.Observer
 
 import android.arch.lifecycle.ViewModelProviders
@@ -34,6 +35,8 @@ import com.ivanasen.smarttickets.ui.adapters.TicketCreationTypeAdapter
 import com.ivanasen.smarttickets.util.Utility
 import com.ivanasen.smarttickets.util.Utility.Companion.CONTRACT_FALSE
 import com.ivanasen.smarttickets.util.Utility.Companion.CONTRACT_TRUE
+import com.ivanasen.smarttickets.util.Utility.Companion.showSnackBar
+import de.mateware.snacky.Snacky
 import droidninja.filepicker.FilePickerBuilder
 import droidninja.filepicker.FilePickerConst
 import java.util.*
@@ -166,44 +169,28 @@ class CreateEventActivity : AppCompatActivity() {
 
         createEventBtn.onClick {
             viewModel.attemptCreateEvent()
-                    .observe(this@CreateEventActivity, Observer {
+                    .observe(application as LifecycleOwner, Observer {
                         when (it) {
                             Utility.Companion.TransactionStatus.PENDING -> {
-                                Toast.makeText(this@CreateEventActivity,
-                                        getString(R.string.event_creating_message),
-                                        Toast.LENGTH_LONG)
-                                        .show()
+                                showSnackBar(this@CreateEventActivity,
+                                        R.string.event_creating_message)
                                 finish()
                             }
                             Utility.Companion.TransactionStatus.SUCCESS -> {
-                                MaterialDialog.Builder(this@CreateEventActivity)
-                                        .title(getString(R.string.event_success_title))
-                                        .content(getString(R.string.event_creation_message))
-                                        .positiveText(getString(R.string.OK))
-                                        .onPositive({ _, _ ->
-                                            finish()
-                                        })
+                                Utility.showNotification(applicationContext,
+                                        getString(R.string.event_creation_success_notification_title),
+                                        getString(R.string.event_creation_success_notification_content))
                             }
-                            Utility.Companion.TransactionStatus.FAILURE -> {
-
-                            }
+                            Utility.Companion.TransactionStatus.FAILURE,
                             Utility.Companion.TransactionStatus.ERROR -> {
-                                hideLoadingScreen()
-                                Toast.makeText(this@CreateEventActivity,
-                                        getString(R.string.event_error_message),
-                                        Toast.LENGTH_LONG)
-                                        .show()
+                                Utility.showNotification(applicationContext,
+                                        getString(R.string.event_creation_error_notification_title),
+                                        getString(R.string.event_creation_error_notification_content))
                             }
                         }
                     })
         }
 
-    }
-
-    private fun hideLoadingScreen() {
-        TransitionManager.beginDelayedTransition(rootView as ViewGroup, Fade())
-        contentView.visibility = View.GONE
-        eventProgressBar.visibility = View.VISIBLE
     }
 
     private fun showTicketTypeDialog() {

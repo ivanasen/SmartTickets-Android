@@ -15,8 +15,11 @@ import java.io.File
 import com.ivanasen.smarttickets.BuildConfig
 import android.support.v4.content.FileProvider
 import android.support.v4.app.ActivityCompat.startActivityForResult
+import android.support.v4.app.NotificationCompat
 import android.util.TypedValue
 import java.math.BigInteger
+import android.support.v4.app.NotificationManagerCompat
+import de.mateware.snacky.Snacky
 
 
 class Utility {
@@ -32,6 +35,9 @@ class Utility {
 
         val CONTRACT_TRUE = 1
         val CONTRACT_FALSE = 0
+
+        val NOTIFICATION_CHANNEL_ID: String = "SmartTickets"
+        private val NOTIFICATION_ID: Int = 1234
 
 
         private val PROVIDER_AUTHORITY = "${BuildConfig.APPLICATION_ID}.provider"
@@ -91,7 +97,26 @@ class Utility {
         fun getIpfsImageUrl(imageHash: String): String =
                 "${BuildConfig.IPFS_GATEWAY_URL}/$IPFS_URL_PATH/$imageHash"
 
+        fun showNotification(context: Context, title: String, content: String) {
+            val mBuilder =
+                    NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
+                    .setSmallIcon(R.drawable.ic_stat_notification)
+                    .setContentTitle(title)
+                    .setContentText(content)
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+            mBuilder.build()
+            val notificationManager = NotificationManagerCompat.from(context)
+            notificationManager.notify(NOTIFICATION_ID, mBuilder.build())
+        }
 
+        fun showSnackBar(activity: Activity, resId: Int) {
+            Snacky.builder()
+                    .setActivity(activity)
+                    .setText(resId)
+                    .setDuration(Snacky.LENGTH_LONG)
+                    .build()
+                    .show()
+        }
     }
 }
 

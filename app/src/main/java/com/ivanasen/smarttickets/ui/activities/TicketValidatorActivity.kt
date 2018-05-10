@@ -8,7 +8,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import com.ivanasen.smarttickets.R
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
@@ -16,8 +15,8 @@ import android.util.Log
 import android.view.View
 import com.blikoon.qrcodescanner.QrCodeActivity
 import com.ivanasen.smarttickets.util.Utility
+import com.ivanasen.smarttickets.util.Utility.Companion.showSnackBar
 import com.ivanasen.smarttickets.viewmodels.AppViewModel
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_ticket_validator.*
 import org.jetbrains.anko.sdk25.coroutines.onClick
 
@@ -29,10 +28,6 @@ class TicketValidatorActivity : AppCompatActivity() {
     private val REQUEST_CODE_QR_SCAN = 101
     private val PERMISSIONS_CAMERA = 1
     private val REQUEST_QR_CODE_RESULT_EXTRA = "com.blikoon.qrcodescanner.got_qr_scan_relult"
-
-//    private val mNfcAdapter: NfcAdapter? by lazy {
-//        NfcAdapter.getDefaultAdapter(this)
-//    }
 
     private val mViewModel: AppViewModel by lazy {
         ViewModelProviders.of(this).get(AppViewModel::class.java)
@@ -75,12 +70,8 @@ class TicketValidatorActivity : AppCompatActivity() {
                     val result = data?.getStringExtra(REQUEST_QR_CODE_RESULT_EXTRA)
                     Log.d(LOG_TAG, result)
                     result?.let { verifyTicket(it) }
-
                 } else {
-                    Toast.makeText(this,
-                            getString(R.string.qr_code_error),
-                            Toast.LENGTH_LONG)
-                            .show()
+                    showSnackBar(this, R.string.qr_code_error)
                 }
             }
         }
@@ -99,7 +90,6 @@ class TicketValidatorActivity : AppCompatActivity() {
     }
 
     private fun showValidationInProcessView() {
-//        TransitionManager.beginDelayedTransition(contentView as ViewGroup, Fade())
         tapToScanView.visibility = View.GONE
         ticketValidatingErrorView.visibility = View.GONE
         ticketValidatingSuccessView.visibility = View.GONE
@@ -107,7 +97,6 @@ class TicketValidatorActivity : AppCompatActivity() {
     }
 
     private fun showValidationSuccessView() {
-//        TransitionManager.beginDelayedTransition(contentView as ViewGroup, Fade())
         tapToScanView.visibility = View.GONE
         ticketValidatingErrorView.visibility = View.GONE
         ticketValidatingSuccessView.visibility = View.VISIBLE
@@ -115,7 +104,6 @@ class TicketValidatorActivity : AppCompatActivity() {
     }
 
     private fun showValidationErrorView() {
-//        TransitionManager.beginDelayedTransition(contentView as ViewGroup, Fade())
         tapToScanView.visibility = View.GONE
         ticketValidatingErrorView.visibility = View.VISIBLE
         ticketValidatingSuccessView.visibility = View.GONE
@@ -128,26 +116,11 @@ class TicketValidatorActivity : AppCompatActivity() {
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     openQrScanner()
                 } else {
-                    Toast.makeText(this, getString(R.string.camera_permission_message),
-                            Toast.LENGTH_LONG).show()
+                    showSnackBar(this, R.string.camera_permission_message)
                 }
                 return
             }
         }
     }
 
-    //    override fun onResume() {
-//        super.onResume()
-//
-//        val action = intent.action
-//        if (action == NfcAdapter.ACTION_NDEF_DISCOVERED) {
-//            val parcelables = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)
-//            val inNdefMessage = parcelables[0] as NdefMessage
-//            val inNdefRecords = inNdefMessage.records
-//            val ndefRecord0 = inNdefRecords[0]
-//            val inMsg = String(ndefRecord0.payload)
-//
-//            Log.d(LOG_TAG, inMsg)
-//        }
-//    }
 }

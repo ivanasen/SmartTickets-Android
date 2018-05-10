@@ -1,5 +1,6 @@
 package com.ivanasen.smarttickets.ui.activities
 
+import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
@@ -21,7 +22,9 @@ import com.ivanasen.smarttickets.ui.activities.DiscoverEventDetailActivity.Compa
 import com.ivanasen.smarttickets.ui.adapters.TicketTypeManageAdapter
 import com.ivanasen.smarttickets.util.Utility
 import com.ivanasen.smarttickets.util.Utility.Companion.CONTRACT_TRUE
+import com.ivanasen.smarttickets.util.Utility.Companion.showSnackBar
 import com.ivanasen.smarttickets.viewmodels.AppViewModel
+import de.mateware.snacky.Snacky
 import kotlinx.android.synthetic.main.activity_manage_event_detail.*
 
 import org.jetbrains.anko.sdk25.coroutines.onClick
@@ -68,7 +71,14 @@ class ManageEventDetailActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return when (item?.itemId) {
             R.id.cancel_event_action -> {
-                showCancelDialog()
+                if (mEvent.cancelled.toInt() == CONTRACT_TRUE) {
+                    Toast.makeText(this,
+                            getString(R.string.event_already_cancelled_msg),
+                            Toast.LENGTH_LONG)
+                            .show()
+                } else {
+                    showCancelDialog()
+                }
                 true
             }
             android.R.id.home -> {
@@ -95,20 +105,21 @@ class ManageEventDetailActivity : AppCompatActivity() {
     }
 
     private fun attemptCancelEvent() {
-        mViewModel.cancelEvent(mEvent.eventId).observe(this, Observer {
+        mViewModel.cancelEvent(mEvent.eventId).observe(application as LifecycleOwner, Observer {
             when (it) {
                 Utility.Companion.TransactionStatus.PENDING -> {
-                    Toast.makeText(this,
-                            getString(R.string.cancelling_event_pending_msg),
-                            Toast.LENGTH_LONG)
+                    Snacky.builder()
+                            .setActivity(this)
+                            .setText(R.string.cancelling_event_pending_msg)
+                            .setDuration(Snacky.LENGTH_LONG)
+                            .build()
                             .show()
                 }
 
                 Utility.Companion.TransactionStatus.SUCCESS -> {
-                    Toast.makeText(this,
-                            getString(R.string.cancelling_event_success_msg),
-                            Toast.LENGTH_LONG)
-                            .show()
+                    Utility.showNotification(applicationContext,
+                            getString(R.string.event_cancellation_success_notification_title),
+                            getString(R.string.event_cancellation_success_notification_content))
                 }
 
                 Utility.Companion.TransactionStatus.FAILURE,
@@ -117,6 +128,10 @@ class ManageEventDetailActivity : AppCompatActivity() {
                             getString(R.string.cancelling_event_error_msg),
                             Toast.LENGTH_LONG)
                             .show()
+
+                    Utility.showNotification(applicationContext,
+                            getString(R.string.event_cancellation_error_notification_title),
+                            getString(R.string.event_cancellation_error_notification_content))
                 }
             }
         })
@@ -152,11 +167,15 @@ class ManageEventDetailActivity : AppCompatActivity() {
             eventCancelledView.visibility = View.VISIBLE
             eventEarningsContainer.visibility = View.GONE
             withdrawalBtn.visibility = View.GONE
+            earningsLabel.visibility = View.GONE
+            eventNotPassedView.visibility = View.GONE
             return
         } else {
             eventCancelledView.visibility = View.GONE
             eventEarningsContainer.visibility = View.VISIBLE
             withdrawalBtn.visibility = View.VISIBLE
+            earningsLabel.visibility = View.VISIBLE
+            eventNotPassedView.visibility = View.VISIBLE
         }
 
         val earningsInWei = mEvent.earnings
@@ -192,22 +211,16 @@ class ManageEventDetailActivity : AppCompatActivity() {
 
     private fun attemptWithdrawalFunds() {
         if (mEvent.timestamp > Calendar.getInstance().timeInMillis) {
-            Toast.makeText(this@ManageEventDetailActivity,
-                    getString(R.string.event_should_have_passed_msg),
-                    Toast.LENGTH_LONG)
-                    .show()
+            showSnackBar(this, R.string.event_should_have_passed_msg)
             return
         }
 
         mViewModel.attemptWithdrawalFunds(mEvent.eventId)
-                .observe(this@ManageEventDetailActivity, Observer {
+                .observe(application as LifecycleOwner, Observer {
                     when (it) {
                         Utility.Companion.TransactionStatus.PENDING -> {
-                            Toast.makeText(
-                                    this@ManageEventDetailActivity,
-                                    getString(R.string.withdrawal_funds_pending),
-                                    Toast.LENGTH_LONG)
-                                    .show()
+                            showSnackBar(this@ManageEventDetailActivity,
+                                    R.string.withdrawal_funds_pending)
                         }
                         Utility.Companion.TransactionStatus.SUCCESS -> {
                             MaterialDialog.Builder(this@ManageEventDetailActivity)

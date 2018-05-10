@@ -25,10 +25,6 @@ class DiscoverFragment : Fragment() {
 
     private val LOG_TAG = DiscoverFragment::class.java.simpleName
 
-    private val SORT_POPULAR_INDEX = 0
-    private val SORT_RECENT_INDEX = 1
-    private val SORT_OLD_INDEX = 2
-
     private val mContext: Context by lazy { requireContext() }
     private val mViewModel: AppViewModel by lazy {
         if (activity != null)

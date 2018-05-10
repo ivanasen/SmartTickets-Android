@@ -13,6 +13,10 @@ import com.ivanasen.smarttickets.viewmodels.AppViewModel
 import com.ivanasen.smarttickets.util.Utility.Companion.loadFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import android.app.NotificationManager
+import android.app.NotificationChannel
+import android.os.Build
+import com.ivanasen.smarttickets.util.Utility.Companion.NOTIFICATION_CHANNEL_ID
 
 
 class MainActivity : AppCompatActivity() {
@@ -31,6 +35,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
+        createNotificationChannel()
         setupViews(savedInstanceState)
     }
 
@@ -70,6 +75,22 @@ class MainActivity : AppCompatActivity() {
                 loadFragment(R.id.fragmentContainer,
                         supportFragmentManager, MyWalletFragment())
             }
+        }
+    }
+
+    private fun createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = getString(R.string.channel_name)
+            val description = getString(R.string.channel_description)
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(NOTIFICATION_CHANNEL_ID, name, importance)
+            channel.description = description
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            val notificationManager = getSystemService(NotificationManager::class.java)
+            notificationManager.createNotificationChannel(channel)
         }
     }
 

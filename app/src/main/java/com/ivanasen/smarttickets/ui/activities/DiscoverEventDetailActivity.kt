@@ -1,11 +1,13 @@
 package com.ivanasen.smarttickets.ui.activities
 
+import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.afollestad.materialdialogs.MaterialDialog
@@ -16,7 +18,10 @@ import com.ivanasen.smarttickets.R
 import com.ivanasen.smarttickets.models.TicketType
 import com.ivanasen.smarttickets.ui.adapters.TicketTypeAdapter
 import com.ivanasen.smarttickets.util.Utility
+import com.ivanasen.smarttickets.util.Utility.Companion.showNotification
+import com.ivanasen.smarttickets.util.Utility.Companion.showSnackBar
 import com.ivanasen.smarttickets.viewmodels.AppViewModel
+import de.mateware.snacky.Snacky
 import kotlinx.android.synthetic.main.activity_discover_event_detail.*
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import java.text.DateFormat.*
@@ -69,29 +74,21 @@ class DiscoverEventDetailActivity : AppCompatActivity() {
 
         val attemptBuyTicket: (ticketType: TicketType) -> Unit = {
             mViewModel.attemptToBuyTicket(it)
-                    .observe(this, Observer {
+                    .observe(application as LifecycleOwner, Observer {
                         when (it) {
                             Utility.Companion.TransactionStatus.PENDING -> {
-                                Toast.makeText(applicationContext,
-                                        getString(R.string.buying_ticket_text),
-                                        Toast.LENGTH_LONG)
-                                        .show()
+                                showSnackBar(this, R.string.buying_ticket_text)
                             }
                             Utility.Companion.TransactionStatus.SUCCESS -> {
-                                MaterialDialog.Builder(this)
-                                        .title(getString(R.string.ticket_success_title))
-                                        .content(getString(R.string.ticket_success))
-                                        .positiveText(getString(R.string.OK))
-                                        .show()
+                                showNotification(applicationContext,
+                                        getString(R.string.ticket_success_notification_title),
+                                        getString(R.string.ticket_success_notification_content))
                             }
-                            Utility.Companion.TransactionStatus.FAILURE -> {
-
-                            }
+                            Utility.Companion.TransactionStatus.FAILURE,
                             Utility.Companion.TransactionStatus.ERROR -> {
-                                Toast.makeText(applicationContext,
-                                        getString(R.string.tx_error_text),
-                                        Toast.LENGTH_LONG)
-                                        .show()
+                                showNotification(applicationContext,
+                                        getString(R.string.ticket_error_notification_title),
+                                        getString(R.string.ticket_error_notification_content))
                             }
                         }
                     })

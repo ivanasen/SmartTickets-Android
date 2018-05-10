@@ -19,6 +19,7 @@ import org.jetbrains.anko.sdk25.coroutines.onClick
 import com.ivanasen.smarttickets.util.Utility
 import java.text.DateFormat
 import android.view.animation.AlphaAnimation
+import com.ivanasen.smarttickets.util.Utility.Companion.CONTRACT_TRUE
 import org.jetbrains.anko.find
 
 
@@ -63,10 +64,6 @@ internal class EventAdapter(val activity: Activity, private val eventsData: Live
         val cheapestTicket = tickets.minBy { it.priceInUSDCents }
         val priceInDollars = cheapestTicket?.priceInUSDCents!!.toDouble() / 100
 
-        holder.eventTicketView.text = String.format(activity.getString(R.string.starting_from_text), priceInDollars)
-        holder.eventNameView.text = name
-        holder.eventLocation.text = locationAddress
-        holder.eventDateView.text = formattedDate
         if (thumbnailHash.isNotEmpty()) {
             val imageUrl = Utility.getIpfsImageUrl(thumbnailHash)
             Glide.with(activity)
@@ -75,9 +72,24 @@ internal class EventAdapter(val activity: Activity, private val eventsData: Live
                             .centerCrop())
                     .into(holder.eventImageView)
         }
+
+        if (event.cancelled.toInt() == CONTRACT_TRUE) {
+            holder.eventCancelledView.visibility = View.VISIBLE
+            holder.eventDescriptionView.visibility = View.GONE
+        } else {
+            holder.eventCancelledView.visibility = View.GONE
+            holder.eventDescriptionView.visibility = View.VISIBLE
+
+            holder.eventTicketView.text = String.format(activity.getString(R.string.starting_from_text), priceInDollars)
+            holder.eventNameView.text = name
+            holder.eventLocation.text = locationAddress
+            holder.eventDateView.text = formattedDate
+        }
+
         holder.view.onClick {
             eventClickCallBack(eventId, holder.eventImageView)
         }
+
         setFadeAnimation(holder.view)
     }
 
@@ -93,5 +105,7 @@ internal class EventAdapter(val activity: Activity, private val eventsData: Live
         val eventDateView = view.find<TextView>(R.id.eventDateView)
         val eventTicketView = view.find<TextView>(R.id.eventTicketPriceView)
         val eventLocation = view.find<TextView>(R.id.eventLocationView)
+        val eventCancelledView = view.find<TextView>(R.id.eventCancelledView)
+        val eventDescriptionView = view.find<View>(R.id.eventDescriptionView)
     }
 }

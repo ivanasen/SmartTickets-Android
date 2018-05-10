@@ -1,5 +1,6 @@
 package com.ivanasen.smarttickets.ui.fragments
 
+import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.Observer
 
 
@@ -35,6 +36,8 @@ import com.ivanasen.smarttickets.ui.activities.TicketValidatorActivity
 import com.ivanasen.smarttickets.util.Utility.Companion.CONTRACT_FALSE
 import com.ivanasen.smarttickets.util.Utility.Companion.CONTRACT_TRUE
 import com.ivanasen.smarttickets.util.Utility.Companion.launchActivity
+import com.ivanasen.smarttickets.util.Utility.Companion.showSnackBar
+import de.mateware.snacky.Snacky
 import org.jetbrains.anko.find
 
 
@@ -107,7 +110,7 @@ class MyTicketsFragment : Fragment() {
         if (ticket.event.cancelled.toInt() == CONTRACT_FALSE) {
             showDetailView(ticket)
         } else {
-            attempSellTicket(ticket)
+            attemptSellTicket(ticket)
         }
     }
 
@@ -185,7 +188,7 @@ class MyTicketsFragment : Fragment() {
             ticketPriceInUsdViewDetail.text = String.format(usdFormat, priceUsd)
 
             refundTicketBtnDetail.onClick {
-                attempSellTicket(ticket)
+                attemptSellTicket(ticket)
             }
         } else {
             ticketRefundDetailContainer.visibility = View.GONE
@@ -194,29 +197,25 @@ class MyTicketsFragment : Fragment() {
 
     }
 
-    private fun attempSellTicket(ticket: Ticket) {
+    private fun attemptSellTicket(ticket: Ticket) {
+        val activity = requireActivity()
+
         mViewModel.attemptSellTicket(ticket)
-                .observe(this@MyTicketsFragment, Observer {
+                .observe(activity.application as LifecycleOwner, Observer {
                     when (it) {
                         Utility.Companion.TransactionStatus.PENDING -> {
-                            Toast.makeText(this@MyTicketsFragment.mContext,
-                                    getString(R.string.selling_ticket_text),
-                                    Toast.LENGTH_LONG)
-                                    .show()
+                            showSnackBar(activity, R.string.selling_ticket_text)
                         }
                         Utility.Companion.TransactionStatus.SUCCESS -> {
-                            MaterialDialog.Builder(this@MyTicketsFragment.mContext)
-                                    .title(R.string.ticket_sell_success_title)
-                                    .content(R.string.ticket_sell_success_message)
-                                    .positiveText(R.string.OK)
-                                    .show()
+                            Utility.showNotification(activity.applicationContext,
+                                    getString(R.string.ticket_sell_success_notification_title),
+                                    getString(R.string.ticket_sell_success_notification_content))
                         }
                         Utility.Companion.TransactionStatus.FAILURE,
                         Utility.Companion.TransactionStatus.ERROR -> {
-                            Toast.makeText(this@MyTicketsFragment.mContext,
-                                    getString(R.string.selling_ticket_error),
-                                    Toast.LENGTH_LONG)
-                                    .show()
+                            Utility.showNotification(activity.applicationContext,
+                                    getString(R.string.ticket_sell_error_notification_title),
+                                    getString(R.string.ticket_sell_error_notification_content))
                         }
                     }
                 })
