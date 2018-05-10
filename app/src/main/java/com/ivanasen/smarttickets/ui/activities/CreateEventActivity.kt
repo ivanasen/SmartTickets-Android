@@ -172,8 +172,10 @@ class CreateEventActivity : AppCompatActivity() {
                     .observe(application as LifecycleOwner, Observer {
                         when (it) {
                             Utility.Companion.TransactionStatus.PENDING -> {
-                                showSnackBar(this@CreateEventActivity,
-                                        R.string.event_creating_message)
+                                Toast.makeText(this@CreateEventActivity,
+                                        getString(R.string.event_creating_message),
+                                        Toast.LENGTH_LONG)
+                                        .show()
                                 finish()
                             }
                             Utility.Companion.TransactionStatus.SUCCESS -> {
