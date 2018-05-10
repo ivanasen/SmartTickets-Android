@@ -11,8 +11,8 @@
         android:id="@+id/ticketCardView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="@dimen/big_margin"
         android:layout_gravity="center"
+        android:layout_margin="@dimen/big_margin"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="12dp"
         app:cardElevation="@dimen/elevation_big">
@@ -34,8 +34,8 @@
                 android:layout_height="0dp"
                 android:layout_marginTop="@dimen/default_margin"
                 android:layout_weight="1"
-                android:clipToPadding="false"
                 android:clipChildren="false"
+                android:clipToPadding="false"
                 android:padding="@dimen/default_padding">
 
                 <TextView

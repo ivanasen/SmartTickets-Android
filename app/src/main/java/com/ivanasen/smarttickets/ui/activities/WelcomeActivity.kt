@@ -52,6 +52,9 @@ class WelcomeActivity : AppCompatActivity() {
         loadFragment(R.id.fragmentContainer, supportFragmentManager, CreateWalletFragment())
     }
 
+    override fun onBackPressed() {
+        moveTaskToBack(true)
+    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
