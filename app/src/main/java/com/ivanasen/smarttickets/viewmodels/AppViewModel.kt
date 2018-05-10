@@ -3,6 +3,7 @@ package com.ivanasen.smarttickets.viewmodels
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
 import android.content.Context
 import com.ivanasen.smarttickets.api.ApplicationApi
 import com.ivanasen.smarttickets.models.Event
@@ -37,14 +38,7 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
     val ticketsFetchStatus: LiveData<Utility.Companion.TransactionStatus> =
             mRepository.ticketsFetchStatus
 
-
-//    public fun refreshEvents(): LiveData<List<IPFSEvent>> {
-//
-//    }
-//
-//    public fun getTicketsForUser(): LiveData<List<TicketType>> {
-//
-//    }
+    val currentEventsSortIndex: MutableLiveData<Int> = MutableLiveData()
 
     fun checkPassword(context: Context, password: String): Boolean {
         val walletName = context.applicationContext.defaultSharedPreferences.getString(WALLET_FILE_NAME_KEY, "")
@@ -95,12 +89,6 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
 
     fun convertEtherToUsd(weiValue: BigInteger): LiveData<Double> {
         return mRepository.convertEtherToUsd(weiValue)
-    }
-
-    fun signTicketNfcMessage(ticket: Ticket): String {
-        // TODO: Not implemented
-//        return mRepository.signTicketMessage(ticket)
-        return ""
     }
 
     fun createTicketValidationCode(ticket: Ticket): LiveData<String> {

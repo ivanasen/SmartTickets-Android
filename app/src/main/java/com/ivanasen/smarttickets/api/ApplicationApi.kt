@@ -39,6 +39,9 @@ interface ApplicationApi {
         val EVENT_ORDER_POPULARITY = "popular"
         val EVENT_ORDER_RECENT = "recent"
         val EVENT_ORDER_OLD = "old"
+
+        val EVENT_ORDERS = arrayOf(EVENT_ORDER_POPULARITY, EVENT_ORDER_RECENT, EVENT_ORDER_OLD)
+
         val EVENT_PAGE_DEFAULT = 0
         val EVENT_LIMIT_DEFAULT = 10
 

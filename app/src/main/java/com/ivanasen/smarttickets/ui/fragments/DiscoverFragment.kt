@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.*
 import com.afollestad.materialdialogs.MaterialDialog
 import com.ivanasen.smarttickets.R
@@ -67,21 +66,13 @@ class DiscoverFragment : Fragment() {
         MaterialDialog.Builder(mContext)
                 .title(getString(R.string.sort_events_title))
                 .items(R.array.event_sort_types)
-                .itemsCallbackSingleChoice(0, { _, _, _, _ -> true })
+                .itemsCallbackSingleChoice(
+                        mViewModel.currentEventsSortIndex.value ?: 0,
+                        { _, _, _, _ -> true })
                 .positiveText(android.R.string.ok)
                 .negativeText(android.R.string.cancel)
-                .onPositive({ dialog, which ->
-                    when (dialog.selectedIndex) {
-                        SORT_POPULAR_INDEX -> {
-                            mViewModel.fetchEvents(ApplicationApi.EVENT_ORDER_POPULARITY)
-                        }
-                        SORT_RECENT_INDEX -> {
-                            mViewModel.fetchEvents(ApplicationApi.EVENT_ORDER_RECENT)
-                        }
-                        SORT_OLD_INDEX -> {
-                            mViewModel.fetchEvents(ApplicationApi.EVENT_ORDER_OLD)
-                        }
-                    }
+                .onPositive({ dialog, _ ->
+                    mViewModel.currentEventsSortIndex.value = dialog.selectedIndex
                 })
                 .show()
     }
@@ -110,6 +101,12 @@ class DiscoverFragment : Fragment() {
                     eventsView.visibility = View.GONE
                     eventRefreshLayout.isRefreshing = false
                 }
+            }
+        })
+
+        mViewModel.currentEventsSortIndex.observe(this, Observer {
+            it?.let {
+                mViewModel.fetchEvents(ApplicationApi.EVENT_ORDERS[it])
             }
         })
     }
