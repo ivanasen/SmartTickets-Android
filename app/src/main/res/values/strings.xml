@@ -170,11 +170,11 @@
     <string name="channel_name">Smart Tickets</string>
     <string name="channel_description">Smart Tickets notification channel</string>
     <string name="ticket_success_notification_title">Your ticket has arrived!</string>
-    <string name="ticket_success_notification_content">\"You can find it in the \\\"My Tickets\\\" section of the app.\"</string>
+    <string name="ticket_success_notification_content">You can find it in the "My Tickets" section of the app.</string>
     <string name="ticket_error_notification_title">There was an unexpected error with your ticket purchase.</string>
     <string name="ticket_error_notification_content">We\'re sorry for the inconvenience.</string>
     <string name="event_creation_success_notification_title">Congratulations! Your event was created successfully.</string>
-    <string name="event_creation_success_notification_content">You can track your earnings in the \\\"Manage Events\\\" section of the app.</string>
+    <string name="event_creation_success_notification_content">You can track your earnings in the "Manage Events" section of the app.</string>
     <string name="event_creation_error_notification_title">There was an error creating your event.</string>
     <string name="event_creation_error_notification_content">We\'re sorry for the inconvenience. You can try again later.</string>
     <string name="event_cancellation_success_notification_title">Your event was cancelled successfully.</string>
