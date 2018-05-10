@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/transparentDark"
-    android:translationZ="@dimen/elevation_big">
+    android:translationZ="@dimen/ticket_detail_elevation">
 
     <android.support.v7.widget.CardView
         android:id="@+id/ticketCardView"
