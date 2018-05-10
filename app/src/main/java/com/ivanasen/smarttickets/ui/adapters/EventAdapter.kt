@@ -81,10 +81,11 @@ internal class EventAdapter(val activity: Activity, private val eventsData: Live
             holder.eventDescriptionView.visibility = View.VISIBLE
 
             holder.eventTicketView.text = String.format(activity.getString(R.string.starting_from_text), priceInDollars)
-            holder.eventNameView.text = name
             holder.eventLocation.text = locationAddress
             holder.eventDateView.text = formattedDate
         }
+
+        holder.eventNameView.text = name
 
         holder.view.onClick {
             eventClickCallBack(eventId, holder.eventImageView)

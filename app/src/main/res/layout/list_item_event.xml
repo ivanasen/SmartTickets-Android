@@ -40,13 +40,15 @@
         android:id="@+id/eventNameView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/eventDescriptionView"
+        android:layout_below="@id/eventImageViewContainer"
+        android:layout_marginTop="-44dp"
         android:layout_marginBottom="@dimen/small_margin"
         android:elevation="5dp"
         android:ellipsize="end"
         android:maxLines="1"
         android:paddingEnd="24dp"
         android:paddingStart="24dp"
+        tools:text="Concert"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         android:textColor="@color/white" />
 
