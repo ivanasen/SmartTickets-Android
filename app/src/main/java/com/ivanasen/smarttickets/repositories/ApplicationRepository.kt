@@ -60,7 +60,6 @@ object ApplicationRepository {
 
     val eventsFetchStatus by lazy { MutableLiveData<Utility.Companion.TransactionStatus>() }
     val ticketsFetchStatus by lazy { MutableLiveData<Utility.Companion.TransactionStatus>() }
-//    val myEventsFetchStatus by lazy { MutableLiveData<Utility.Companion.TransactionStatus>() }
 
     fun createEvent(name: String,
                     description: String,
@@ -96,9 +95,9 @@ object ApplicationRepository {
                         ticketRefundables)
                         .send()
                 Log.d(LOG_TAG, eventTxReceipt.transactionHash)
-
-
                 txStatusLiveData.postValue(Utility.Companion.TransactionStatus.SUCCESS)
+
+                fetchWalletData()
             } catch (e: Exception) {
                 Log.e(LOG_TAG, e.message)
                 txStatusLiveData.postValue(Utility.Companion.TransactionStatus.ERROR)
@@ -371,6 +370,9 @@ object ApplicationRepository {
                         totalPrice).send()
                 Log.d(LOG_TAG, txReceipt.transactionHash.toString())
                 txStatusLiveData.postValue(Utility.Companion.TransactionStatus.SUCCESS)
+
+                fetchTickets()
+                fetchWalletData()
             } catch (e: Exception) {
                 Log.e(LOG_TAG, e.message)
                 Log.d(LOG_TAG, "Balance: " + balanceInWei.toBigDecimal()
@@ -483,6 +485,9 @@ object ApplicationRepository {
                 val txReceipt = mContract.refundTicket(ticketId).send()
                 ticketLiveData.postValue(Utility.Companion.TransactionStatus.SUCCESS)
                 Log.d(LOG_TAG, txReceipt.transactionHash)
+
+                fetchTickets()
+                fetchWalletData()
             } catch (e: Exception) {
                 e.printStackTrace()
                 ticketLiveData.postValue(Utility.Companion.TransactionStatus.ERROR)
